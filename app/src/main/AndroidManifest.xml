@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.app_vpn">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name=".AppVpnApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.App_vpn"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31"
+        tools:replace="android:label,android:theme, android:name"
+        >
+<!--        <activity-->
+<!--            android:name=".ui.auth.signup.VerifyActivity"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".FirstActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.auth.AuthActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.pay.PaymentVipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.splashscreen.SplashTheme"
+            android:exported="true"
+            android:theme="@style/ThemeSpl" />
+        <activity
+            android:name=".ui.splashscreen.SplashScreenActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.auth.signup.SignUpActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App_vpn" />
+        <activity
+            android:name=".ui.auth.login.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.auth.signup.verify.VerificationActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.auth.signup.verify.SuccessActivity"
+            android:exported="true" />
+
+        <!--        Bên VPN-->
+        <service
+            android:name="de.blinkt.openvpn.core.OpenVPNService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+        <!-- Disconnect VPN Activity -->
+        <activity
+            android:name="de.blinkt.openvpn.activities.DisconnectVPN"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=".DisconnectVPN"
+            android:theme="@style/blinkt.dialog" />
+    </application>
+
+</manifest>

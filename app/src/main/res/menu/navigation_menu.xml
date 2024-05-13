@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/source_code"
+        android:title="Source Code"
+        android:icon="@drawable/code_ic"/>
+
+    <item
+        android:id="@+id/policy"
+        android:title="Private Policy"
+        android:icon="@drawable/policy_icon" />
+
+    <item
+        android:id="@+id/rate"
+        android:title="Rate us"
+        android:icon="@drawable/rate_icon" />
+
+    <item
+        android:id="@+id/contact"
+        android:title="Contact us"
+        android:icon="@drawable/contact_ic" />
+
+</menu>

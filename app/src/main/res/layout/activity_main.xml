@@ -1,0 +1,50 @@
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+    <!-- LinearLayout as the outermost container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Content View -->
+        <FrameLayout
+            android:id="@+id/fl_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- Your main content goes here -->
+
+        </FrameLayout>
+
+        <!-- BottomNavigationView -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:itemBackground="@color/nav_bottom"
+            app:itemTextColor="@drawable/icon_tinit_selected"
+            app:itemIconTint="@drawable/icon_tinit_selected"
+            app:menu="@menu/nav_menu" />
+
+    </LinearLayout>
+
+    <!-- NavigationView -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="332dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_drawer"
+        app:menu="@menu/navigation_menu"
+        tools:ignore="MissingConstraints" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

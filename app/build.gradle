@@ -1,0 +1,136 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id("kotlin-android")
+    //ksp
+    id 'com.google.devtools.ksp'
+    //hilt
+    id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    namespace 'com.example.app_vpn'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.example.app_vpn"
+        minSdk 28
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    flavorDimensions("implementation")
+
+    productFlavors {
+        create("ui") {
+            setDimension("implementation")
+            buildConfigField("boolean", "openvpn3", "true")
+        }
+        create("skeleton") {
+            setDimension("implementation")
+            buildConfigField("boolean", "openvpn3", "false")
+        }
+    }
+
+
+    bundle {
+        abi { enableSplit = true }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.activity:activity-ktx:1.9.0'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //android material
+    implementation 'com.google.android.material:material:1.12.0'
+
+
+    //view-model and livedata
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    //retrofit and gson
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    //coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    //room
+    implementation 'androidx.room:room-ktx:2.6.1'
+    implementation 'androidx.room:room-runtime:2.6.1'
+    ksp 'androidx.room:room-compiler:2.6.1'
+
+    //navigation
+    def nav_version = "2.7.7"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:2.49"
+    ksp "com.google.dagger:hilt-compiler:2.49"
+
+    //OkHttp Logging Interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
+
+    //Data Store Preferences
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
+
+    //SwipeRefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+
+    //google firebase service
+    implementation 'com.google.firebase:firebase-auth:22.3.1'
+    implementation 'com.google.android.gms:play-services-auth:21.1.0'
+    implementation platform('com.google.firebase:firebase-bom:32.8.1')
+
+    // Support OTP code
+    implementation "io.github.chaosleung:pinview:1.4.4"
+    implementation project(path: ':openvpn')
+}
