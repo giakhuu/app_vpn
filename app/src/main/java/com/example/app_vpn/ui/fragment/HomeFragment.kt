@@ -170,66 +170,59 @@ class HomeFragment : Fragment() {
             }
             val localFile = File(subDir, "config.ovpn")
 
-            val country = preferenceManager.getCountry();
+            val country = preferenceManager.getCountry()
             if (country == null) {
-                Toast.makeText(requireContext(), "Hãy chọn vpn" , Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
+                return@launch
             }
-            // Usage
-            if (isUserLoggedIn()) {
-                if (country != null) {
-                    downloadFileFromFirebase(
-                        fileUrl = country.config,
-                        localFile = localFile,
-                        onSuccess = {
-                            println("File downloaded successfully")
-                        },
-                        onFailure = { exception ->
-                            println("Failed to download file: ${exception.message}")
+
+            val downloadAndConnect = {
+                downloadFileFromFirebase(
+                    fileUrl = country.config,
+                    localFile = localFile,
+                    onSuccess = {
+                        println("File downloaded successfully")
+                        try {
+                            localFile.inputStream().use { inputStream ->
+                                val isr = InputStreamReader(inputStream)
+                                val br = BufferedReader(isr)
+                                val config = buildString {
+                                    var line: String?
+                                    while (true) {
+                                        line = br.readLine()
+                                        if (line == null) break
+                                        append(line).append("\n")
+                                    }
+                                }
+
+                                val profile = mService!!.addNewVPNProfile("america", false, config)
+                                mService!!.startProfile(profile.mUUID)
+                                mService!!.startVPN(config)
+                                binding.button.text = "Disconnect"
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Toast.makeText(activity, "VPN service error", Toast.LENGTH_SHORT).show()
                         }
-                    )
-                }
+                    },
+                    onFailure = { exception ->
+                        println("Failed to download file: ${exception.message}")
+                    }
+                )
+            }
+
+            if (isUserLoggedIn()) {
+                downloadAndConnect()
             } else {
                 signIn("giakhuu18112004@gmail.com", "gia18112004", {
-                    if (country != null) {
-                        downloadFileFromFirebase(
-                            fileUrl = country.config,
-                            localFile = localFile,
-                            onSuccess = {
-                                println("File downloaded successfully")
-                            },
-                            onFailure = { exception ->
-                                println("Failed to download file: ${exception.message}")
-                            }
-                        )
-                    }
+                    downloadAndConnect()
                 }, { exception ->
                     println("Sign-in failed: ${exception.message}")
                 })
             }
-            try {
-                localFile.inputStream().use { inputStream ->
-                    val isr = InputStreamReader(inputStream)
-                    val br = BufferedReader(isr)
-                    var config = ""
-                    var line: String?
-
-                    while (true) {
-                        line = br.readLine()
-                        if (line == null) break
-                        config += line + "\n"
-                    }
-
-                    val profile = mService!!.addNewVPNProfile("america", false, config)
-                    mService!!.startProfile(profile.mUUID)
-                    mService!!.startVPN(config)
-                    binding.button.text = "Disconnect"
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(activity, "VPN service error", Toast.LENGTH_SHORT).show()
-            }
         }
     }
+
 
 
 
