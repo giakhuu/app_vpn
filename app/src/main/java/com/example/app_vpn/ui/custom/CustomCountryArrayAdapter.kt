@@ -2,6 +2,7 @@ package com.example.app_vpn.ui.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,15 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import com.example.app_vpn.R
-import com.example.app_vpn.data.local.Country
+import com.example.app_vpn.data.local.PreferenceManager
+import com.example.app_vpn.data.repsonses.Country
+import com.squareup.picasso.Picasso
 
-class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) :
+class CustomArrayCountryAdapter(val activity: Context, val list: List<com.example.app_vpn.data.repsonses.Country>) :
     ArrayAdapter<Country>(activity, R.layout.item_country_layout) {
 
     private var checkedPosition = -1 // Khởi tạo checkedPosition là -1
+    private lateinit var preferenceManager: PreferenceManager
 
     override fun getCount(): Int {
         return list.size
@@ -32,27 +36,36 @@ class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) 
         val pingConnection = rowView.findViewById<TextView>(R.id.pingConnection)
         val radioButton = rowView.findViewById<RadioButton>(R.id.radioButton)
 
+        // set preferenceManager
+        preferenceManager = PreferenceManager(activity)
+
+
         // Set hình ảnh của quốc gia
-        flagImg.setImageDrawable(list[position].flagImg)
+        Picasso.get().load(list[position].flag).into(flagImg)
 
         // Set tên quốc gia
-        countryName.text = list[position].countryName
+        countryName.text = list[position].name
 
         // Set thời gian ping
-        pingConnection.text = list[position].pingConnection
+        pingConnection.text = "50ms"
 
         // Thiết lập sự kiện khi RadioButton được nhấn
         radioButton.setOnClickListener {
             // Cập nhật checkedPosition khi RadioButton được chọn
-            checkedPosition = position
             notifyDataSetChanged()
 
             // Kiểm tra nếu RadioButton được chọn ở vị trí hiện tại
-            if (position == checkedPosition) {
+            if (position != checkedPosition) {
                 val countryNameText = countryName.text.toString()
                 Toast.makeText(activity, countryNameText, Toast.LENGTH_LONG).show()
+                checkedPosition = position
 
-                // Chuyển dữ liệu sang fragment home để hiển thị quốc gia
+
+                // lưu vào preference
+                preferenceManager.saveCountry(list[position])
+                val country = preferenceManager.getCountry();
+                Log.d("country", country.toString())
+
 
             }
         }

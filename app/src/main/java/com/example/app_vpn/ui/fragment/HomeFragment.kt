@@ -1,7 +1,6 @@
 package com.example.app_vpn.ui.fragment
 
 import android.app.Activity
-import android.app.Notification
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
@@ -10,24 +9,27 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.RemoteException
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ServiceCompat.startForeground
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
+import com.example.app_vpn.data.local.PreferenceManager
 import com.example.app_vpn.databinding.FragmentHomeBinding
-import com.example.app_vpn.ui.auth.AuthActivity
 import com.example.app_vpn.ui.pay.PaymentVipActivity
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.google.firebase.auth.FirebaseAuth
 import de.blinkt.openvpn.api.IOpenVPNAPIService
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 
 class HomeFragment : Fragment() {
@@ -35,6 +37,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val buttonViewModel: ButtonViewModel by activityViewModels()
     private var mService: IOpenVPNAPIService? = null
+    private lateinit var preferenceManager: PreferenceManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,6 +89,9 @@ class HomeFragment : Fragment() {
             // Xử lí sự kiện nhấn vào Rate Us
         }
 
+        // khai báo preference
+        preferenceManager = PreferenceManager(requireContext())
+
         return view
     }
 
@@ -124,13 +130,84 @@ class HomeFragment : Fragment() {
     private fun stopPulse() {
         handlerAnimation.removeCallbacks(runnable)
     }
+    fun downloadFileFromFirebase(
+        fileUrl: String,
+        localFile: File,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val storage = Firebase.storage
+        val fileRef = storage.getReferenceFromUrl(fileUrl)
 
+        fileRef.getFile(localFile).addOnSuccessListener {
+            onSuccess()
+        }.addOnFailureListener { exception ->
+            onFailure(exception)
+        }
+    }
 
+    fun signIn(email: String, password: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val auth = FirebaseAuth.getInstance()
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    task.exception?.let { onFailure(it) }
+                }
+            }
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        val auth = FirebaseAuth.getInstance()
+        return auth.currentUser != null
+    }
     private fun startVpn() {
         lifecycleScope.launch {
+            val subDir = File(requireContext().filesDir, "com/example/app_vpn/util")
+            if (!subDir.exists()) {
+                subDir.mkdirs()  // Tạo thư mục và các thư mục cha nếu chưa tồn tại
+            }
+            val localFile = File(subDir, "config.ovpn")
+
+            val country = preferenceManager.getCountry();
+            if (country == null) {
+                Toast.makeText(requireContext(), "Hãy chọn vpn" , Toast.LENGTH_LONG).show()
+            }
+            // Usage
+            if (isUserLoggedIn()) {
+                if (country != null) {
+                    downloadFileFromFirebase(
+                        fileUrl = country.config,
+                        localFile = localFile,
+                        onSuccess = {
+                            println("File downloaded successfully")
+                        },
+                        onFailure = { exception ->
+                            println("Failed to download file: ${exception.message}")
+                        }
+                    )
+                }
+            } else {
+                signIn("giakhuu18112004@gmail.com", "gia18112004", {
+                    if (country != null) {
+                        downloadFileFromFirebase(
+                            fileUrl = country.config,
+                            localFile = localFile,
+                            onSuccess = {
+                                println("File downloaded successfully")
+                            },
+                            onFailure = { exception ->
+                                println("Failed to download file: ${exception.message}")
+                            }
+                        )
+                    }
+                }, { exception ->
+                    println("Sign-in failed: ${exception.message}")
+                })
+            }
             try {
-                requireActivity().assets.open("vpn/america.ovpn").use { inputStream ->
-                    Log.d("testvpn", "startVpn: ")
+                localFile.inputStream().use { inputStream ->
                     val isr = InputStreamReader(inputStream)
                     val br = BufferedReader(isr)
                     var config = ""

@@ -1,7 +1,6 @@
 package com.example.app_vpn.ui.fragment
 
 import android.content.res.AssetManager
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,13 +11,10 @@ import android.widget.ListView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.app_vpn.R
-import com.example.app_vpn.data.local.Country
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.ui.custom.CustomArrayCountryAdapter
 import com.example.app_vpn.ui.viewmodel.CountryViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CountryFragment : Fragment() {
@@ -55,14 +51,8 @@ class CountryFragment : Fragment() {
 //            flagInputStream.close()
 //        }
 
-//        customArrayCountryAdapter = CustomArrayCountryAdapter(requireContext(), list)
-
-        // Inflate layout cho fragment này
         val view = inflater.inflate(R.layout.fragment_country, container, false)
 
-        // Gắn adapter với ListView trong layout
-//        val listView = view.findViewById<ListView>(R.id.list)
-//        listView.adapter = customArrayCountryAdapter
 
         countryViewModel.getAllCountry()
 
@@ -70,7 +60,14 @@ class CountryFragment : Fragment() {
             when(response) {
                 is Resource.Success -> {
                     val allCountry = response.value
-                    Log.d("allCountry", allCountry.toString())
+                    Log.d("allCountry", allCountry.data.toString())
+                    customArrayCountryAdapter = CustomArrayCountryAdapter(requireContext(), allCountry.data)
+
+                    // Inflate layout cho fragment này
+
+                    // Gắn adapter với ListView trong layout
+                    val listView = view.findViewById<ListView>(R.id.list)
+                    listView.adapter = customArrayCountryAdapter
                 }
                 is Resource.Failure -> {
                     Log.d("errorBool", response.isNetworkError.toString())

@@ -129,8 +129,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:22.3.1'
     implementation 'com.google.android.gms:play-services-auth:21.1.0'
     implementation platform('com.google.firebase:firebase-bom:32.8.1')
-
+    implementation 'com.google.firebase:firebase-storage-ktx'
     // Support OTP code
     implementation "io.github.chaosleung:pinview:1.4.4"
+
+    // picasso cho hình
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
     implementation project(path: ':openvpn')
 }

@@ -1,12 +1,11 @@
 package com.example.app_vpn
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import com.example.app_vpn.data.UserPreferences
 import com.example.app_vpn.ui.MainActivity
-import com.example.app_vpn.ui.auth.AuthActivity
 import com.example.app_vpn.util.startNewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
