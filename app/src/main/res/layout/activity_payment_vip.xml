@@ -5,12 +5,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.pay.PaymentVip"
+    tools:context=".ui.pay.PaymentVipActivity"
     android:background="@color/primaryColorVPN"
     >
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imgQrCode"
         android:layout_width="276dp"
         android:layout_height="227dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
         android:fontFamily="@font/urbanist_semibold"
         android:textColor="@color/white"
         android:textSize="35sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintBottom_toTopOf="@+id/imgQrCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +38,7 @@
         />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/btnSaveImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/urbanist_semibold"
@@ -49,14 +49,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imgQrCode"
         app:layout_constraintVertical_bias="0.088" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/urbanist_semibold"
         android:text="Instruction:"
         android:textColor="@color/white"
@@ -65,19 +65,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSaveImg" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="362dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Scan the QR code above, enter the account name registered to use the service and wait for confirmation from the system"
+        android:text="@string/instruction_payment"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.755"
         app:layout_constraintStart_toStartOf="parent"
+        android:lineSpacingExtra="5dp"
         app:layout_constraintTop_toBottomOf="@+id/textView12"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -92,5 +93,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13"
         app:layout_constraintVertical_bias="0.472"
         app:srcCompat="@drawable/bg_splash" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

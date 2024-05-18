@@ -1,4 +1,4 @@
-package com.example.app_vpn.data
+package com.example.app_vpn.data.preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -11,11 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "my_data_store")
 
-class UserPreferences @Inject constructor(@ApplicationContext context: Context) {
-
+@Singleton
+class UserPreference @Inject constructor(@ApplicationContext context: Context) {
 
     private val appContext = context.applicationContext
 
@@ -29,10 +30,21 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
             preferences[REFRESH_TOKEN]
         }
 
+    val premiumKey: Flow<String?>
+        get() = appContext.dataStore.data.map { preferences ->
+            preferences[PREMIUM_KEY]
+        }
+
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         appContext.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken
+        }
+    }
+
+    suspend fun savePremiumKey(premiumKey: String) {
+        appContext.dataStore.edit { preferences ->
+            preferences[PREMIUM_KEY] = premiumKey
         }
     }
 
@@ -43,17 +55,15 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
     }
 
     suspend fun getAccessTokenAsString(): String? {
-
         return appContext.dataStore.data.map { preferences ->
             preferences[ACCESS_TOKEN]
         }.firstOrNull()
     }
 
-
-
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
         private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
+        private val PREMIUM_KEY = stringPreferencesKey("premiumKey")
     }
 
 }

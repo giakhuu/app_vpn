@@ -1,19 +1,20 @@
 package com.example.app_vpn.data.repository
 
-import com.example.app_vpn.data.UserPreferences
+import com.example.app_vpn.data.network.SafeApiCall
+import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.data.network.api.AuthApi
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val api: AuthApi,
-    private val preferences: UserPreferences
-) : BaseRepository(api) {
+    private val preferences: UserPreference
+) : SafeApiCall {
     suspend fun login(
         username: String,
         password: String
     )  = safeApiCall {
-            api.login(username, password)
-        }
+        api.login(username, password)
+    }
 
     suspend fun register(
         username: String,
@@ -40,5 +41,9 @@ class AuthRepository @Inject constructor(
 
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         preferences.saveAccessTokens(accessToken, refreshToken)
+    }
+
+    suspend fun savePremiumKey(premiumKey: String) {
+        preferences.savePremiumKey(premiumKey)
     }
 }

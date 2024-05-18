@@ -92,7 +92,7 @@
         android:textFontWeight="800"
         android:textColor="@color/primaryColorVPN"
 
-        app:layout_constraintBottom_toTopOf="@id/pbVerify"
+        app:layout_constraintBottom_toTopOf="@id/btnVerify"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pbVerify" />
+        app:layout_constraintTop_toBottomOf="@+id/btnResentCode" />
 
     <ImageButton
         android:id="@+id/btnBack"
@@ -123,18 +123,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_arrow_back_ios_new_24" />
-
-    <ProgressBar
-
-        android:layout_marginTop="10dp"
-        android:id="@+id/pbVerify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/btnVerify"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnResentCode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

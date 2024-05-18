@@ -16,11 +16,21 @@ class MailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _sendVerifyResponse = MutableLiveData<Resource<OtherResponse>>()
+    private val _resendCodeResponse = MutableLiveData<Resource<OtherResponse>>()
 
     val sendVerifyResponse : MutableLiveData<Resource<OtherResponse>>
         get() = _sendVerifyResponse
 
+    val resendCodeResponse : MutableLiveData<Resource<OtherResponse>>
+        get() = _resendCodeResponse
+
     fun sendVerifyCode(email : String) = viewModelScope.launch {
-        sendVerifyResponse.value = mailRepository.sendVerifyCode(email)
+        _sendVerifyResponse.value = Resource.Loading
+        _sendVerifyResponse.value = mailRepository.sendVerifyCode(email)
+    }
+
+    fun resendCode(email: String) = viewModelScope.launch {
+        _resendCodeResponse.value = Resource.Loading
+        _resendCodeResponse.value = mailRepository.resendCode(email)
     }
 }

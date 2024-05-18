@@ -1,4 +1,4 @@
-package com.example.app_vpn.data.repsonses
+package com.example.app_vpn.data.entities
 
 data class Country(
     val id : Int,

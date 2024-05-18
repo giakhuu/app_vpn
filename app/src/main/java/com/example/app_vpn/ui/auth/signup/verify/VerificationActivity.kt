@@ -1,16 +1,23 @@
 package com.example.app_vpn.ui.auth.signup.verify
 
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivityVerificationBinding
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
+import com.example.app_vpn.ui.viewmodel.MailViewModel
 import com.example.app_vpn.util.handleApiError
+import com.example.app_vpn.util.snackBar
 import com.example.app_vpn.util.startNewActivity
-import com.example.app_vpn.util.visible
+import com.github.razir.progressbutton.attachTextChangeAnimator
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,58 +29,108 @@ class VerificationActivity : AppCompatActivity() {
     private lateinit var bundle: Bundle
 
     private val authViewModel by viewModels<AuthViewModel>()
+    private val mailViewModel by viewModels<MailViewModel>()
+    private lateinit var btnVerify: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        bundle = intent.extras!!
-
         binding = ActivityVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.pbVerify.visible(false)
+        btnVerify = binding.btnVerify
+        bindProgressButton(btnVerify)
+        btnVerify.apply {
+            attachTextChangeAnimator()
+        }
+
+        bundle = intent.extras!!
 
         binding.txtEmailVerify.text = bundle.getString("email")
 
         binding.btnResentCode.setOnClickListener {
-
+            resendCode()
         }
 
         binding.btnVerify.setOnClickListener {
             verifyEmail()
         }
 
-        authViewModel.verifyResponse.observe(this, Observer {
-            when (it) {
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
+        authViewModel.verifyResponse.observe(this) { response ->
+            when (response) {
                 is Resource.Success -> {
-                    binding.pbVerify.visible(false)
-                    register()
+                    btnVerify.hideProgress(R.string.verify)
+                    val verifyResponse = response.value
+                    when (verifyResponse.isSuccess) {
+                        true -> {
+                            register()
+                        }
+
+                        false -> {
+                            binding.root.snackBar(verifyResponse.message)
+                        }
+                    }
                 }
+
                 is Resource.Failure -> {
-                    binding.pbVerify.visible(false)
-                    handleApiError(it)
+                    handleApiError(response)
                 }
+
                 else -> {
-                    binding.pbVerify.visible(true)
+                    btnVerify.showProgress {
+                        buttonTextRes = R.string.loading
+                        progressColor = Color.WHITE
+                    }
                 }
             }
-        })
+        }
 
-        authViewModel.registerResponse.observe(this, Observer {
+        authViewModel.registerResponse.observe(this) {
             when (it) {
                 is Resource.Success -> {
                     startNewActivity(SuccessActivity::class.java)
                 }
+
                 is Resource.Failure -> {
                     handleApiError(it)
                 }
-                else -> {
 
+                else -> {
+                    btnVerify.showProgress {
+                        buttonTextRes = R.string.loading
+                        progressColor = Color.WHITE
+                    }
                 }
             }
-        })
+        }
 
+        mailViewModel.resendCodeResponse.observe(this) {
+            when (it) {
+                is Resource.Success -> {
+                    btnVerify.hideProgress(R.string.verify)
+                }
+
+                is Resource.Failure -> {
+                    handleApiError(it)
+                }
+
+                else -> {
+                    btnVerify.showProgress {
+                        buttonTextRes = R.string.loading
+                        progressColor = Color.WHITE
+                    }
+                }
+            }
+        }
+    }
+
+    private fun resendCode() {
+        val email = bundle.getString("email")
+        mailViewModel.resendCode(email!!)
     }
 
     private fun register() {

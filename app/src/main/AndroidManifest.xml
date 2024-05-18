@@ -5,6 +5,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:name=".AppVpnApplication"
@@ -18,12 +23,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_vpn"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31"
         tools:replace="android:label,android:theme, android:name"
-        >
-<!--        <activity-->
-<!--            android:name=".ui.auth.signup.VerifyActivity"-->
-<!--            android:exported="false" />-->
+        tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+        <activity
+            android:name=".ui.pay.GetPremiumActivity"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".ui.auth.signup.VerifyActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".FirstActivity"
             android:exported="true">
@@ -61,19 +71,15 @@
             android:exported="true" />
         <activity
             android:name=".ui.auth.signup.verify.SuccessActivity"
-            android:exported="true" />
-
-        <!--        Bên VPN-->
+            android:exported="true" /> <!-- Bên VPN -->
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
-            android:permission="android.permission.BIND_VPN_SERVICE"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
-        </service>
-
-        <!-- Disconnect VPN Activity -->
+        </service> <!-- Disconnect VPN Activity -->
         <activity
             android:name="de.blinkt.openvpn.activities.DisconnectVPN"
             android:excludeFromRecents="true"

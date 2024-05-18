@@ -1,8 +1,8 @@
-package com.example.app_vpn.data.local
+package com.example.app_vpn.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.app_vpn.data.repsonses.Country
+import com.example.app_vpn.data.entities.Country
 import com.google.gson.Gson
 
 class PreferenceManager(context: Context) {
@@ -10,7 +10,7 @@ class PreferenceManager(context: Context) {
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
     private val gson = Gson()
 
-    fun saveCountry(country: com.example.app_vpn.data.repsonses.Country) {
+    fun saveCountry(country: Country) {
         val json = gson.toJson(country)
         editor.putString("country", json)
         editor.apply()

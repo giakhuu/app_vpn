@@ -1,11 +1,12 @@
 package com.example.app_vpn.ui.auth.login
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
@@ -15,14 +16,12 @@ import com.example.app_vpn.ui.auth.signup.SignUpActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
-import com.example.app_vpn.util.snackBar
+import com.example.app_vpn.util.hideKeyboard
 import com.example.app_vpn.util.startNewActivity
-import com.example.app_vpn.util.visible
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.github.razir.progressbutton.attachTextChangeAnimator
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,48 +35,73 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLoginBinding
 
-    private lateinit var auth : FirebaseAuth
+    private lateinit var btnSignIn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
-
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        auth = Firebase.auth
-
-        binding.progressBarLogin.visible(false)
-        binding.btnSignIn.enable(false)
+        btnSignIn = binding.btnSignIn
+        bindProgressButton(btnSignIn)
+        btnSignIn.apply {
+            attachTextChangeAnimator()
+            enable(false)
+        }
 
         //kiểm tra dữ liệu trả về có token hay chưa
-        authViewModel.loginResponse.observe(this, Observer { response ->
+        authViewModel.loginResponse.observe(this) {response ->
             when (response) {
                 is Resource.Success -> {
+                    btnSignIn.hideProgress(R.string.sign_in)
                     val loginResult = response.value
                     when (loginResult.isSuccessful) {
                         true -> {
                             lifecycleScope.launch {
-                                authViewModel.saveAccessTokens(
-                                    loginResult.accessToken!!,
-                                    loginResult.refreshToken!!
-                                )
+                                authViewModel.apply {
+                                    saveAccessTokens(
+                                        loginResult.data.accessToken!!,
+                                        loginResult.data.refreshToken!!
+                                    )
+                                    savePremiumKey(loginResult.data.premiumKey!!)
+                                }
                                 startNewActivity(MainActivity::class.java)
                             }
                         }
                         false -> {
-                            binding.root.snackBar(loginResult.message)
+                            binding.txtInputUsername.isHelperTextEnabled = false
+                            binding.txtInputPassword.isHelperTextEnabled = false
+                            if (loginResult.message.contains("User")) {
+                                binding.txtInputUsername.apply {
+                                    binding.txtInputUsername.isHelperTextEnabled = true
+                                    helperText = loginResult.message
+                                    setHelperTextColor(ColorStateList.valueOf(resources.getColor(R.color.red)))
+                                }
+                            }
+                            else if (loginResult.message.contains("password")) {
+                                binding.txtInputPassword.apply {
+                                    binding.txtInputPassword.isHelperTextEnabled = true
+                                    helperText = loginResult.message
+                                    setHelperTextColor(ColorStateList.valueOf(resources.getColor(R.color.red)))
+                                }
+                            }
                         }
                     }
                 }
+
                 is Resource.Failure -> {
-                    Log.d(TAG, response.toString())
+                    btnSignIn.hideProgress(R.string.sign_in)
                     handleApiError(response) { logIn() }
                 }
+
                 is Resource.Loading -> {
-                    binding.progressBarLogin.visible(true)
+                    btnSignIn.showProgress {
+                        buttonTextRes = R.string.loading
+                        progressColor = Color.WHITE
+                    }
                 }
             }
-        })
+        }
 
         binding.txtPassword.addTextChangedListener {
             val username = binding.txtUsername.text.toString().trim()
@@ -85,30 +109,23 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnSignIn.setOnClickListener {
+            hideKeyboard(this, it)
             logIn()
         }
 
         binding.txtSignUp.setOnClickListener {
             startNewActivity(SignUpActivity::class.java)
         }
-    }
 
-
-    private fun googleLogin() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-
+//        binding.txtForgotPw.setOnClickListener {
+//            val intent = Intent(this, ForgotPasswordActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun logIn() {
-        val TAG_LOGIN = "MYTAG_LOGIN"
         val username = binding.txtUsername.text.toString().trim()
         val password = binding.txtPassword.text.toString().trim()
-        Log.d(TAG_LOGIN, username + password)
         authViewModel.login(username, password)
     }
 }

@@ -11,4 +11,8 @@ class MailRepository @Inject constructor(
     suspend fun sendVerifyCode(email: String) = safeApiCall {
         mailApi.sendVerifyCode(email)
     }
+
+    suspend fun resendCode(email: String) = safeApiCall {
+        mailApi.resendCode(email)
+    }
 }

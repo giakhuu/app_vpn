@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.repository.CountryRepository
-import com.example.app_vpn.data.repsonses.Country
-import com.example.app_vpn.data.repsonses.DataRespones
+import com.example.app_vpn.data.entities.Country
+import com.example.app_vpn.data.repsonses.DataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,9 +15,9 @@ import javax.inject.Inject
 class CountryViewModel @Inject constructor(
     private val countryRepository: CountryRepository
 ) : ViewModel() {
-    private val _allCountry = MutableLiveData<Resource<DataRespones<List<Country>>>>()
+    private val _allCountry = MutableLiveData<Resource<DataResponse<List<Country>>>>()
 
-    val allCountry : MutableLiveData<Resource<DataRespones<List<Country>>>>
+    val allCountry : MutableLiveData<Resource<DataResponse<List<Country>>>>
         get() = _allCountry
 
     fun getAllCountry() = viewModelScope.launch {

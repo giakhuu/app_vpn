@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app_vpn.ui.MainActivity
 import com.example.app_vpn.R
+import com.example.app_vpn.util.startNewActivity
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +23,8 @@ class SplashScreenActivity : AppCompatActivity() {
         }
 
         Handler().postDelayed({
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startNewActivity(MainActivity::class.java)
             finish()
-        },3000)
-
+        },1500)
     }
 }

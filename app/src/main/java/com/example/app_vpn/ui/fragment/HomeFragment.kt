@@ -18,26 +18,41 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
-import com.example.app_vpn.data.local.PreferenceManager
+import com.example.app_vpn.data.preferences.PreferenceManager
+import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentHomeBinding
-import com.example.app_vpn.ui.pay.PaymentVipActivity
+import com.example.app_vpn.ui.MainActivity
+import com.example.app_vpn.ui.pay.GetPremiumActivity
+import com.example.app_vpn.ui.viewmodel.ButtonViewModel
+import com.example.app_vpn.util.JwtUtils
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 import de.blinkt.openvpn.api.IOpenVPNAPIService
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+import javax.inject.Inject
 
+const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
+    @Inject
+    lateinit var userPreference: UserPreference
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var preferenceManager: PreferenceManager
+
+    private var jwtUtils = JwtUtils()
     private val buttonViewModel: ButtonViewModel by activityViewModels()
     private var mService: IOpenVPNAPIService? = null
-    private lateinit var preferenceManager: PreferenceManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +60,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         bindService()
+
         binding.button.setOnClickListener {
             if (buttonViewModel.isRunning) {
                 stopPulse()
@@ -52,6 +68,7 @@ class HomeFragment : Fragment() {
                 binding.button.setText(R.string.start)
             } else {
                 startPulse()
+                showInterstitial()
                 startVpn()
                 binding.button.setText(R.string.stop)
             }
@@ -73,10 +90,9 @@ class HomeFragment : Fragment() {
 
         // Xử lí sự kiện click vào vương miện
         binding.crownVip.setOnClickListener {
-            val intent = Intent(requireContext(), PaymentVipActivity::class.java)
+            val intent = Intent(requireContext(), GetPremiumActivity::class.java)
             startActivity(intent)
         }
-
 
         // Xử lí sự kiện click hiện navigation drawer
         binding.btnNavigation.setOnClickListener {
@@ -95,7 +111,13 @@ class HomeFragment : Fragment() {
         return view
     }
 
-
+    private fun showInterstitial() {
+        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) {token ->
+            if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
+                (activity as MainActivity).showInterstitial()
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -146,7 +168,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun signIn(email: String, password: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    private fun signIn(email: String, password: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -222,9 +244,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-
-
 
     private fun stopVpn() {
         if (mService != null) {

@@ -1,13 +1,13 @@
 package com.example.app_vpn.data.repository
 
-import com.example.app_vpn.data.UserPreferences
+import com.example.app_vpn.data.network.SafeApiCall
+import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.data.network.api.UserApi
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val userApi: UserApi,
-    private val userPreferences: UserPreferences
-) : BaseRepository(userApi) {
+    private val userApi: UserApi
+) : SafeApiCall {
 
     suspend fun fetchData(accessToken : String) = safeApiCall {
         userApi.fetchData(accessToken)

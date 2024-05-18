@@ -1,20 +1,21 @@
 package com.example.app_vpn.data.network.api
 
-import com.example.app_vpn.data.repsonses.LoginResponse
+import com.example.app_vpn.data.entities.Token
+import com.example.app_vpn.data.entities.User
+import com.example.app_vpn.data.repsonses.DataResponse
 import com.example.app_vpn.data.repsonses.OtherResponse
-import com.example.app_vpn.data.repsonses.RegisterResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-interface AuthApi : BaseApi {
+interface AuthApi {
 
     @FormUrlEncoded
     @POST("/auth/login")
     suspend fun login(
         @Field(value = "username") username: String,
         @Field(value = "password") password: String
-    ) : LoginResponse
+    ) : DataResponse<Token>
 
     @FormUrlEncoded
     @POST("auth/register")
@@ -23,7 +24,7 @@ interface AuthApi : BaseApi {
         @Field(value = "email") email: String,
         @Field(value = "password") password: String,
         @Field(value = "role") role: String,
-    ) : RegisterResponse
+    ) : DataResponse<User>
 
     @FormUrlEncoded
     @POST("auth/verify")

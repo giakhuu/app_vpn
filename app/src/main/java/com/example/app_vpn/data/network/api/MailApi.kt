@@ -12,4 +12,10 @@ interface MailApi {
     suspend fun sendVerifyCode(
         @Field(value = "email") email : String
     ) : OtherResponse
+
+    @FormUrlEncoded
+    @POST("/mail/resendCode")
+    suspend fun resendCode(
+        @Field(value = "email") email : String
+    ) : OtherResponse
 }

@@ -1,15 +1,11 @@
 package com.example.app_vpn.data.network.api
 
-import androidx.lifecycle.LiveData
-import com.example.app_vpn.data.repsonses.Country
-import com.example.app_vpn.data.repsonses.DataRespones
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import com.example.app_vpn.data.entities.Country
+import com.example.app_vpn.data.repsonses.DataResponse
 import retrofit2.http.GET
 
 
-interface CountryApi : BaseApi {
-//    @FormUrlEncoded
+interface CountryApi {
     @GET("/country/all")
-    suspend fun getAllCountry() : DataRespones<List<Country>>
+    suspend fun getAllCountry() : DataResponse<List<Country>>
 }

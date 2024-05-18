@@ -12,11 +12,11 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import com.example.app_vpn.R
-import com.example.app_vpn.data.local.PreferenceManager
-import com.example.app_vpn.data.repsonses.Country
+import com.example.app_vpn.data.preferences.PreferenceManager
+import com.example.app_vpn.data.entities.Country
 import com.squareup.picasso.Picasso
 
-class CustomArrayCountryAdapter(val activity: Context, val list: List<com.example.app_vpn.data.repsonses.Country>) :
+class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) :
     ArrayAdapter<Country>(activity, R.layout.item_country_layout) {
 
     private var checkedPosition = -1 // Khởi tạo checkedPosition là -1

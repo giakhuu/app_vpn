@@ -2,10 +2,10 @@ package com.example.app_vpn.data.network
 
 import android.content.Context
 import android.util.Log
-import com.example.app_vpn.data.UserPreferences
+import com.example.app_vpn.data.entities.Token
+import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.data.network.api.TokenRefreshApi
 import com.example.app_vpn.data.repository.BaseRepository
-import com.example.app_vpn.data.repsonses.TokenResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -20,14 +20,14 @@ class TokenAuthenticator @Inject constructor (
 ): Authenticator, BaseRepository(tokenApi) {
 
     private val appContext = context.applicationContext
-    private val userPreferences = UserPreferences(appContext)
+    private val userPreference = UserPreference(appContext)
 
     override fun authenticate(route: Route?, response: Response): Request? {
         Log.d("mytag_authenticate", "authenticate")
         return runBlocking {
             when (val tokenResponse = getUpdatedToken()) {
                 is Resource.Success -> {
-                    userPreferences.saveAccessTokens(
+                    userPreference.saveAccessTokens(
                         tokenResponse.value.accessToken!!,
                         tokenResponse.value.refreshToken!!
                     )
@@ -41,8 +41,8 @@ class TokenAuthenticator @Inject constructor (
         }
     }
 
-    private suspend fun getUpdatedToken(): Resource<TokenResponse> {
-        val refreshToken = userPreferences.refreshToken.first()
+    private suspend fun getUpdatedToken(): Resource<Token> {
+        val refreshToken = userPreference.refreshToken.first()
         return safeApiCall { tokenApi.refreshAccessToken(refreshToken) }
     }
 
