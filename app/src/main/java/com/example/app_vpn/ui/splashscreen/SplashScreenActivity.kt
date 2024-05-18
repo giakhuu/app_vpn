@@ -1,14 +1,13 @@
 package com.example.app_vpn.ui.splashscreen
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.app_vpn.ui.MainActivity
 import com.example.app_vpn.R
+import com.example.app_vpn.ui.MainActivity
 import com.example.app_vpn.util.startNewActivity
 
 class SplashScreenActivity : AppCompatActivity() {

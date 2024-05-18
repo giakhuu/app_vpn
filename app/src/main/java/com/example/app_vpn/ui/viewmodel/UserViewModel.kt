@@ -20,9 +20,9 @@ class UserViewModel @Inject constructor(
     private val _user = MutableLiveData<Resource<DataResponse<User>>>()
     private val _changePwResponse = MutableLiveData<Resource<DataResponse<User>>>()
 
-    val user : LiveData<Resource<DataResponse<User>>>
+    val user: LiveData<Resource<DataResponse<User>>>
         get() = _user
-    val changePwResponse : LiveData<Resource<DataResponse<User>>>
+    val changePwResponse: LiveData<Resource<DataResponse<User>>>
         get() = _changePwResponse
 
     fun fetchData(accessToken: String) = viewModelScope.launch {
@@ -35,7 +35,8 @@ class UserViewModel @Inject constructor(
         newPassword: String
     ) = viewModelScope.launch {
         _changePwResponse.value = Resource.Loading
-        _changePwResponse.value = userRepository.changePassword(accessToken, oldPassword, newPassword)
+        _changePwResponse.value =
+            userRepository.changePassword(accessToken, oldPassword, newPassword)
     }
 
     fun delete(accessToken: String) = viewModelScope.launch {

@@ -2,7 +2,6 @@ package com.example.app_vpn
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.ui.MainActivity
@@ -18,10 +17,10 @@ class FirstActivity : AppCompatActivity() {
 
         val userPreference = UserPreference(this)
 
-        userPreference.accessToken.asLiveData().observe(this, Observer {
+        userPreference.accessToken.asLiveData().observe(this) {
             val activity = if (it == null) AuthActivity::class.java else MainActivity::class.java
             startNewActivity(activity)
-        })
+        }
 //        startNewActivity(MainActivity::class.java)
     }
 }

@@ -29,7 +29,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.io.IOException
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PaymentVipActivity : AppCompatActivity() {
@@ -77,9 +76,11 @@ class PaymentVipActivity : AppCompatActivity() {
                     val paymentUrl = response.value.data.paymentUrl
                     generateQRCode(paymentUrl)
                 }
+
                 is Resource.Failure -> {
                     handleApiError(response)
                 }
+
                 else -> {
                     Log.d("mytag", "on Loading payment")
                 }

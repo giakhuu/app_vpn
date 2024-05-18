@@ -1,5 +1,6 @@
 package com.example.app_vpn.ui.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ class CustomBenefitAdapter(val activity: Context, val list: List<Benefit>) :
         return list.size
     }
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(activity)
         val rowView = inflater.inflate(R.layout.item_benefit, parent, false)

@@ -63,7 +63,7 @@ class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) 
 
                 // lưu vào preference
                 preferenceManager.saveCountry(list[position])
-                val country = preferenceManager.getCountry();
+                val country = preferenceManager.getCountry()
                 Log.d("country", country.toString())
 
 

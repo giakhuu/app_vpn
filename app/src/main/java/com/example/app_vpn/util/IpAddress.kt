@@ -4,11 +4,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import java.net.InetAddress
-import java.net.NetworkInterface
-import java.net.SocketException
 import java.net.URL
-import java.util.Enumeration
 
 suspend fun getMyPublicIpAsync(): Deferred<String> = coroutineScope {
     async(Dispatchers.IO) {
