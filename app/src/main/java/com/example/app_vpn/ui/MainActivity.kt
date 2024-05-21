@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder().setTestDeviceIds(listOf("ABCDEF012345")).build()
+            RequestConfiguration.Builder().setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR)).build()
         )
     }
 

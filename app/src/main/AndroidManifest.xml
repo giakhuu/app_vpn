@@ -25,9 +25,12 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:label,android:theme, android:name"
         tools:targetApi="31">
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--            android:value="ca-app-pub-3940256099942544~3347511713" />-->
+                <meta-data
+                    android:name="com.google.android.gms.ads.APPLICATION_ID"
+                    android:value="ca-app-pub-6756127155027324~6524013225" />
         <activity
             android:name=".ui.pay.GetPremiumActivity"
             android:exported="false" />
@@ -86,6 +89,14 @@
             android:noHistory="true"
             android:taskAffinity=".DisconnectVPN"
             android:theme="@style/blinkt.dialog" />
+
+        <receiver
+            android:name=".util.MyVpnStateReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="de.blinkt.openvpn.VPN_STATUS"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

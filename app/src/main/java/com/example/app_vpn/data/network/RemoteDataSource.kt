@@ -3,6 +3,7 @@ package com.example.app_vpn.data.network
 import android.content.Context
 import android.util.Log
 import com.example.app_vpn.BuildConfig
+import com.example.app_vpn.data.network.api.IpifyApi
 import com.example.app_vpn.data.network.api.TokenRefreshApi
 import com.example.app_vpn.util.BASE_URL
 import okhttp3.Authenticator
@@ -53,5 +54,13 @@ class RemoteDataSource @Inject constructor() {
                     client.addInterceptor(logging)
                 }
             }.build()
+    }
+
+    private fun getIpAddress() : IpifyApi  {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(IpifyApi::class.java)
     }
 }

@@ -3,6 +3,7 @@ package com.example.app_vpn.ui.fragment
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
@@ -28,21 +29,28 @@ import com.example.app_vpn.ui.MainActivity
 import com.example.app_vpn.ui.pay.GetPremiumActivity
 import com.example.app_vpn.ui.viewmodel.ButtonViewModel
 import com.example.app_vpn.util.JwtUtils
+import com.example.app_vpn.util.MyVpnStateReceiver
+import com.example.app_vpn.util.VpnStateListener
+import com.example.app_vpn.util.getMyPublicIpAsync
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
 import de.blinkt.openvpn.api.IOpenVPNAPIService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import javax.inject.Inject
 
-const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+const val AD_UNIT_ID = "ca-app-pub-6756127155027324/8332435836"
+//const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), VpnStateListener {
     @Inject
     lateinit var userPreference: UserPreference
 
@@ -53,13 +61,29 @@ class HomeFragment : Fragment() {
     private val buttonViewModel: ButtonViewModel by activityViewModels()
     private var mService: IOpenVPNAPIService? = null
 
+    // Create an instance of MyVpnStateReceiver
+    private val vpnStateReceiver = MyVpnStateReceiver(this)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        // Gán giá trị đầu cho vpn
         bindService()
+        val filter = IntentFilter("de.blinkt.openvpn.VPN_STATUS")
+        requireContext().registerReceiver(vpnStateReceiver, filter)
+
+        // Gán giá trị cho 2 cái text ơ trang home
+        CoroutineScope(Dispatchers.Main).launch {
+            val ipAddress = getMyPublicIpAsync().await()
+            binding.ipaddress.text = ipAddress
+        }
+
+        binding.testad.setOnClickListener {
+            showInterstitial()
+        }
 
         binding.button.setOnClickListener {
             if (buttonViewModel.isRunning) {
@@ -68,7 +92,6 @@ class HomeFragment : Fragment() {
                 binding.button.setText(R.string.start)
             } else {
                 startPulse()
-                showInterstitial()
                 startVpn()
                 binding.button.setText(R.string.stop)
             }
@@ -78,12 +101,10 @@ class HomeFragment : Fragment() {
         // Khôi phục trạng thái của nút khi Fragment được hiển thị lại
         if (buttonViewModel.isRunning) {
             startPulse()
-            startVpn()
             binding.button.setText(R.string.stop)
         }
         else {
             stopPulse()
-            stopVpn()
             binding.button.setText(R.string.start)
         }
 
@@ -110,15 +131,6 @@ class HomeFragment : Fragment() {
 
         return view
     }
-
-    private fun showInterstitial() {
-        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) {token ->
-            if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
-                (activity as MainActivity).showInterstitial()
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         stopPulse() // Dừng Handler khi Fragment bị destroy
@@ -152,6 +164,8 @@ class HomeFragment : Fragment() {
     private fun stopPulse() {
         handlerAnimation.removeCallbacks(runnable)
     }
+
+    // firebase file
     fun downloadFileFromFirebase(
         fileUrl: String,
         localFile: File,
@@ -184,6 +198,28 @@ class HomeFragment : Fragment() {
         val auth = FirebaseAuth.getInstance()
         return auth.currentUser != null
     }
+
+    // cập nhật state
+    override fun onVpnStateChanged(state: String) {
+        // Update the TextView with the new state
+        binding.state.text = state
+    }
+
+    override fun updateIpAddress() {
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.ipaddress.text = getMyPublicIpAsync().await()
+        }
+    }
+
+    override fun showInterstitial() {
+        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) {token ->
+            if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
+                (activity as MainActivity).showInterstitial()
+            }
+        }
+    }
+
+    // xử lí vpn
     private fun startVpn() {
         lifecycleScope.launch {
             val subDir = File(requireContext().filesDir, "com/example/app_vpn/util")
@@ -197,6 +233,9 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
                 return@launch
             }
+
+            // Thiết lập chữ
+            binding.countryName.text = country.name
 
             val downloadAndConnect = {
                 downloadFileFromFirebase(
@@ -220,7 +259,7 @@ class HomeFragment : Fragment() {
                                 val profile = mService!!.addNewVPNProfile("america", false, config)
                                 mService!!.startProfile(profile.mUUID)
                                 mService!!.startVPN(config)
-                                binding.button.text = "Disconnect"
+                                binding.button.text = "Stop"
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

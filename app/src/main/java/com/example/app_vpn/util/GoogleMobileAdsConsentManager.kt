@@ -2,14 +2,18 @@ package com.example.app_vpn.util
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
+import com.google.android.gms.ads.AdRequest
 import com.google.android.ump.ConsentDebugSettings
-import com.google.android.ump.ConsentForm.OnConsentFormDismissedListener
+import com.google.android.ump.ConsentForm
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.FormError
 import com.google.android.ump.UserMessagingPlatform
 
 class GoogleMobileAdsConsentManager private constructor(context: Context) {
+    private val TAG = "GoogleMobileAdsConsent"
+
     private val consentInformation: ConsentInformation =
         UserMessagingPlatform.getConsentInformation(context)
 
@@ -36,17 +40,17 @@ class GoogleMobileAdsConsentManager private constructor(context: Context) {
         activity: Activity,
         onConsentGatheringCompleteListener: OnConsentGatheringCompleteListener
     ) {
-        // For testing purposes, you can force a DebugGeography of EEA or NOT_EEA.
         val debugSettings =
             ConsentDebugSettings.Builder(activity)
+                // Uncomment the line below to force the geography to EEA (European Economic Area)
                 // .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-                // Check your logcat output for the hashed device ID e.g.
-                // "Use new ConsentDebugSettings.Builder().addTestDeviceHashedId("ABCDEF012345")" to use
-                // the debug functionality.
-                .addTestDeviceHashedId("TEST-DEVICE-HASHED-ID")
+                // Add test device hashed ID for emulator
+                .addTestDeviceHashedId(AdRequest.DEVICE_ID_EMULATOR)
                 .build()
 
-        val params = ConsentRequestParameters.Builder().setConsentDebugSettings(debugSettings).build()
+        val params = ConsentRequestParameters.Builder()
+            .setConsentDebugSettings(debugSettings)
+            .build()
 
         // Requesting an update to consent information should be called on every app launch.
         consentInformation.requestConsentInfoUpdate(
@@ -67,18 +71,21 @@ class GoogleMobileAdsConsentManager private constructor(context: Context) {
     /** Helper method to call the UMP SDK method to show the privacy options form. */
     fun showPrivacyOptionsForm(
         activity: Activity,
-        onConsentFormDismissedListener: OnConsentFormDismissedListener
+        onConsentFormDismissedListener: ConsentForm.OnConsentFormDismissedListener
     ) {
         UserMessagingPlatform.showPrivacyOptionsForm(activity, onConsentFormDismissedListener)
     }
 
     companion object {
-        @Volatile private var instance: GoogleMobileAdsConsentManager? = null
+        @Volatile
+        private var instance: GoogleMobileAdsConsentManager? = null
 
-        fun getInstance(context: Context) =
-            instance
-                ?: synchronized(this) {
-                    instance ?: GoogleMobileAdsConsentManager(context).also { instance = it }
+        fun getInstance(context: Context): GoogleMobileAdsConsentManager {
+            return instance ?: synchronized(this) {
+                instance ?: GoogleMobileAdsConsentManager(context.applicationContext).also {
+                    instance = it
                 }
+            }
+        }
     }
 }
