@@ -21,8 +21,8 @@ class AuthViewModel @Inject constructor(
     private val _loginResponse: MutableLiveData<Resource<DataResponse<Token>>> = MutableLiveData()
     private val _registerResponse: MutableLiveData<Resource<DataResponse<User>>> = MutableLiveData()
     private val _verifyResponse: MutableLiveData<Resource<OtherResponse>> = MutableLiveData()
-    private val _isValidUsernameEmailResponse: MutableLiveData<Resource<OtherResponse>> =
-        MutableLiveData()
+    private val _isUsernameEmailExist: MutableLiveData<Resource<OtherResponse>> = MutableLiveData()
+    private val _isEmailExist: MutableLiveData<Resource<OtherResponse>> = MutableLiveData()
 
     val loginResponse: LiveData<Resource<DataResponse<Token>>>
         get() = _loginResponse
@@ -30,8 +30,10 @@ class AuthViewModel @Inject constructor(
         get() = _registerResponse
     val verifyResponse: LiveData<Resource<OtherResponse>>
         get() = _verifyResponse
-    val isValidUsernameEmailResponse: LiveData<Resource<OtherResponse>>
-        get() = _isValidUsernameEmailResponse
+    val isUsernameEmailExist: LiveData<Resource<OtherResponse>>
+        get() = _isUsernameEmailExist
+    val isEmailExist: LiveData<Resource<OtherResponse>>
+        get() = _isEmailExist
 
     fun login(
         username: String, password: String
@@ -56,11 +58,18 @@ class AuthViewModel @Inject constructor(
         _verifyResponse.value = authRepository.verify(email, code)
     }
 
-    fun isValidUsernameEmailResponse(
+    fun isUsernameEmailExist(
         username: String, email: String
     ) = viewModelScope.launch {
-        _isValidUsernameEmailResponse.value = Resource.Loading
-        _isValidUsernameEmailResponse.value = authRepository.isValidUsernameEmail(username, email)
+        _isUsernameEmailExist.value = Resource.Loading
+        _isUsernameEmailExist.value = authRepository.isUsernameEmailExist(username, email)
+    }
+
+    fun isEmailExist(
+        email: String
+    ) = viewModelScope.launch {
+        _isEmailExist.value = Resource.Loading
+        _isEmailExist.value = authRepository.isEmailExist(email)
     }
 
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {

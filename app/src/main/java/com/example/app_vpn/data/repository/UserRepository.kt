@@ -20,6 +20,13 @@ class UserRepository @Inject constructor(
         userApi.changePassword(accessToken, oldPassword, newPassword)
     }
 
+    suspend fun resetPassword(
+        email: String,
+        password: String
+    ) = safeApiCall {
+        userApi.resetPassword(email, password)
+    }
+
     suspend fun delete(accessToken: String) = safeApiCall {
         userApi.delete(accessToken)
     }

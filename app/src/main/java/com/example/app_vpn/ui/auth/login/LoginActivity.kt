@@ -2,7 +2,6 @@ package com.example.app_vpn.ui.auth.login
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -22,11 +21,12 @@ import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
 import com.example.app_vpn.util.hideKeyboard
+import com.example.app_vpn.util.isValidPassword
+import com.example.app_vpn.util.onDone
+import com.example.app_vpn.util.onLoad
 import com.example.app_vpn.util.setUp
 import com.example.app_vpn.util.startNewActivity
 import com.github.razir.progressbutton.bindProgressButton
-import com.github.razir.progressbutton.hideProgress
-import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
         authViewModel.loginResponse.observe(this) {response ->
             when (response) {
                 is Resource.Success -> {
-                    btnSignIn.hideProgress(R.string.sign_in)
+                    btnSignIn.onDone(getString(R.string.sign_in))
                     val loginResult = response.value
                     when (loginResult.isSuccessful) {
                         true -> {
@@ -99,22 +99,19 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is Resource.Failure -> {
-                    btnSignIn.hideProgress(R.string.sign_in)
+                    btnSignIn.onDone(getString(R.string.sign_in))
                     handleApiError(response) { logIn() }
                 }
 
                 is Resource.Loading -> {
-                    btnSignIn.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
+                    btnSignIn.onLoad()
                 }
             }
         }
 
         binding.txtPassword.addTextChangedListener {
             val username = binding.txtUsername.text.toString().trim()
-            binding.btnSignIn.enable(username.isNotEmpty() && it.toString().length > 5 && it.toString().isNotEmpty())
+            binding.btnSignIn.enable(username.isNotEmpty() && it.toString().isValidPassword())
         }
 
         binding.btnSignIn.setOnClickListener {

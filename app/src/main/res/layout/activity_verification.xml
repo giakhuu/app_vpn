@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.signup.verify.VerifySignUpActivity">
+    tools:context=".ui.auth.verify.VerificationActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -24,10 +24,10 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/urbanist_semibold"
         android:layout_marginTop="28dp"
-        android:textSize="14sp"
+        android:fontFamily="@font/urbanist_semibold"
         android:text="Code has sent to"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/urbanist_bold"
-        android:textFontWeight="800"
         android:text="hello123@gmail.com"
+        android:textFontWeight="800"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,13 +53,12 @@
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
         android:cursorVisible="true"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:inputType="number"
         android:itemBackground="#f5f5f5"
         app:cursorColor="@color/primaryColorVPN"
         app:hideLineWhenFilled="true"
-        app:lineColor="@color/material_dynamic_neutral_variant60"
-        android:fontFamily="@font/urbanist_semibold"
         app:itemCount="6"
         app:itemHeight="50dp"
         app:itemRadius="10dp"
@@ -67,18 +66,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmailVerify" />
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailVerify"
+        app:lineColor="@color/material_dynamic_neutral_variant60" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/urbanist_semibold"
         android:text="Haven't recived the verification code?"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:fontFamily="@font/urbanist_semibold"
         app:layout_constraintTop_toBottomOf="@+id/pvOTP" />
 
     <TextView
@@ -87,16 +87,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/urbanist_semibold"
-        android:textSize="14sp"
         android:text="Resend"
-        android:textFontWeight="800"
         android:textColor="@color/primaryColorVPN"
-
-        app:layout_constraintBottom_toTopOf="@id/btnVerify"
+        android:textFontWeight="800"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/txtVerifyError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/txtVerifyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/urbanist_semibold"
+        android:text="Verification code is invalid"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnResentCode" />
 
     <Button
         android:id="@+id/btnVerify"
@@ -105,12 +116,13 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/primaryColorVPN"
         android:fontFamily="@font/urbanist_semibold"
-        android:textFontWeight="800"
         android:text="Verify"
+        android:textAllCaps="true"
+        android:textFontWeight="800"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnResentCode" />
+        app:layout_constraintTop_toBottomOf="@+id/txtVerifyError" />
 
     <ImageButton
         android:id="@+id/btnBack"

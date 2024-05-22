@@ -65,4 +65,9 @@
     <string name="passwordValidateError">Password must have 6 characters or more</string>
     <string name="save_qr_as_picture">Save QR as picture</string>
     <string name="click_here_logout">Click here to logout</string>
+    <string name="verify_email">Verify email</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="passwordConfirmValidateError">Password does not match</string>
+    <string name="reset_password">Reset Password</string>
 </resources>

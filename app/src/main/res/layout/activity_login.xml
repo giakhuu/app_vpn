@@ -120,63 +120,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtForgotPw" />
 
-    <LinearLayout
-        android:id="@+id/llAnotherLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="25dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/btnSignIn">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_semibold"
-            android:gravity="center"
-            android:text="or continue with"
-            android:textColor="#757575"
-            android:textSize="15sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/imageButton1"
-                android:layout_width="40dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="20sp"
-                android:layout_marginEnd="20sp"
-                android:layout_weight="1"
-                android:background="@drawable/social_network_button"
-                android:src="@drawable/ic_fb" />
-
-            <ImageButton
-                android:id="@+id/btnGoogleLogin"
-                android:layout_width="40dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="20sp"
-                android:layout_marginEnd="20sp"
-                android:layout_weight="1"
-                android:background="@drawable/social_network_button"
-                android:src="@drawable/ic_gg" />
-
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="40dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="20sp"
-                android:layout_marginEnd="20sp"
-                android:layout_weight="1"
-                android:background="@drawable/social_network_button"
-                android:src="@drawable/ic_apple" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <LinearLayout
 
@@ -185,7 +128,7 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/llAnotherLogin">
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn">
 
         <TextView
             android:id="@+id/textView4"

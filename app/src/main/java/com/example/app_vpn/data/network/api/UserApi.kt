@@ -8,6 +8,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface UserApi {
     @GET("user/detail")
@@ -26,4 +27,11 @@ interface UserApi {
     suspend fun delete(
         @Header("Authorization") accessToken: String
     ) : OtherResponse
+
+    @FormUrlEncoded
+    @PUT("user/resetPassword")
+    suspend fun resetPassword(
+        @Field(value = "email") email: String,
+        @Field(value = "password") password: String
+    ): OtherResponse
 }

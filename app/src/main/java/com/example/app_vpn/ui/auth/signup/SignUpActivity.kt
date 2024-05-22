@@ -1,7 +1,6 @@
 package com.example.app_vpn.ui.auth.signup
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -15,7 +14,7 @@ import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivitySignUpBinding
 import com.example.app_vpn.ui.auth.login.LoginActivity
-import com.example.app_vpn.ui.auth.signup.verify.VerifySignUpActivity
+import com.example.app_vpn.ui.auth.verify.VerificationActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.ui.viewmodel.MailViewModel
 import com.example.app_vpn.util.enable
@@ -25,11 +24,11 @@ import com.example.app_vpn.util.isValid
 import com.example.app_vpn.util.isValidEmail
 import com.example.app_vpn.util.isValidPassword
 import com.example.app_vpn.util.isValidUsername
+import com.example.app_vpn.util.onDone
+import com.example.app_vpn.util.onLoad
 import com.example.app_vpn.util.setUp
 import com.example.app_vpn.util.startNewActivity
 import com.github.razir.progressbutton.bindProgressButton
-import com.github.razir.progressbutton.hideProgress
-import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -93,28 +92,27 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.txtPassword.addTextChangedListener {
             binding.btnSignUp.enable(
-                binding.txtUsername.text.toString().trim()
-                    .isNotEmpty() && binding.txtEmail.text.toString().trim()
-                    .isNotEmpty() && it.toString().trim().length >= 6
+                binding.txtUsername.text.toString().isValidUsername()
+                        && binding.txtEmail.text.toString().isValidEmail()
+                        && it.toString().isValidPassword()
             )
         }
 
-        authViewModel.isValidUsernameEmailResponse.observe(this) { response ->
+        authViewModel.isUsernameEmailExist.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
-                    btnSignUp.hideProgress(R.string.sign_up)
-                    val isValidReponse = response.value
-                    when (isValidReponse.isSuccess) {
+                    btnSignUp.onDone(getString(R.string.sign_up))
+                    val isValidResponse = response.value
+                    when (isValidResponse.isSuccess) {
                         true -> {
                             val email = binding.txtEmail.text.toString().trim()
                             mailViewModel.sendVerifyCode(email)
                         }
-
                         false -> {
-                            if (isValidReponse.message.contains("Username")) {
+                            if (isValidResponse.message.contains("Username")) {
                                 binding.txtUsername.error = "Username is already taken"
                             }
-                            if (isValidReponse.message.contains("Email")) {
+                            if (isValidResponse.message.contains("Email")) {
                                 binding.txtEmail.error = "Email is already taken"
                             }
                         }
@@ -122,15 +120,12 @@ class SignUpActivity : AppCompatActivity() {
                 }
 
                 is Resource.Failure -> {
-                    btnSignUp.hideProgress(R.string.sign_up)
+                    btnSignUp.onDone(getString(R.string.sign_up))
                     handleApiError(response)
                 }
 
                 else -> {
-                    btnSignUp.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
+                    btnSignUp.onLoad()
                 }
             }
         }
@@ -138,7 +133,7 @@ class SignUpActivity : AppCompatActivity() {
         mailViewModel.sendVerifyResponse.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
-                    btnSignUp.hideProgress(R.string.sign_up)
+                    btnSignUp.onDone(getString(R.string.sign_up))
                     val username = binding.txtUsername.text.toString().trim()
                     val email = binding.txtEmail.text.toString().trim()
                     val password = binding.txtPassword.text.toString().trim()
@@ -148,21 +143,18 @@ class SignUpActivity : AppCompatActivity() {
                         putString("email", email)
                         putString("password", password)
                     }
-                    val intent = Intent(this, VerifySignUpActivity::class.java)
+                    val intent = Intent(this, VerificationActivity::class.java)
                     intent.putExtras(bundle)
                     startActivity(intent)
                 }
 
                 is Resource.Failure -> {
-                    btnSignUp.hideProgress(R.string.sign_up)
+                    btnSignUp.onDone(getString(R.string.sign_up))
                     handleApiError(response)
                 }
 
                 else -> {
-                    btnSignUp.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
+                    btnSignUp.onLoad()
                 }
             }
         }
@@ -179,6 +171,6 @@ class SignUpActivity : AppCompatActivity() {
     private fun isValidUsernameEmail() {
         val username = binding.txtUsername.text.toString().trim()
         val email = binding.txtEmail.text.toString().trim()
-        authViewModel.isValidUsernameEmailResponse(username, email)
+        authViewModel.isUsernameEmailExist(username, email)
     }
 }

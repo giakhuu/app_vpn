@@ -1,28 +1,31 @@
-package com.example.app_vpn.ui.auth.signup.verify
+package com.example.app_vpn.ui.auth.verify
 
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivityVerificationBinding
+import com.example.app_vpn.ui.auth.resetpw.ResetPasswordActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.ui.viewmodel.MailViewModel
+import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
-import com.example.app_vpn.util.snackBar
+import com.example.app_vpn.util.onDone
+import com.example.app_vpn.util.onLoad
+import com.example.app_vpn.util.setUp
 import com.example.app_vpn.util.startNewActivity
-import com.github.razir.progressbutton.attachTextChangeAnimator
+import com.example.app_vpn.util.visible
 import com.github.razir.progressbutton.bindProgressButton
-import com.github.razir.progressbutton.hideProgress
-import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class VerifySignUpActivity : AppCompatActivity() {
+class VerificationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVerificationBinding
 
@@ -40,9 +43,7 @@ class VerifySignUpActivity : AppCompatActivity() {
 
         btnVerify = binding.btnVerify
         bindProgressButton(btnVerify)
-        btnVerify.apply {
-            attachTextChangeAnimator()
-        }
+        btnVerify.setUp()
 
         bundle = intent.extras!!
 
@@ -60,31 +61,43 @@ class VerifySignUpActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.pvOTP.addTextChangedListener {
+            binding.btnVerify.enable(
+                it.toString().length == 6
+            )
+        }
+
         authViewModel.verifyResponse.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
-                    btnVerify.hideProgress(R.string.verify)
+                    btnVerify.onDone(getString(R.string.verify))
                     val verifyResponse = response.value
                     when (verifyResponse.isSuccess) {
                         true -> {
-                            register()
+                            if (bundle.containsKey("username") && bundle.containsKey("password")) {
+                                register()
+                            } else {
+                                val intent = Intent(this, ResetPasswordActivity::class.java)
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            }
                         }
-
                         false -> {
-                            binding.root.snackBar(verifyResponse.message)
+                            binding.txtVerifyError.apply {
+                                text = verifyResponse.message
+                                visible(true)
+                            }
                         }
                     }
                 }
 
                 is Resource.Failure -> {
+                    btnVerify.onDone(getString(R.string.verify))
                     handleApiError(response)
                 }
 
                 else -> {
-                    btnVerify.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
+                    btnVerify.onLoad()
                 }
             }
         }
@@ -96,14 +109,12 @@ class VerifySignUpActivity : AppCompatActivity() {
                 }
 
                 is Resource.Failure -> {
+                    btnVerify.onDone(getString(R.string.verify))
                     handleApiError(it)
                 }
 
                 else -> {
-                    btnVerify.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
+                    btnVerify.onLoad()
                 }
             }
         }
@@ -111,18 +122,17 @@ class VerifySignUpActivity : AppCompatActivity() {
         mailViewModel.resendCodeResponse.observe(this) {
             when (it) {
                 is Resource.Success -> {
-                    btnVerify.hideProgress(R.string.verify)
+                    btnVerify.onDone(getString(R.string.verify))
                 }
 
                 is Resource.Failure -> {
+                    btnVerify.onDone(getString(R.string.verify))
                     handleApiError(it)
                 }
 
                 else -> {
-                    btnVerify.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
+                    binding.txtVerifyError.visible(false)
+                    btnVerify.onLoad()
                 }
             }
         }

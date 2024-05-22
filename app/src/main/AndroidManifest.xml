@@ -31,8 +31,6 @@
         <activity
             android:name=".ui.menu.ContactActivity"
             android:exported="false" />
-        <activity android:name=".ui.auth.resetpw.VerifyForgotPwActivity"
-            android:exported="false" />
         <activity
             android:name=".ui.auth.resetpw.ResetPasswordSuccessActivity"
             android:exported="false" />
@@ -83,10 +81,10 @@
             android:name=".ui.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.auth.signup.verify.VerifySignUpActivity"
+            android:name=".ui.auth.verify.VerificationActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.auth.signup.verify.SuccessActivity"
+            android:name=".ui.auth.verify.SuccessActivity"
             android:exported="true" /> <!-- Bên VPN -->
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"

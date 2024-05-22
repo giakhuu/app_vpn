@@ -1,4 +1,4 @@
-package com.example.app_vpn.ui.auth.signup.verify
+package com.example.app_vpn.ui.auth.verify
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

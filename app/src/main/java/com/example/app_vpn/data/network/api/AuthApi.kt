@@ -34,9 +34,15 @@ interface AuthApi {
     ) : OtherResponse
 
     @FormUrlEncoded
-    @POST("auth/isValidUsernameEmail")
-    suspend fun isValidUsernameEmail(
+    @POST("auth/isUsernameEmailExist")
+    suspend fun isUsernameEmailExist(
         @Field(value = "username") username: String,
         @Field(value = "email") email: String
     ) : OtherResponse
+
+    @FormUrlEncoded
+    @POST("auth/isEmailExist")
+    suspend fun isEmailExist(
+        @Field(value = "email") email: String
+    ): OtherResponse
 }

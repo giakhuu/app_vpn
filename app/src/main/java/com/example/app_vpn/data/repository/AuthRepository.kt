@@ -1,8 +1,8 @@
 package com.example.app_vpn.data.repository
 
 import com.example.app_vpn.data.network.SafeApiCall
-import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.data.network.api.AuthApi
+import com.example.app_vpn.data.preferences.UserPreference
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
@@ -32,11 +32,17 @@ class AuthRepository @Inject constructor(
         api.verify(email, code)
     }
 
-    suspend fun isValidUsernameEmail(
+    suspend fun isUsernameEmailExist(
         username: String,
         email: String
     ) = safeApiCall {
-        api.isValidUsernameEmail(username, email)
+        api.isUsernameEmailExist(username, email)
+    }
+
+    suspend fun isEmailExist(
+        email: String
+    ) = safeApiCall {
+        api.isEmailExist(email)
     }
 
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
