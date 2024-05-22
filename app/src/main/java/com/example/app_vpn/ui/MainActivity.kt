@@ -3,13 +3,17 @@ package com.example.app_vpn.ui
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.ActivityMainBinding
-import com.example.app_vpn.ui.auth.AuthActivity
+import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.ui.fragment.AD_UNIT_ID
 import com.example.app_vpn.ui.fragment.AccountFragment
 import com.example.app_vpn.ui.fragment.CountryFragment
@@ -46,6 +50,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_drawer_layout)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigation_view)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         setUpAds(true)
 
@@ -76,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     fun performLogout() = lifecycleScope.launch {
         userPreference.clear()
-        startNewActivity(AuthActivity::class.java)
+        startNewActivity(LoginActivity::class.java)
     }
 
     private fun setUpAds(showAds: Boolean) {

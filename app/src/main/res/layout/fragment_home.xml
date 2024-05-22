@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.HomeFragment">
+    android:id="@+id/main"
+    tools:context=".ui.fragment.HomeFragment">
+
 
     <ImageView
         android:id="@+id/imageView2"
@@ -139,7 +141,7 @@
         android:id="@+id/testad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/state"></androidx.appcompat.widget.AppCompatButton>
+        app:layout_constraintTop_toBottomOf="@+id/state" />
 
 
     <ImageButton
@@ -165,9 +167,4 @@
         app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

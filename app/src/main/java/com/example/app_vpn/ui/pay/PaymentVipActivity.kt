@@ -18,9 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.ActivityPaymentVipBinding
+import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.ui.viewmodel.PaymentViewModel
 import com.example.app_vpn.util.getMyPublicIpAsync
 import com.example.app_vpn.util.handleApiError
+import com.example.app_vpn.util.startNewActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -56,6 +58,12 @@ class PaymentVipActivity : AppCompatActivity() {
             createPayment(bundle.getString("amount")!!)
         }
 
+        binding.imgLogo.setOnClickListener {
+            lifecycleScope.launch {
+                logout()
+            }
+        }
+
         // Tiếp tục với việc ánh xạ các view và thiết lập các sự kiện ở đây
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -86,6 +94,11 @@ class PaymentVipActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private suspend fun logout() {
+        userPreference.clear()
+        startNewActivity(LoginActivity::class.java)
     }
 
     private fun saveImage(bitmap: Bitmap, imageName: String) {

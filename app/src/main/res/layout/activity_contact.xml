@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.menu.ContactUs">
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/urbanist_bold"
+        android:text="Contact Us"
+        android:textColor="@color/primaryColorVPN"
+        android:textFontWeight="800"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnContactBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/zxing_transparent"
+        android:src="@drawable/baseline_arrow_back_ios_new_24"
+        app:layout_constraintEnd_toStartOf="@+id/textView20"
+        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20"
+        app:srcCompat="@drawable/logovpn" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="398dp"
+        android:layout_height="172dp"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/urbanist_semibold"
+        android:padding="25dp"
+        android:text="We are a group of passionate Information Technology students who collaborate to develop advanced and useful applications. With expertise in DevOps, programming, and mobile app development, we strive to stay updated with the latest technologies and
+        deliver high-quality products that meet user needs. Join us on our exciting technological journey!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/urbanist_bold"
+        android:text="Follow Us On"
+        android:textColor="@color/primaryColorVPN"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+    <LinearLayout
+        android:layout_width="325dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33">
+
+        <ImageButton
+            android:id="@+id/btnContactFB"
+            android:layout_width="40dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/social_network_button"
+            android:src="@drawable/ic_fb" />
+
+        <ImageButton
+            android:id="@+id/btnContactLK"
+            android:layout_width="40dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/social_network_button"
+            android:src="@drawable/ic_lk" />
+
+        <ImageButton
+            android:id="@+id/btnContactIns"
+            android:layout_width="40dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/social_network_button"
+            android:src="@drawable/ic_ins" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,6 @@ fun String.isValidUsername() : Boolean {
 }
 
 fun String.isValidPassword() : Boolean {
-    val regex = "^\\S{6,}\$\n"
+    val regex = "^\\S{6,}$"
     return this.matches(regex.toRegex())
 }

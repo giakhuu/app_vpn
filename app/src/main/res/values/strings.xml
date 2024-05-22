@@ -54,11 +54,15 @@
     <string name="stop">Stop</string>
     <string name="default_web_client_id">328887374113–5er56jbe5tus397pqg08pi15i9m14o0t.apps.googleusercontent.com</string>
     <string name="instruction_payment">
-        Scan the QR code above.\n
-        After payment successful, please login again to activate the premium account.
+        Scan the QR code above.
+        \nAfter payment successful, please login again to activate the premium account.
         \nThank you for your support.
     </string>
     <string name="usernameValidateError">Username must be at least 6 characters, must not contain capital letters, must not begin with a number, and must not contain special characters.</string>
     <string name="verify">Verify</string>
     <string name="change_password">Change Password</string>
+    <string name="emailValidateError">Email is not valid</string>
+    <string name="passwordValidateError">Password must have 6 characters or more</string>
+    <string name="save_qr_as_picture">Save QR as picture</string>
+    <string name="click_here_logout">Click here to logout</string>
 </resources>

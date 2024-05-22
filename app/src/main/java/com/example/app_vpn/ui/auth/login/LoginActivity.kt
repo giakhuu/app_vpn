@@ -1,24 +1,29 @@
 package com.example.app_vpn.ui.auth.login
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivityLoginBinding
 import com.example.app_vpn.ui.MainActivity
+import com.example.app_vpn.ui.auth.resetpw.ForgotPasswordActivity
 import com.example.app_vpn.ui.auth.signup.SignUpActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
 import com.example.app_vpn.util.hideKeyboard
+import com.example.app_vpn.util.setUp
 import com.example.app_vpn.util.startNewActivity
-import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
@@ -42,12 +47,16 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         btnSignIn = binding.btnSignIn
         bindProgressButton(btnSignIn)
-        btnSignIn.apply {
-            attachTextChangeAnimator()
-            enable(false)
-        }
+        btnSignIn.setUp()
 
         //kiểm tra dữ liệu trả về có token hay chưa
         authViewModel.loginResponse.observe(this) {response ->
@@ -114,13 +123,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.txtSignUp.setOnClickListener {
-            startNewActivity(SignUpActivity::class.java)
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
-//        binding.txtForgotPw.setOnClickListener {
-//            val intent = Intent(this, ForgotPasswordActivity::class.java)
-//            startActivity(intent)
-//        }
+        binding.txtForgotPw.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+        }
     }
 
     private fun logIn() {

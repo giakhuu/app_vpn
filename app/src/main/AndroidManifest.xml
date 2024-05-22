@@ -25,16 +25,32 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:label,android:theme, android:name"
         tools:targetApi="31">
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--            android:value="ca-app-pub-3940256099942544~3347511713" />-->
-                <meta-data
-                    android:name="com.google.android.gms.ads.APPLICATION_ID"
-                    android:value="ca-app-pub-6756127155027324~6524013225" />
+        <activity
+            android:name=".ui.menu.PrivatePolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.menu.ContactActivity"
+            android:exported="false" />
+        <activity android:name=".ui.auth.resetpw.VerifyForgotPwActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.resetpw.ResetPasswordSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.resetpw.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.resetpw.ForgotPasswordActivity"
+            android:exported="false" /> <!-- <meta-data -->
+        <!-- android:name="com.google.android.gms.ads.APPLICATION_ID" -->
+        <!-- android:value="ca-app-pub-3940256099942544~3347511713" /> -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6756127155027324~6524013225" />
+
         <activity
             android:name=".ui.pay.GetPremiumActivity"
-            android:exported="false" />
-        <!-- <activity -->
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".ui.auth.signup.VerifyActivity" -->
         <!-- android:exported="false" /> -->
         <activity
@@ -46,9 +62,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.auth.AuthActivity"
-            android:exported="true" />
         <activity
             android:name=".ui.pay.PaymentVipActivity"
             android:exported="false" />
@@ -70,7 +83,7 @@
             android:name=".ui.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.auth.signup.verify.VerificationActivity"
+            android:name=".ui.auth.signup.verify.VerifySignUpActivity"
             android:exported="true" />
         <activity
             android:name=".ui.auth.signup.verify.SuccessActivity"
@@ -94,7 +107,7 @@
             android:name=".util.MyVpnStateReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="de.blinkt.openvpn.VPN_STATUS"/>
+                <action android:name="de.blinkt.openvpn.VPN_STATUS" />
             </intent-filter>
         </receiver>
     </application>

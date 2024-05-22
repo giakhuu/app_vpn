@@ -13,27 +13,41 @@ import com.example.app_vpn.data.entities.Subscription
 import com.google.android.material.card.MaterialCardView
 
 class CustomSubscriptionAdapter(
-    private val list: List<Subscription>, private val onClick: (Int) -> Unit
+    private val list: List<Subscription>,
+    private val onClick: (Int) -> Unit
 ) : RecyclerView.Adapter<CustomSubscriptionAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val _number: TextView = itemView.findViewById(R.id.number)
-        private val _duration: TextView = itemView.findViewById(R.id.duration)
-        private val _price: TextView = itemView.findViewById(R.id.price)
-        private val _radioButtonPricing: RadioButton = itemView.findViewById(R.id.radioButtonPricing)
-        private val _materialCardView: MaterialCardView = itemView as MaterialCardView
+        private val numberTextView: TextView = itemView.findViewById(R.id.number)
+        private val durationTextView: TextView = itemView.findViewById(R.id.duration)
+        private val priceTextView: TextView = itemView.findViewById(R.id.price)
+        private val radioButtonPricing: RadioButton = itemView.findViewById(R.id.radioButtonPricing)
+        private val materialCardView: MaterialCardView = itemView as MaterialCardView
+
         fun bind(subscription: Subscription) {
             with(subscription) {
-                _number.text = number.toString()
-                _price.text = price
-                _duration.text = duration
-                _radioButtonPricing.isChecked = selected
+                numberTextView.text = number.toString()
+                priceTextView.text = price
+                durationTextView.text = duration
+                radioButtonPricing.isChecked = selected
                 setBorderColor(selected)
+
+                itemView.setOnClickListener { handleItemClick(this) }
+                radioButtonPricing.setOnClickListener { handleItemClick(this) }
             }
         }
+
         private fun setBorderColor(selected: Boolean) {
-            val color = if (selected) android.R.color.holo_orange_light else android.R.color.white
-            _materialCardView.strokeColor = ContextCompat.getColor(itemView.context, color)
+            val colorResId = if (selected) android.R.color.holo_orange_light else android.R.color.white
+            materialCardView.strokeColor = ContextCompat.getColor(itemView.context, colorResId)
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        private fun handleItemClick(subscription: Subscription) {
+            list.forEach { it.selected = false }
+            subscription.selected = true
+            onClick(adapterPosition)
+            notifyDataSetChanged()
         }
     }
 
@@ -42,20 +56,10 @@ class CustomSubscriptionAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val subscription = list[position]
-        holder.bind(subscription)
-
-        holder.itemView.setOnClickListener {
-            list.forEach { it.selected = false }
-            subscription.selected = true
-            onClick(holder.adapterPosition)
-            notifyDataSetChanged()
-        }
+        holder.bind(list[position])
     }
 }

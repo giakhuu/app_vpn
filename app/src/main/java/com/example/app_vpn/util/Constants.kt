@@ -4,7 +4,7 @@ import com.example.app_vpn.data.entities.Benefit
 import com.example.app_vpn.data.entities.Subscription
 
 //const val BASE_URL = "http://192.168.193.138:8080/"
-const val BASE_URL = "http://192.168.2.7:8080/"
+const val BASE_URL = "http://192.168.1.8:8080/"
 
 val listSubscriptions = listOf(
     Subscription(1, "Month", "23000"),

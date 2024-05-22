@@ -5,23 +5,28 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivitySignUpBinding
 import com.example.app_vpn.ui.auth.login.LoginActivity
-import com.example.app_vpn.ui.auth.signup.verify.VerificationActivity
+import com.example.app_vpn.ui.auth.signup.verify.VerifySignUpActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.ui.viewmodel.MailViewModel
 import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
 import com.example.app_vpn.util.hideKeyboard
+import com.example.app_vpn.util.isValid
 import com.example.app_vpn.util.isValidEmail
+import com.example.app_vpn.util.isValidPassword
 import com.example.app_vpn.util.isValidUsername
+import com.example.app_vpn.util.setUp
 import com.example.app_vpn.util.startNewActivity
-import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
@@ -40,18 +45,41 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         btnSignUp = binding.btnSignUp
         bindProgressButton(btnSignUp)
-        btnSignUp.apply {
-            enable(false)
-            attachTextChangeAnimator()
-        }
+        btnSignUp.setUp()
+
+        binding.iplyUsername.isValid(
+            editText = binding.txtUsername,
+            invalidHelperText = getString(R.string.usernameValidateError),
+            validate = {this.isValidUsername()}
+        )
+
+        binding.iplyEmail.isValid(
+            editText = binding.txtEmail,
+            invalidHelperText = getString(R.string.emailValidateError),
+            validate = {this.isValidEmail()}
+        )
+
+        binding.iplyPassword.isValid(
+            editText = binding.txtPassword,
+            submitButton = binding.btnSignUp,
+            invalidHelperText = getString(R.string.passwordValidateError),
+            validate = {this.isValidPassword()}
+        )
 
         binding.btnSignUp.setOnClickListener {
             val email = binding.txtEmail.text.toString().trim()
             val username = binding.txtUsername.text.toString().trim()
             if (!email.isValidEmail()) {
-                binding.txtEmail.error = "Email is not valid"
+                binding.txtEmail.error = getString(R.string.emailValidateError)
             }
             if (!username.isValidUsername()) {
                 Log.d("mytag", username)
@@ -83,10 +111,10 @@ class SignUpActivity : AppCompatActivity() {
                         }
 
                         false -> {
-                            if (isValidReponse.message == "Username is already exist") {
+                            if (isValidReponse.message.contains("Username")) {
                                 binding.txtUsername.error = "Username is already taken"
                             }
-                            if (isValidReponse.message == "Email is already exist") {
+                            if (isValidReponse.message.contains("Email")) {
                                 binding.txtEmail.error = "Email is already taken"
                             }
                         }
@@ -120,7 +148,7 @@ class SignUpActivity : AppCompatActivity() {
                         putString("email", email)
                         putString("password", password)
                     }
-                    val intent = Intent(this, VerificationActivity::class.java)
+                    val intent = Intent(this, VerifySignUpActivity::class.java)
                     intent.putExtras(bundle)
                     startActivity(intent)
                 }
@@ -141,6 +169,10 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.txtSignIn.setOnClickListener {
             startNewActivity(LoginActivity::class.java)
+        }
+
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 

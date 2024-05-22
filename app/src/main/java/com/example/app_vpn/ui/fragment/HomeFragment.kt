@@ -16,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,12 +28,16 @@ import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentHomeBinding
 import com.example.app_vpn.ui.MainActivity
+import com.example.app_vpn.ui.menu.ContactActivity
+import com.example.app_vpn.ui.menu.PrivatePolicyActivity
 import com.example.app_vpn.ui.pay.GetPremiumActivity
 import com.example.app_vpn.ui.viewmodel.ButtonViewModel
 import com.example.app_vpn.util.JwtUtils
 import com.example.app_vpn.util.MyVpnStateReceiver
 import com.example.app_vpn.util.VpnStateListener
 import com.example.app_vpn.util.getMyPublicIpAsync
+import com.example.app_vpn.util.toast
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -70,6 +76,17 @@ class HomeFragment : Fragment(), VpnStateListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         // Gán giá trị đầu cho vpn
         bindService()
         val filter = IntentFilter("de.blinkt.openvpn.VPN_STATUS")
@@ -102,8 +119,7 @@ class HomeFragment : Fragment(), VpnStateListener {
         if (buttonViewModel.isRunning) {
             startPulse()
             binding.button.setText(R.string.stop)
-        }
-        else {
+        } else {
             stopPulse()
             binding.button.setText(R.string.start)
         }
@@ -119,18 +135,45 @@ class HomeFragment : Fragment(), VpnStateListener {
         binding.btnNavigation.setOnClickListener {
             // Lấy ra DrawerLayout từ Activity chứa Fragment
             val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.main_drawer_layout)
+            val navigationView = requireActivity().findViewById<NavigationView>(R.id.navigation_view)
+
 
             // Mở DrawerLayout để hiển thị NavigationView
             drawerLayout.openDrawer(GravityCompat.START)
 
-            // Xử lí sự kiện nhấn vào Rate Us
+            //xử lí sự kiện khi click vào item trong navigation view
+            navigationView.setNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.source_code -> {
+                        requireActivity().toast("Bank anh 500 thì anh suy nghĩ")
+                        true
+                    }
+
+                    R.id.policy -> {
+                        startActivity(Intent(requireActivity(), PrivatePolicyActivity::class.java))
+                        true
+                    }
+                    R.id.rate -> {
+                        requireActivity().toast("5* không phải bàn ¯\\_(ツ)_/¯")
+                        true
+                    }
+                    R.id.contact -> {
+                        startActivity(Intent(requireActivity(), ContactActivity::class.java))
+                        true
+                    }
+                    else -> {
+                        requireActivity().toast("Đang phát triển")
+                        true
+                    }
+                }
+            }
         }
 
         // khai báo preference
         preferenceManager = PreferenceManager(requireContext())
 
-        return view
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         stopPulse() // Dừng Handler khi Fragment bị destroy
@@ -182,7 +225,12 @@ class HomeFragment : Fragment(), VpnStateListener {
         }
     }
 
-    private fun signIn(email: String, password: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    private fun signIn(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -212,7 +260,7 @@ class HomeFragment : Fragment(), VpnStateListener {
     }
 
     override fun showInterstitial() {
-        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) {token ->
+        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) { token ->
             if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
                 (activity as MainActivity).showInterstitial()
             }
@@ -301,7 +349,11 @@ class HomeFragment : Fragment(), VpnStateListener {
         val icsopenvpnService = Intent(IOpenVPNAPIService::class.java.name)
 
         icsopenvpnService.setPackage("com.example.app_vpn")
-        requireActivity().bindService(icsopenvpnService, mConnection, AppCompatActivity.BIND_AUTO_CREATE)
+        requireActivity().bindService(
+            icsopenvpnService,
+            mConnection,
+            AppCompatActivity.BIND_AUTO_CREATE
+        )
     }
 
     private val mConnection = object : ServiceConnection {
@@ -319,7 +371,7 @@ class HomeFragment : Fragment(), VpnStateListener {
                     onActivityResult(7, Activity.RESULT_OK, null)
                 }
             } catch (e: RemoteException) {
-                Log.d("testconectreq","openvpn service connection failed: " + e.message)
+                Log.d("testconectreq", "openvpn service connection failed: " + e.message)
                 e.printStackTrace()
             }
         }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -24,13 +24,14 @@ import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentAccountBinding
 import com.example.app_vpn.ui.viewmodel.UserViewModel
 import com.example.app_vpn.util.JwtUtils
-import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
+import com.example.app_vpn.util.isValid
+import com.example.app_vpn.util.isValidPassword
 import com.example.app_vpn.util.logout
-import com.github.razir.progressbutton.attachTextChangeAnimator
+import com.example.app_vpn.util.onDone
+import com.example.app_vpn.util.onLoad
+import com.example.app_vpn.util.setUp
 import com.github.razir.progressbutton.bindProgressButton
-import com.github.razir.progressbutton.hideProgress
-import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -62,6 +63,12 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("my_tag", "on view create account fragemnt")
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.swiperefresh) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         swipeRefreshLayout = binding.swiperefresh
 
@@ -98,19 +105,18 @@ class AccountFragment : Fragment() {
 
             val btnChangePw = viewBottomSheetDialog.findViewById<Button>(R.id.btnChangePw)
             bindProgressButton(btnChangePw)
-            btnChangePw.apply {
-                attachTextChangeAnimator()
-                enable(false)
-            }
+            btnChangePw.setUp()
 
             val txtCurrentPassword = viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtCurrentPassword)
             val txtNewPassword = viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtNewPassword)
+            val iplyNewPassword = viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyNewPassword)
 
-            txtNewPassword.addTextChangedListener {
-                btnChangePw.enable(
-                    txtCurrentPassword.text.toString().isNotEmpty() &&
-                            txtNewPassword.text.toString().isNotEmpty()
-                )
+            iplyNewPassword.isValid(
+                txtNewPassword,
+                btnChangePw,
+                invalidHelperText = getString(R.string.passwordValidateError)
+            ) {
+                this.isValidPassword()
             }
 
             // Xử lí sự kiện thay đổi password
@@ -125,7 +131,7 @@ class AccountFragment : Fragment() {
             userViewModel.changePwResponse.observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Success -> {
-                        btnChangePw.hideProgress(R.string.change_password)
+                        btnChangePw.onDone(getString(R.string.change_password))
                         val responseValue = it.value
                         when (responseValue.isSuccessful) {
                             true -> {
@@ -145,10 +151,7 @@ class AccountFragment : Fragment() {
                         dialog.dismiss()
                     }
                     is Resource.Loading -> {
-                        btnChangePw.showProgress() {
-                            buttonTextRes = R.string.loading
-                            progressColor = Color.WHITE
-                        }
+                        btnChangePw.onLoad()
                     }
                 }
             }

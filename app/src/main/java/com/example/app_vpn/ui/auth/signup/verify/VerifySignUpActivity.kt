@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class VerificationActivity : AppCompatActivity() {
+class VerifySignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVerificationBinding
 

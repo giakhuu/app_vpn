@@ -1,5 +1,4 @@
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_drawer_layout"
@@ -31,8 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:itemBackground="@color/nav_bottom"
-            app:itemTextColor="@drawable/icon_tinit_selected"
             app:itemIconTint="@drawable/icon_tinit_selected"
+            app:itemTextColor="@drawable/icon_tinit_selected"
             app:menu="@menu/nav_menu" />
 
     </LinearLayout>
@@ -48,3 +47,4 @@
         tools:ignore="MissingConstraints" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
+

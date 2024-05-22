@@ -15,12 +15,11 @@ interface SafeApiCall {
             } catch (throwable: Throwable) {
                 when (throwable) {
                     is HttpException -> {
-                        Resource.Failure(true, throwable.code(), throwable.message)
+                        Resource.Failure(false, throwable.code(), throwable.message)
                     }
                     is IOException -> {
-                        throwable.printStackTrace()
                         // Xử lý khi có lỗi IO
-                        Resource.Failure(false, null, "IO Exception: " + throwable.message)
+                        Resource.Failure(true, null, "IO Exception: " + throwable.message)
                     }
                     else -> {
                         // Xử lý mặc định cho các loại ngoại lệ khác

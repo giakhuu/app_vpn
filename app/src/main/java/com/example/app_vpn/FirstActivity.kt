@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.ui.MainActivity
-import com.example.app_vpn.ui.auth.AuthActivity
+import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.util.startNewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,7 +18,7 @@ class FirstActivity : AppCompatActivity() {
         val userPreference = UserPreference(this)
 
         userPreference.accessToken.asLiveData().observe(this) {
-            val activity = if (it == null) AuthActivity::class.java else MainActivity::class.java
+            val activity = if (it == null) LoginActivity::class.java else MainActivity::class.java
             startNewActivity(activity)
         }
 //        startNewActivity(MainActivity::class.java)

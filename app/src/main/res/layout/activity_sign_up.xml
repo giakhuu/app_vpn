@@ -5,9 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="20dp"
-    android:paddingLeft="20dp"
     tools:context=".ui.auth.login.LoginActivity">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/zxing_transparent"
+        android:src="@drawable/baseline_arrow_back_ios_new_24"
+        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imgLogo"
@@ -24,6 +34,7 @@
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/urbanist_bold"
         android:gravity="center"
@@ -36,13 +47,14 @@
         app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtInputUsername"
+        android:id="@+id/iplyUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
         android:textColorHint="#757575"
         app:hintEnabled="false"
-        app:layout_constraintBottom_toTopOf="@id/txtInputEmail"
+        app:layout_constraintBottom_toTopOf="@id/iplyEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle"
@@ -53,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_input"
-            android:drawableStart="@drawable/custom_email_icon"
+            android:drawableStart="@drawable/ic_user"
             android:drawablePadding="12dp"
             android:fontFamily="@font/urbanist_semibold"
             android:hint="@string/enter_your_username"
@@ -65,16 +77,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtInputEmail"
+        android:id="@+id/iplyEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
         android:textColorHint="#757575"
         app:hintEnabled="false"
-        app:layout_constraintBottom_toTopOf="@id/txtInputPassword"
+        app:layout_constraintBottom_toTopOf="@id/iplyPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputUsername"
+        app:layout_constraintTop_toBottomOf="@+id/iplyUsername"
         app:passwordToggleTint="@color/primaryColorVPN">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -95,15 +108,16 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
-        android:id="@+id/txtInputPassword"
+        android:id="@+id/iplyPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
         android:textColorHint="#757575"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputEmail"
+        app:layout_constraintTop_toBottomOf="@+id/iplyEmail"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -128,20 +142,22 @@
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/custom_button"
         android:fontFamily="@font/urbanist_semibold"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textColor="@color/white"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/iplyPassword" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="vertical"
@@ -166,10 +182,10 @@
     </LinearLayout>
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBarRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
