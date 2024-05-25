@@ -3,7 +3,6 @@ package com.example.app_vpn.ui.fragment
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
@@ -24,6 +23,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
+import com.example.app_vpn.data.entities.Country
 import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentHomeBinding
@@ -33,8 +33,6 @@ import com.example.app_vpn.ui.menu.PrivatePolicyActivity
 import com.example.app_vpn.ui.pay.GetPremiumActivity
 import com.example.app_vpn.ui.viewmodel.ButtonViewModel
 import com.example.app_vpn.util.JwtUtils
-import com.example.app_vpn.util.MyVpnStateReceiver
-import com.example.app_vpn.util.VpnStateListener
 import com.example.app_vpn.util.getMyPublicIpAsync
 import com.example.app_vpn.util.toast
 import com.google.android.material.navigation.NavigationView
@@ -43,32 +41,34 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
 import de.blinkt.openvpn.api.IOpenVPNAPIService
+import de.blinkt.openvpn.api.IOpenVPNStatusCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import javax.inject.Inject
 
+
 const val AD_UNIT_ID = "ca-app-pub-6756127155027324/8332435836"
-//const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), VpnStateListener {
+class HomeFragment : Fragment() {
     @Inject
+    // Khai báo preference
     lateinit var userPreference: UserPreference
-
-    private lateinit var binding: FragmentHomeBinding
     private lateinit var preferenceManager: PreferenceManager
 
+    private lateinit var binding: FragmentHomeBinding
     private var jwtUtils = JwtUtils()
     private val buttonViewModel: ButtonViewModel by activityViewModels()
+
+    // khai báo service cho vpn
     private var mService: IOpenVPNAPIService? = null
 
-    // Create an instance of MyVpnStateReceiver
-    private val vpnStateReceiver = MyVpnStateReceiver(this)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,41 +87,47 @@ class HomeFragment : Fragment(), VpnStateListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         // Gán giá trị đầu cho vpn
         bindService()
-        val filter = IntentFilter("de.blinkt.openvpn.VPN_STATUS")
-        requireContext().registerReceiver(vpnStateReceiver, filter)
 
+        // khai báo preference
+        preferenceManager = PreferenceManager(requireContext())
         // Gán giá trị cho 2 cái text ơ trang home
         CoroutineScope(Dispatchers.Main).launch {
             val ipAddress = getMyPublicIpAsync().await()
             binding.ipaddress.text = ipAddress
         }
 
+        // xử lí bấm quảng cáo
+
         binding.testad.setOnClickListener {
             showInterstitial()
         }
+
+        // hiện thông tin vpn trong bộ nhớ
+        preferenceVPNDetail()
+
+        // xử lí bấm nút kết nối
 
         binding.button.setOnClickListener {
             if (buttonViewModel.isRunning) {
                 stopPulse()
                 stopVpn()
-                binding.button.setText(R.string.start)
+                updateIpAddress()
+                buttonViewModel.isRunning = false
             } else {
+                buttonViewModel.isRunning = true
                 startPulse()
                 startVpn()
-                binding.button.setText(R.string.stop)
             }
-            buttonViewModel.isRunning = !buttonViewModel.isRunning
         }
 
         // Khôi phục trạng thái của nút khi Fragment được hiển thị lại
         if (buttonViewModel.isRunning) {
             startPulse()
-            binding.button.setText(R.string.stop)
         } else {
             stopPulse()
-            binding.button.setText(R.string.start)
         }
 
 
@@ -168,9 +174,6 @@ class HomeFragment : Fragment(), VpnStateListener {
                 }
             }
         }
-
-        // khai báo preference
-        preferenceManager = PreferenceManager(requireContext())
 
     }
 
@@ -247,27 +250,20 @@ class HomeFragment : Fragment(), VpnStateListener {
         return auth.currentUser != null
     }
 
-    // cập nhật state
-    override fun onVpnStateChanged(state: String) {
-        // Update the TextView with the new state
-        binding.state.text = state
-    }
 
-    override fun updateIpAddress() {
-        CoroutineScope(Dispatchers.Main).launch {
-            binding.ipaddress.text = getMyPublicIpAsync().await()
-        }
-    }
 
-    override fun showInterstitial() {
-        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) { token ->
-            if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
-                (activity as MainActivity).showInterstitial()
+    // xử lí vpn
+    private fun preferenceVPNDetail() {
+        val country = preferenceManager.getCountry()
+        if(country != null) {
+            binding.preferenceVpnCountryName.text = country.name
+            if (country.prenium) {
+                binding.preferenceVpnName.text = country.vpnName
+                binding.preferenceVpnPassword.text = country.vpnPassword
             }
         }
     }
 
-    // xử lí vpn
     private fun startVpn() {
         lifecycleScope.launch {
             val subDir = File(requireContext().filesDir, "com/example/app_vpn/util")
@@ -277,6 +273,7 @@ class HomeFragment : Fragment(), VpnStateListener {
             val localFile = File(subDir, "config.ovpn")
 
             val country = preferenceManager.getCountry()
+
             if (country == null) {
                 Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
                 return@launch
@@ -290,7 +287,6 @@ class HomeFragment : Fragment(), VpnStateListener {
                     fileUrl = country.config,
                     localFile = localFile,
                     onSuccess = {
-                        println("File downloaded successfully")
                         try {
                             localFile.inputStream().use { inputStream ->
                                 val isr = InputStreamReader(inputStream)
@@ -304,10 +300,9 @@ class HomeFragment : Fragment(), VpnStateListener {
                                     }
                                 }
 
-                                val profile = mService!!.addNewVPNProfile("america", false, config)
+                                val profile = mService!!.addNewVPNProfile(country.name, false, config)
                                 mService!!.startProfile(profile.mUUID)
                                 mService!!.startVPN(config)
-                                binding.button.text = "Stop"
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -336,7 +331,7 @@ class HomeFragment : Fragment(), VpnStateListener {
         if (mService != null) {
             try {
                 mService!!.disconnect()
-                binding.button.text = "Connect"
+                binding.countryName.text = getString(R.string.your_wifi)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -356,6 +351,8 @@ class HomeFragment : Fragment(), VpnStateListener {
         )
     }
 
+
+
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             mService = IOpenVPNAPIService.Stub.asInterface(service)
@@ -374,6 +371,13 @@ class HomeFragment : Fragment(), VpnStateListener {
                 Log.d("testconectreq", "openvpn service connection failed: " + e.message)
                 e.printStackTrace()
             }
+
+            try {
+                mService?.registerStatusCallback(mCallback)
+            } catch (e: RemoteException) {
+                Log.e("HomeFragment", "Failed to register VPN status callback: ${e.message}")
+                e.printStackTrace()
+            }
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
@@ -384,5 +388,110 @@ class HomeFragment : Fragment(), VpnStateListener {
     override fun onDestroy() {
         super.onDestroy()
         requireActivity().unbindService(mConnection)
+        try {
+            mService?.unregisterStatusCallback(mCallback)
+        } catch (e: RemoteException) {
+            Log.e("MainFragment", "Failed to unregister VPN status callback: ${e.message}")
+            e.printStackTrace()
+        }
     }
+
+    // cập nhật state
+    fun status(state: String) {
+        if(state == "noconnect") {
+            binding.button.text = "Connect"
+        }
+        else if (state == "connecting") {
+            binding.button.text = "Connecting..."
+        }
+        else if (state == "retry") {
+            binding.button.text = "Retry"
+        }
+        else if (state == "connected") {
+            binding.button.text = "Disconnect"
+            showInterstitial()
+            updateIpAddress()
+        }
+    }
+    fun statusHandler(connectionState: String) {
+        requireActivity().runOnUiThread {
+            when (connectionState) {
+                "NOPROCESS" -> {
+                    if(buttonViewModel.isRunning) {
+                        binding.textView6.text = "Wait a moment..."
+                        status("connecting")
+                    }
+                    else {
+                        binding.textView6.text = "Not Connected"
+                        status("noconnect")
+                    }
+                }
+                "CONNECTED" -> {
+                    binding.textView6.text = "Connect successfully"
+                    status("connected")
+                }
+
+                "WAIT" -> {
+                    binding.textView6.text = "Wait a moment..."
+                    status("connecting")
+                }
+
+                "AUTH" -> {
+                    binding.textView6.text = "Authenticating..."
+                    status("connecting")
+                }
+
+                "CONNECTRETRY" -> {
+                    status("retry")
+                    binding.textView6.text = "Retry to connect"
+                    try {
+                        mService!!.disconnect()
+                    } catch (ex: RemoteException) {
+                        Log.d("statusHandler", "openvpn server disconnect failed: " + ex.message)
+                        ex.printStackTrace()
+                    }
+                }
+
+                "AUTH_FAILED" -> {
+                    binding.textView6.text = "Authentication failed"
+                    status("retry")
+                }
+
+                "EXITING" -> {
+                    binding.textView6.text = "Exiting"
+                    binding.countryName.text = getString(R.string.your_wifi)
+                    buttonViewModel.isRunning = false
+                    stopPulse()
+                    status("connect")
+                }
+            }
+        }
+    }
+
+
+    fun updateIpAddress() {
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000)
+            var ip = getMyPublicIpAsync().await()
+            binding.ipaddress.text = ip
+        }
+    }
+    // Hiện quảng cáo
+    fun showInterstitial() {
+        userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) { token ->
+            if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
+                (activity as MainActivity).showInterstitial()
+            }
+        }
+    }
+
+// call back để lấy status
+    private val mCallback: IOpenVPNStatusCallback = object : IOpenVPNStatusCallback.Stub() {
+        @Throws(RemoteException::class)
+        override fun newStatus(uuid: String, state: String, message: String, level: String) {
+            Log.d("VPNStatus", state)
+            statusHandler(state)
+        }
+    }
+
 }

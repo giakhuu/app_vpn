@@ -11,6 +11,7 @@
     <string name="loading">Loading…</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+    <string name="state">NONE</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -50,8 +51,7 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
+    <string name="start">Connect</string>
     <string name="default_web_client_id">328887374113–5er56jbe5tus397pqg08pi15i9m14o0t.apps.googleusercontent.com</string>
     <string name="instruction_payment">
         Scan the QR code above.
@@ -70,4 +70,10 @@
     <string name="enter_new_password">Enter new password</string>
     <string name="passwordConfirmValidateError">Password does not match</string>
     <string name="reset_password">Reset Password</string>
+
+<!--    VPN THING -->
+    <string name="connect_to">Connect to: </string>
+    <string name="your_wifi">Your Wifi</string>
+    <string name="not_connected">Not Connected</string>
+    <string name="none">None</string>
 </resources>

@@ -5,4 +5,7 @@ data class Country(
     val name : String,
     val flag : String,
     val config : String,
+    val prenium :Boolean,
+    val vpnName : String,
+    val vpnPassword : String,
 )
