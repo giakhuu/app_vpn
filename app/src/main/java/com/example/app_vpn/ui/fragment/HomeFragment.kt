@@ -61,6 +61,7 @@ class HomeFragment : Fragment() {
     // Khai báo preference
     lateinit var userPreference: UserPreference
     private lateinit var preferenceManager: PreferenceManager
+    private var country : Country? = null
 
     private lateinit var binding: FragmentHomeBinding
     private var jwtUtils = JwtUtils()
@@ -93,6 +94,7 @@ class HomeFragment : Fragment() {
 
         // khai báo preference
         preferenceManager = PreferenceManager(requireContext())
+        country = preferenceManager.getCountry()
         // Gán giá trị cho 2 cái text ơ trang home
         CoroutineScope(Dispatchers.Main).launch {
             val ipAddress = getMyPublicIpAsync().await()
@@ -112,13 +114,11 @@ class HomeFragment : Fragment() {
 
         binding.button.setOnClickListener {
             if (buttonViewModel.isRunning) {
-                stopPulse()
                 stopVpn()
+                stopPulse()
                 updateIpAddress()
                 buttonViewModel.isRunning = false
             } else {
-                buttonViewModel.isRunning = true
-                startPulse()
                 startVpn()
             }
         }
@@ -254,12 +254,11 @@ class HomeFragment : Fragment() {
 
     // xử lí vpn
     private fun preferenceVPNDetail() {
-        val country = preferenceManager.getCountry()
         if(country != null) {
-            binding.preferenceVpnCountryName.text = country.name
-            if (country.prenium) {
-                binding.preferenceVpnName.text = country.vpnName
-                binding.preferenceVpnPassword.text = country.vpnPassword
+            binding.preferenceVpnCountryName.text = country!!.name
+            if (country!!.prenium) {
+                binding.preferenceVpnName.text = country!!.vpnName
+                binding.preferenceVpnPassword.text = country!!.vpnPassword
             }
         }
     }
@@ -272,19 +271,15 @@ class HomeFragment : Fragment() {
             }
             val localFile = File(subDir, "config.ovpn")
 
-            val country = preferenceManager.getCountry()
 
             if (country == null) {
                 Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
                 return@launch
             }
 
-            // Thiết lập chữ
-            binding.countryName.text = country.name
-
             val downloadAndConnect = {
                 downloadFileFromFirebase(
-                    fileUrl = country.config,
+                    fileUrl = country!!.config,
                     localFile = localFile,
                     onSuccess = {
                         try {
@@ -300,7 +295,7 @@ class HomeFragment : Fragment() {
                                     }
                                 }
 
-                                val profile = mService!!.addNewVPNProfile(country.name, false, config)
+                                val profile = mService!!.addNewVPNProfile(country!!.name, false, config)
                                 mService!!.startProfile(profile.mUUID)
                                 mService!!.startVPN(config)
                             }
@@ -402,6 +397,7 @@ class HomeFragment : Fragment() {
             binding.button.text = "Connect"
         }
         else if (state == "connecting") {
+            binding.countryName.text = country?.name
             binding.button.text = "Connecting..."
         }
         else if (state == "retry") {
@@ -433,6 +429,8 @@ class HomeFragment : Fragment() {
 
                 "WAIT" -> {
                     binding.textView6.text = "Wait a moment..."
+                    startPulse()
+                    buttonViewModel.isRunning = true
                     status("connecting")
                 }
 
@@ -462,7 +460,7 @@ class HomeFragment : Fragment() {
                     binding.countryName.text = getString(R.string.your_wifi)
                     buttonViewModel.isRunning = false
                     stopPulse()
-                    status("connect")
+                    status("retry")
                 }
             }
         }
