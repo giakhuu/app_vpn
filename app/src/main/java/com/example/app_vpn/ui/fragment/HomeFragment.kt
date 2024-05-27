@@ -24,6 +24,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
 import com.example.app_vpn.data.entities.Country
+import com.example.app_vpn.data.network.FirebaseHandler
 import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentHomeBinding
@@ -39,6 +40,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import de.blinkt.openvpn.api.IOpenVPNAPIService
 import de.blinkt.openvpn.api.IOpenVPNStatusCallback
@@ -58,9 +60,12 @@ const val AD_UNIT_ID = "ca-app-pub-6756127155027324/8332435836"
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     @Inject
+    lateinit var firebaseHandler: FirebaseHandler
     // Khai báo preference
+    @Inject
     lateinit var userPreference: UserPreference
-    private lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
     private var country : Country? = null
 
     private lateinit var binding: FragmentHomeBinding
@@ -93,19 +98,11 @@ class HomeFragment : Fragment() {
         bindService()
 
         // khai báo preference
-        preferenceManager = PreferenceManager(requireContext())
         country = preferenceManager.getCountry()
+
         // Gán giá trị cho 2 cái text ơ trang home
-        CoroutineScope(Dispatchers.Main).launch {
-            val ipAddress = getMyPublicIpAsync().await()
-            binding.ipaddress.text = ipAddress
-        }
+        updateIpAddress()
 
-        // xử lí bấm quảng cáo
-
-        binding.testad.setOnClickListener {
-            showInterstitial()
-        }
 
         // hiện thông tin vpn trong bộ nhớ
         preferenceVPNDetail()
@@ -211,44 +208,7 @@ class HomeFragment : Fragment() {
         handlerAnimation.removeCallbacks(runnable)
     }
 
-    // firebase file
-    fun downloadFileFromFirebase(
-        fileUrl: String,
-        localFile: File,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val storage = Firebase.storage
-        val fileRef = storage.getReferenceFromUrl(fileUrl)
 
-        fileRef.getFile(localFile).addOnSuccessListener {
-            onSuccess()
-        }.addOnFailureListener { exception ->
-            onFailure(exception)
-        }
-    }
-
-    private fun signIn(
-        email: String,
-        password: String,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val auth = FirebaseAuth.getInstance()
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onSuccess()
-                } else {
-                    task.exception?.let { onFailure(it) }
-                }
-            }
-    }
-
-    fun isUserLoggedIn(): Boolean {
-        val auth = FirebaseAuth.getInstance()
-        return auth.currentUser != null
-    }
 
 
 
@@ -256,6 +216,7 @@ class HomeFragment : Fragment() {
     private fun preferenceVPNDetail() {
         if(country != null) {
             binding.preferenceVpnCountryName.text = country!!.name
+            Picasso.get().load(country!!.flag).into(binding.flagImg)
             if (country!!.prenium) {
                 binding.preferenceVpnName.text = country!!.vpnName
                 binding.preferenceVpnPassword.text = country!!.vpnPassword
@@ -278,7 +239,7 @@ class HomeFragment : Fragment() {
             }
 
             val downloadAndConnect = {
-                downloadFileFromFirebase(
+                firebaseHandler.downloadFileFromFirebase(
                     fileUrl = country!!.config,
                     localFile = localFile,
                     onSuccess = {
@@ -310,10 +271,10 @@ class HomeFragment : Fragment() {
                 )
             }
 
-            if (isUserLoggedIn()) {
+            if (firebaseHandler.isUserLoggedIn()) {
                 downloadAndConnect()
             } else {
-                signIn("giakhuu18112004@gmail.com", "gia18112004", {
+                firebaseHandler.signIn("giakhuu18112004@gmail.com", "gia18112004", {
                     downloadAndConnect()
                 }, { exception ->
                     println("Sign-in failed: ${exception.message}")

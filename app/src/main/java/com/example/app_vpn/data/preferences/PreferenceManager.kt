@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.app_vpn.data.entities.Country
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PreferenceManager(context: Context) {
+@Singleton
+class PreferenceManager @Inject constructor(@ApplicationContext context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
     private val gson = Gson()

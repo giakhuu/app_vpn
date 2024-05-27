@@ -8,5 +8,6 @@
     <color name="benefit">#FFB965</color>
     <color name="benefitBackGround">#FDEAD3</color>
     <color name="wordBenefit">#FFB449</color>
+    <color name="bg_preferenceVpnDetail">#E9DCCD</color>
 
 </resources>
