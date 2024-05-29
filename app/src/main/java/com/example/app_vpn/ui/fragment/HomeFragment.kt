@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
     // Khai báo preference
     lateinit var userPreference: UserPreference
     private lateinit var preferenceManager: PreferenceManager
-    private var country : Country? = null
+    private var country: Country? = null
 
     private lateinit var binding: FragmentHomeBinding
     private var jwtUtils = JwtUtils()
@@ -117,6 +117,7 @@ class HomeFragment : Fragment() {
                 stopVpn()
                 stopPulse()
                 updateIpAddress()
+                showInterstitial()
                 buttonViewModel.isRunning = false
             } else {
                 startVpn()
@@ -141,7 +142,8 @@ class HomeFragment : Fragment() {
         binding.btnNavigation.setOnClickListener {
             // Lấy ra DrawerLayout từ Activity chứa Fragment
             val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.main_drawer_layout)
-            val navigationView = requireActivity().findViewById<NavigationView>(R.id.navigation_view)
+            val navigationView =
+                requireActivity().findViewById<NavigationView>(R.id.navigation_view)
 
 
             // Mở DrawerLayout để hiển thị NavigationView
@@ -159,14 +161,17 @@ class HomeFragment : Fragment() {
                         startActivity(Intent(requireActivity(), PrivatePolicyActivity::class.java))
                         true
                     }
+
                     R.id.rate -> {
                         requireActivity().toast("5* không phải bàn ¯\\_(ツ)_/¯")
                         true
                     }
+
                     R.id.contact -> {
                         startActivity(Intent(requireActivity(), ContactActivity::class.java))
                         true
                     }
+
                     else -> {
                         requireActivity().toast("Đang phát triển")
                         true
@@ -251,10 +256,9 @@ class HomeFragment : Fragment() {
     }
 
 
-
     // xử lí vpn
     private fun preferenceVPNDetail() {
-        if(country != null) {
+        if (country != null) {
             binding.preferenceVpnCountryName.text = country!!.name
             if (country!!.prenium) {
                 binding.preferenceVpnName.text = country!!.vpnName
@@ -295,7 +299,8 @@ class HomeFragment : Fragment() {
                                     }
                                 }
 
-                                val profile = mService!!.addNewVPNProfile(country!!.name, false, config)
+                                val profile =
+                                    mService!!.addNewVPNProfile(country!!.name, false, config)
                                 mService!!.startProfile(profile.mUUID)
                                 mService!!.startVPN(config)
                             }
@@ -347,7 +352,6 @@ class HomeFragment : Fragment() {
     }
 
 
-
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             mService = IOpenVPNAPIService.Stub.asInterface(service)
@@ -356,7 +360,7 @@ class HomeFragment : Fragment() {
 
             try {
                 // Request permission to use the API
-                val i = (mService as? IOpenVPNAPIService)?.prepare(activity!!.packageName)
+                val i = mService?.prepare(activity!!.packageName)
                 if (i != null) {
                     startActivityForResult(i, 7)
                 } else {
@@ -393,35 +397,33 @@ class HomeFragment : Fragment() {
 
     // cập nhật state
     fun status(state: String) {
-        if(state == "noconnect") {
+        if (state == "noconnect") {
             binding.button.text = "Connect"
-        }
-        else if (state == "connecting") {
+        } else if (state == "connecting") {
             binding.countryName.text = country?.name
             binding.button.text = "Connecting..."
-        }
-        else if (state == "retry") {
+        } else if (state == "retry") {
             binding.button.text = "Retry"
-        }
-        else if (state == "connected") {
+        } else if (state == "connected") {
             binding.button.text = "Disconnect"
             showInterstitial()
             updateIpAddress()
         }
     }
+
     fun statusHandler(connectionState: String) {
         requireActivity().runOnUiThread {
             when (connectionState) {
                 "NOPROCESS" -> {
-                    if(buttonViewModel.isRunning) {
+                    if (buttonViewModel.isRunning) {
                         binding.textView6.text = "Wait a moment..."
                         status("connecting")
-                    }
-                    else {
+                    } else {
                         binding.textView6.text = "Not Connected"
                         status("noconnect")
                     }
                 }
+
                 "CONNECTED" -> {
                     binding.textView6.text = "Connect successfully"
                     status("connected")
@@ -474,8 +476,9 @@ class HomeFragment : Fragment() {
             binding.ipaddress.text = ip
         }
     }
+
     // Hiện quảng cáo
-    fun showInterstitial() {
+    private fun showInterstitial() {
         userPreference.premiumKey.asLiveData().observe(viewLifecycleOwner) { token ->
             if (activity != null && activity is MainActivity && jwtUtils.extractPremiumType(token!!) == "F") {
                 (activity as MainActivity).showInterstitial()
@@ -483,7 +486,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-// call back để lấy status
+    // call back để lấy status
     private val mCallback: IOpenVPNStatusCallback = object : IOpenVPNStatusCallback.Stub() {
         @Throws(RemoteException::class)
         override fun newStatus(uuid: String, state: String, message: String, level: String) {

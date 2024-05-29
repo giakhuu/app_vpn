@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
-        android:fontFamily="@font/urbanist_bold"
+        android:fontFamily="@font/geomanist_book"
         android:gravity="center"
         android:text="@string/login_to_your_account"
         android:textColor="@color/black"
@@ -98,8 +98,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Forgot Password ?"
-        android:fontFamily="@font/urbanist_bold"
+        android:fontFamily="@font/geomanist_book"
+        android:text="@string/forgot_password"
         android:textColor="@color/red"
         android:textFontWeight="700"
         app:layout_constraintEnd_toEndOf="@+id/txtInputPassword"
@@ -113,7 +113,7 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/custom_button"
         android:fontFamily="@font/urbanist_semibold"
-        android:text="Sign In"
+        android:text="@string/sign_in"
         android:textColor="@color/white"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/urbanist_semibold"
-            android:text="Don’t have an account?"
+            android:text="@string/login_no_acc"
             android:textColor="#9E9E9E" />
 
         <TextView
@@ -144,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fontFamily="@font/urbanist_bold"
-            android:text="Sign up"
+            android:text="@string/sign_up"
             android:textColor="@color/primaryColorVPN" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

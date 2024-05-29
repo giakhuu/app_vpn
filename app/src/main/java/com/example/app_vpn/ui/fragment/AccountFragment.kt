@@ -211,9 +211,16 @@ class AccountFragment : Fragment() {
     private fun updateUI(user: User) {
         val premiumType = jwtUtils.extractPremiumType(user.premiumKey)
         when (premiumType) {
-            "F" -> binding.txtPremiumType.text = "Free"
-            else -> binding.txtPremiumType.text =
-                "Premium. Expire Date: ${jwtUtils.extractExpirationDate(user.premiumKey)}"
+            "F" -> {
+                binding.txtPremiumType.text = "Free"
+                binding.txtExpireDate.text = "Unlimited"
+            }
+
+            else -> {
+                binding.txtPremiumType.text = "Premium"
+                binding.txtExpireDate.text =
+                    " Expire Date: ${jwtUtils.extractExpirationDate(user.premiumKey)}"
+            }
         }
         binding.txtUsername.text = user.username
         binding.txtEmail.text = user.email

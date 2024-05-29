@@ -2,7 +2,6 @@ package com.example.app_vpn.util
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentForm
@@ -10,8 +9,10 @@ import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.FormError
 import com.google.android.ump.UserMessagingPlatform
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class GoogleMobileAdsConsentManager private constructor(context: Context) {
+class GoogleMobileAdsConsentManager @Inject constructor(@ApplicationContext context: Context) {
     private val TAG = "GoogleMobileAdsConsent"
 
     private val consentInformation: ConsentInformation =
@@ -80,12 +81,10 @@ class GoogleMobileAdsConsentManager private constructor(context: Context) {
         @Volatile
         private var instance: GoogleMobileAdsConsentManager? = null
 
-        fun getInstance(context: Context): GoogleMobileAdsConsentManager {
-            return instance ?: synchronized(this) {
-                instance ?: GoogleMobileAdsConsentManager(context.applicationContext).also {
-                    instance = it
+        fun getInstance(@ApplicationContext context: Context) =
+            instance
+                ?: synchronized(this) {
+                    instance ?: GoogleMobileAdsConsentManager(context).also { instance = it }
                 }
-            }
-        }
     }
 }

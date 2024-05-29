@@ -5,15 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.menu.ContactUs">
+    tools:context=".ui.menu.ContactActivity">
 
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:fontFamily="@font/urbanist_bold"
-        android:text="Contact Us"
+        android:fontFamily="@font/geomanist_book"
+        android:text="@string/contact_us"
         android:textColor="@color/primaryColorVPN"
         android:textFontWeight="800"
         android:textSize="30dp"
@@ -49,10 +49,9 @@
         android:layout_width="398dp"
         android:layout_height="172dp"
         android:layout_marginTop="64dp"
-        android:fontFamily="@font/urbanist_semibold"
+        android:fontFamily="@font/geomanist_book"
         android:padding="25dp"
-        android:text="We are a group of passionate Information Technology students who collaborate to develop advanced and useful applications. With expertise in DevOps, programming, and mobile app development, we strive to stay updated with the latest technologies and
-        deliver high-quality products that meet user needs. Join us on our exciting technological journey!"
+        android:text="@string/contact_us_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
 
@@ -64,12 +63,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:fontFamily="@font/urbanist_bold"
-        android:text="Follow Us On"
+        android:fontFamily="@font/geomanist_medium"
+        android:text="@string/contact_us_follow"
         android:textColor="@color/primaryColorVPN"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView32" />
 

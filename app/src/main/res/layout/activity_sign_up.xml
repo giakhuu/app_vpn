@@ -38,7 +38,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/urbanist_bold"
         android:gravity="center"
-        android:text="Create Account"
+        android:text="@string/create_account"
         android:textColor="@color/black"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
             android:drawableStart="@drawable/custom_email_icon"
             android:drawablePadding="12dp"
             android:fontFamily="@font/urbanist_semibold"
-            android:hint="Enter your email"
+            android:hint="@string/enter_your_email"
             android:inputType="textEmailAddress"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/urbanist_semibold"
-            android:text="Already have an account?"
+            android:text="@string/sign_up_have_acc"
             android:textColor="#9E9E9E" />
 
         <TextView
@@ -177,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/urbanist_semibold"
-            android:text=" Sign in"
+            android:text="@string/sign_in"
             android:textColor="@color/primaryColorVPN" />
     </LinearLayout>
 

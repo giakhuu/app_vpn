@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Base64
+import java.util.Date
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
@@ -37,4 +38,9 @@ class JwtUtils {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).format(formatter)
     }
+
+    fun isTokenExpired(token: String): Boolean {
+        return extractClaims(token) { it.expiration }.before(Date())
+    }
+
 }
