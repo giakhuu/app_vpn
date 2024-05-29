@@ -54,9 +54,9 @@
     <string name="start">Connect</string>
     <string name="default_web_client_id">328887374113–5er56jbe5tus397pqg08pi15i9m14o0t.apps.googleusercontent.com</string>
     <string name="payment_instruct_detail">
-        Scan the QR code above.
-        \nAfter payment successful, please login again to activate the premium account.
-        \nThank you for your support.
+        Vui lòng quét mã QR ở trên để thanh toán.
+        \nSau khi thanh toán thành công, vui lòng đăng nhập lại để được kích hoạt.
+        \nApexVpn chân thành cảm ơn sự hỗ trợ của bạn.
     </string>
     <string name="usernameValidateError">Tên đăng nhập phải có ít nhất 6 ký tự, không được chứa chữ in hoa, không được bắt đầu bằng số và không được chứa các ký tự đặc biệt.</string>
     <string name="verify">Xác thực</string>
@@ -88,7 +88,7 @@
     <string name="enter_your_email">Nhập email của bạn</string>
 
     <!--    Get premium-->
-    <string name="get_premium">Đăng kí tài khoản Premium</string>
+    <string name="get_premium">Đăng kí gói Premium</string>
     <string name="get_premium_select_sub">Chọn gói Premium</string>
     <string name="get_premium_btn">Thanh toán</string>
     <string name="login_no_acc">Chưa có tài khoản ?</string>

@@ -136,6 +136,7 @@ class PaymentVipActivity : AppCompatActivity() {
     private suspend fun createPayment(amount: String) {
         val accessToken = userPreference.getAccessTokenAsString()
         ipAddress = getMyPublicIpAsync().await()
+        Log.d("mytag", ipAddress.toString() + amount)
         paymentViewModel.createPayment(accessToken!!, ipAddress!!, amount)
     }
 

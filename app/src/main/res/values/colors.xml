@@ -9,5 +9,6 @@
     <color name="benefitBackGround">#FDEAD3</color>
     <color name="wordBenefit">#FFB449</color>
     <color name="bg_preferenceVpnDetail">#E9DCCD</color>
+    <color name="grey">#CCCCCC</color>
 
 </resources>

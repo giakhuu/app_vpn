@@ -37,9 +37,6 @@ import com.example.app_vpn.util.JwtUtils
 import com.example.app_vpn.util.getMyPublicIpAsync
 import com.example.app_vpn.util.toast
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import de.blinkt.openvpn.api.IOpenVPNAPIService
@@ -217,7 +214,7 @@ class HomeFragment : Fragment() {
         if(country != null) {
             binding.preferenceVpnCountryName.text = country!!.name
             Picasso.get().load(country!!.flag).into(binding.flagImg)
-            if (country!!.prenium) {
+            if (country!!.premium) {
                 binding.preferenceVpnName.text = country!!.vpnName
                 binding.preferenceVpnPassword.text = country!!.vpnPassword
             }

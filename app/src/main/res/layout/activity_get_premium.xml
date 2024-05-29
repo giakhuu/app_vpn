@@ -16,9 +16,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="25dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="24dp"
+        android:paddingEnd="16dp">
 
         <ImageView
             android:id="@+id/btnexit"
@@ -45,15 +44,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="20dp">
 
         <ListView
             android:id="@+id/listViewBenefits"
             android:layout_width="match_parent"
-            android:layout_height="276dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:divider="@android:color/transparent"
-            android:dividerHeight="10dp"
-            android:paddingTop="20dp" />
+            android:dividerHeight="10dp" />
 
         <TextView
             android:id="@+id/textView11"
@@ -61,7 +61,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/urbanist_bold"
             android:gravity="center"
-            android:paddingBottom="15sp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="@string/get_premium_select_sub"
             android:textColor="@color/wordBenefit"
             android:textSize="20sp" />
@@ -69,7 +70,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listViewSubcription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:divider="@android:color/transparent"
             android:dividerHeight="10dp" />
 
@@ -82,6 +84,5 @@
             android:background="@drawable/custom_button"
             android:backgroundTint="@color/wordBenefit"
             android:text="@string/get_premium_btn" />
-
     </LinearLayout>
 </LinearLayout>

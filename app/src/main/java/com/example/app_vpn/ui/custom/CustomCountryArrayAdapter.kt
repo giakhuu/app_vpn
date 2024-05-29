@@ -11,13 +11,25 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.asLiveData
 import com.example.app_vpn.R
-import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.entities.Country
+import com.example.app_vpn.data.preferences.PreferenceManager
+import com.example.app_vpn.data.preferences.UserPreference
+import com.example.app_vpn.util.JwtUtils
+import com.example.app_vpn.util.enable
 import com.squareup.picasso.Picasso
 
-class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) :
+class CustomArrayCountryAdapter(
+    val activity: Context,
+    val list: List<Country>,
+    val lifecycleOwner: LifecycleOwner
+) :
     ArrayAdapter<Country>(activity, R.layout.item_country_layout) {
+
+    private var userPreference = UserPreference(activity)
+    private var jwtUtils = JwtUtils()
 
     private var checkedPosition = -1 // Khởi tạo checkedPosition là -1
     private lateinit var preferenceManager: PreferenceManager
@@ -39,6 +51,7 @@ class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) 
         // set preferenceManager
         preferenceManager = PreferenceManager(activity)
 
+        userPreference.premiumKey
 
         // Set hình ảnh của quốc gia
         Picasso.get().load(list[position].flag).into(flagImg)
@@ -49,6 +62,24 @@ class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) 
         // Set thời gian ping
         pingConnection.text = "50ms"
 
+        userPreference.premiumKey.asLiveData().observe(lifecycleOwner) { premiumKey ->
+            val premiumType = jwtUtils.extractPremiumType(premiumKey!!)
+            val isFreeUser = premiumType == "F"
+            val isFreeCountry = !list[position].premium
+            // If the user is not a premium user, enable/disable the entire row
+            if (isFreeUser) {
+                rowView.enable(
+                    isFreeCountry
+                )
+                radioButton.enable(
+                    isFreeCountry
+                )
+                if (list[position].premium == false) {
+
+                }
+            }
+        }
+
         // Thiết lập sự kiện khi RadioButton được nhấn
         radioButton.setOnClickListener {
             // Cập nhật checkedPosition khi RadioButton được chọn
@@ -57,16 +88,13 @@ class CustomArrayCountryAdapter(val activity: Context, val list: List<Country>) 
             // Kiểm tra nếu RadioButton được chọn ở vị trí hiện tại
             if (position != checkedPosition) {
                 val countryNameText = countryName.text.toString()
-                Toast.makeText(activity, countryNameText, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, countryNameText, Toast.LENGTH_SHORT).show()
                 checkedPosition = position
-
 
                 // lưu vào preference
                 preferenceManager.saveCountry(list[position])
                 val country = preferenceManager.getCountry()
                 Log.d("country", country.toString())
-
-
             }
         }
 
