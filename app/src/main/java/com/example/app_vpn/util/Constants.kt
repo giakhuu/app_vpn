@@ -3,8 +3,7 @@ package com.example.app_vpn.util
 import com.example.app_vpn.data.entities.Benefit
 import com.example.app_vpn.data.entities.Subscription
 
-//const val BASE_URL = "https://apexvpnapi.azurewebsites.net/"
-const val BASE_URL = "http://192.168.1.14:8080/"
+const val BASE_URL = "https://apexvpnapi.azurewebsites.net/"
 
 val listSubscriptions = listOf(
     Subscription(1, "Month", "23000"),
