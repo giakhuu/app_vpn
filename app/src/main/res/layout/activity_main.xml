@@ -25,6 +25,8 @@
 
         <!-- BottomNavigationView -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            app:itemTextAppearanceActive="@style/CustomBottomNavTextActive"
+            app:itemTextAppearanceInactive="@style/CustomBottomNavTextInactive"
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,6 +40,7 @@
 
     <!-- NavigationView -->
     <com.google.android.material.navigation.NavigationView
+        app:itemTextAppearance="@style/CustomBottomNavTextActive"
         android:id="@+id/navigation_view"
         android:layout_width="332dp"
         android:layout_height="match_parent"

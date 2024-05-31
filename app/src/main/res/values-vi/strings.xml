@@ -8,7 +8,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="loading">Đang tải</string>
+    <string name="loading">Đang tải...</string>
     <string name="sign_in">Đăng nhập</string>
     <string name="sign_up">Đăng kí</string>
     <string name="state">NONE</string>
@@ -80,23 +80,24 @@
     <!--    Contact us-->
     <string name="contact_us_detail">We are a group of passionate Information Technology students who collaborate to develop advanced and useful applications. With expertise in DevOps, programming, and mobile app development, we strive to stay updated with the latest technologies and deliver high-quality products that meet user needs. Join us on our exciting technological journey!</string>
     <string name="contact_us_follow">Theo dõi trên</string>
-    <string name="contact_us">Liên lạc</string>
+    <string name="contact_us">Liên hệ với chúng tôi</string>
 
     <!--    Forgot password-->
     <string name="forgot_password">Quên mật khẩu</string>
-    <string name="forgot_password_detail">Nhập email và nhập mã OTP để xác thực</string>
+    <string name="forgot_password_detail">Nhập email để nhận mã OTP xác thực</string>
     <string name="enter_your_email">Nhập email của bạn</string>
 
     <!--    Get premium-->
-    <string name="get_premium">Đăng kí gói Premium</string>
+    <string name="get_premium">Đăng kí Premium</string>
     <string name="get_premium_select_sub">Chọn gói Premium</string>
     <string name="get_premium_btn">Thanh toán</string>
     <string name="login_no_acc">Chưa có tài khoản ?</string>
     <string name="payment_title">Quét mã thanh toán</string>
     <string name="payment_instruction">Hướng dẫn</string>
     <string name="privacy_policy">Chính sách bảo mật</string>
-    <string name="private_policy_detail_1">Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles. Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues.</string>
-    <string name="private_policy_detail_2">It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</string>
+
+    <string name="private_policy_detail_1">Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles. Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues.</string>
+    <string name="private_policy_detail_2">It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores.</string>
     <string name="reset_password_title">Đặt lại mật khẩu mới cho tài khoản của bạn</string>
     <string name="successfully">Thành công</string>
     <string name="reset_password_success">Mật khẩu của bạn đã được đặt lại thành công</string>
@@ -125,4 +126,19 @@
     <string name="type">Loại</string>
     <string name="expire_date">Ngày hết hạn</string>
     <string name="disconnect_alert">Bạn có muốn ngắt kết nối?</string>
+    <string name="your_ip">IP hiện tại:</string>
+    <string name="need_help">Cần hỗ trợ ? Liên lạc với chúng tôi tại</string>
+    <string name="home">Trang chủ</string>
+    <string name="country">Quốc gia</string>
+    <string name="account">Tài khoản</string>
+    <string name="username_already_taken">Tên đăng nhập đã được đăng ký</string>
+    <string name="email_already_taken">Email đã được đăng ký</string>
+    <string name="incorrect_password">Mật khẩu không đúng</string>
+    <string name="password_change_success">Thay đổi mật khẩu thành công</string>
+    <string name="user_doesn_t_exist">Tài khoản không tồn tại</string>
+    <string name="create_payment_loading">Vui lòng đợi một lát\nđể chúng tôi tạo mã QR thanh toán cho bạn</string>
+    <string name="verrify_error_1">Mã xác minh đã hết hạn</string>
+    <string name="verify_error_2">Mã xác minh không hợp lệ</string>
+    <string name="source_code">Mã nguồn</string>
+    <string name="rate_us">Đánh giá</string>
 </resources>

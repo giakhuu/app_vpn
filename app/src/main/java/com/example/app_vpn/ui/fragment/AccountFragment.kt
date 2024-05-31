@@ -36,6 +36,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,9 +74,7 @@ class AccountFragment : Fragment() {
 
         swipeRefreshLayout = binding.swiperefresh
 
-        lifecycleScope.launch {
-            fetchData()
-        }
+        fetchData()
 
         swipeRefreshLayout.setOnRefreshListener {
             refreshData()
@@ -140,7 +140,9 @@ class AccountFragment : Fragment() {
                             }
                             false -> {
                                 viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyCurrentPassword).apply {
-                                    helperText = responseValue.message
+                                    if (responseValue.message.contains("Incorrect")) {
+                                        helperText = context.getString(R.string.incorrect_password)
+                                    }
                                     setHelperTextColor(ColorStateList.valueOf(resources.getColor(R.color.red)))
                                 }
                             }
@@ -192,19 +194,25 @@ class AccountFragment : Fragment() {
 
         val btnDone = viewDialog.findViewById<Button>(R.id.btnDone)
         val txtSuccessText = viewDialog.findViewById<TextView>(R.id.txtSuccessText)
-        txtSuccessText.text = "Change password successful"
+        txtSuccessText.text = getString(R.string.password_change_success)
         btnDone.setOnClickListener {
             dialog.dismiss()
         }
     }
 
     private fun refreshData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val accessToken = userPreference.getAccessTokenAsString()
+            userViewModel.fetchData(accessToken!!)
+        }
         binding.swiperefresh.isRefreshing = false
     }
 
-    private suspend  fun fetchData() {
-        val accessToken = userPreference.getAccessTokenAsString()
-        userViewModel.fetchData(accessToken!!)
+    private fun fetchData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val accessToken = userPreference.getAccessTokenAsString()
+            userViewModel.fetchData(accessToken!!)
+        }
     }
 
     @SuppressLint("SetTextI18n")

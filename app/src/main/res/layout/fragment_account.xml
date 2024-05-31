@@ -23,7 +23,7 @@
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_bold"
+            android:fontFamily="@font/poppin_semibold"
             android:layout_marginTop="24dp"
             android:text="@string/my_account"
             android:textColor="@color/primaryColorVPN"
@@ -67,7 +67,7 @@
                         android:id="@+id/textView1"
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_semibold"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/username"
                         android:textColor="@color/white"
                         android:textFontWeight="900" />
@@ -76,8 +76,8 @@
                         android:id="@+id/txtUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_semibold"
-                        android:text=" "
+                        android:fontFamily="@font/poppin_medium"
+                        android:text="@string/loading"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
@@ -92,7 +92,7 @@
                         android:id="@+id/textView17"
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_semibold"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/email"
                         android:textColor="@color/white"
                         android:textFontWeight="900" />
@@ -102,8 +102,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
-                        android:fontFamily="@font/urbanist_semibold"
-                        android:text=" "
+                        android:fontFamily="@font/poppin_medium"
+                        android:text="@string/loading"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
@@ -116,7 +116,7 @@
                         android:id="@+id/textview2"
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_bold"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/password"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toStartOf="@id/txtPassword"
@@ -180,14 +180,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/urbanist_bold"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/type" />
 
                     <TextView
+                        android:fontFamily="@font/poppin_medium"
                         android:id="@+id/txtPremiumType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_bold"
+                        android:text="@string/loading"
                         android:textColor="@color/primaryColorVPN" />
                 </LinearLayout>
 
@@ -202,14 +203,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/urbanist_bold"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/expire_date" />
 
                     <TextView
+                        android:fontFamily="@font/poppin_medium"
                         android:id="@+id/txtExpireDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_bold"
+                        android:text="@string/loading"
                         android:textColor="@color/primaryColorVPN" />
                 </LinearLayout>
 

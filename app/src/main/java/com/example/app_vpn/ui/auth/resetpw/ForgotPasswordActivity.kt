@@ -54,7 +54,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         binding.iplyForgotEmail.isValid(
             binding.txtForgotEmail,
             binding.btnSubmit,
-            invalidHelperText = "Invalid Email",
+            invalidHelperText = getString(R.string.emailValidateError),
             validate = {this.isValidEmail()}
         )
 

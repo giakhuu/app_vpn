@@ -110,10 +110,11 @@ class SignUpActivity : AppCompatActivity() {
                         }
                         false -> {
                             if (isValidResponse.message.contains("Username")) {
-                                binding.txtUsername.error = "Username is already taken"
+                                binding.txtUsername.error =
+                                    getString(R.string.username_already_taken)
                             }
                             if (isValidResponse.message.contains("Email")) {
-                                binding.txtEmail.error = "Email is already taken"
+                                binding.txtEmail.error = getString(R.string.email_already_taken)
                             }
                         }
                     }

@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
-        android:fontFamily="@font/geomanist_book"
+        android:fontFamily="@font/poppin_medium"
         android:gravity="center"
         android:text="@string/login_to_your_account"
         android:textColor="@color/black"
@@ -54,13 +54,12 @@
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_user"
             android:drawablePadding="12dp"
-            android:fontFamily="@font/urbanist_semibold"
+            android:fontFamily="@font/poppin_medium"
             android:hint="@string/enter_your_username"
             android:inputType="textEmailAddress"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingHorizontal="12dp"
             android:textColor="@color/primaryColorVPN"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -68,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="12dp"
         android:textColorHint="#757575"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,17 +79,15 @@
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_lock_icon"
             android:drawablePadding="12dp"
-            android:fontFamily="@font/urbanist_semibold"
+            android:fontFamily="@font/poppin_medium"
             android:hint="@string/enter_your_password"
             android:inputType="textPassword"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingHorizontal="12dp"
             android:textColor="@color/primaryColorVPN"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -98,10 +95,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/geomanist_book"
+        android:fontFamily="@font/poppin_medium"
         android:text="@string/forgot_password"
         android:textColor="@color/red"
-        android:textFontWeight="700"
         app:layout_constraintEnd_toEndOf="@+id/txtInputPassword"
         app:layout_constraintTop_toBottomOf="@+id/txtInputPassword" />
 
@@ -112,7 +108,7 @@
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="25dp"
         android:background="@drawable/custom_button"
-        android:fontFamily="@font/urbanist_semibold"
+        android:fontFamily="@font/poppin_semibold"
         android:text="@string/sign_in"
         android:textColor="@color/white"
         android:textSize="17sp"
@@ -135,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:fontFamily="@font/urbanist_semibold"
+            android:fontFamily="@font/poppin_medium"
             android:text="@string/login_no_acc"
             android:textColor="#9E9E9E" />
 
@@ -143,7 +139,7 @@
             android:id="@+id/txtSignUp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:fontFamily="@font/urbanist_bold"
+            android:fontFamily="@font/poppin_medium"
             android:text="@string/sign_up"
             android:textColor="@color/primaryColorVPN" />
     </LinearLayout>

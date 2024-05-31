@@ -47,7 +47,6 @@ import de.blinkt.openvpn.api.IOpenVPNAPIService
 import de.blinkt.openvpn.api.IOpenVPNStatusCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
@@ -386,7 +385,7 @@ class HomeFragment : Fragment() {
         }
         else if (state == "connected") {
             binding.button.text = "Disconnect"
-//            showInterstitial()
+            showInterstitial()
             updateIpAddress()
         }
     }
@@ -452,7 +451,6 @@ class HomeFragment : Fragment() {
 
     fun updateIpAddress() {
         CoroutineScope(Dispatchers.Main).launch {
-            delay(2000)
             var ip = getMyPublicIpAsync().await()
             binding.ipaddress.text = ip
         }

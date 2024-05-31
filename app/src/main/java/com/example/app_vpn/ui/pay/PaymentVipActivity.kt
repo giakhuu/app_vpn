@@ -23,6 +23,7 @@ import com.example.app_vpn.ui.viewmodel.PaymentViewModel
 import com.example.app_vpn.util.getMyPublicIpAsync
 import com.example.app_vpn.util.handleApiError
 import com.example.app_vpn.util.startNewActivity
+import com.example.app_vpn.util.visible
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -81,11 +82,15 @@ class PaymentVipActivity : AppCompatActivity() {
         paymentViewModel.createPaymentResponse.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
+                    binding.txtCreatePaymentLoading.visible(false)
+                    binding.btnSaveImg.visible(true)
                     val paymentUrl = response.value.data.paymentUrl
                     generateQRCode(paymentUrl)
                 }
 
                 is Resource.Failure -> {
+                    binding.txtCreatePaymentLoading.visible(false)
+                    binding.btnSaveImg.visible(true)
                     handleApiError(response)
                 }
 

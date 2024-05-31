@@ -83,14 +83,14 @@ class LoginActivity : AppCompatActivity() {
                             if (loginResult.message.contains("User")) {
                                 binding.txtInputUsername.apply {
                                     binding.txtInputUsername.isHelperTextEnabled = true
-                                    helperText = loginResult.message
+                                    helperText = context.getString(R.string.user_doesn_t_exist)
                                     setHelperTextColor(ColorStateList.valueOf(resources.getColor(R.color.red)))
                                 }
                             }
                             else if (loginResult.message.contains("password")) {
                                 binding.txtInputPassword.apply {
                                     binding.txtInputPassword.isHelperTextEnabled = true
-                                    helperText = loginResult.message
+                                    helperText = context.getString(R.string.incorrect_password)
                                     setHelperTextColor(ColorStateList.valueOf(resources.getColor(R.color.red)))
                                 }
                             }

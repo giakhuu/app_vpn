@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.app_vpn.R
 import com.example.app_vpn.data.entities.Subscription
 import com.example.app_vpn.databinding.ActivityGetPremiumBinding
 import com.example.app_vpn.ui.custom.CustomBenefitAdapter
@@ -27,6 +30,11 @@ class GetPremiumActivity : AppCompatActivity() {
         binding = ActivityGetPremiumBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
 
         binding.btnSubcription.enable(false)

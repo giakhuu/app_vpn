@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/earth_dot_bg"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-225dp" />
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="40dp" />
 
     <ImageView
         android:id="@+id/imgAnimation2"
@@ -35,12 +35,12 @@
         android:src="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.212" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:fontFamily="@font/poppin_medium"
         android:id="@+id/button"
         style="@style/AppTheme.ButtonStyle"
         android:layout_width="100dp"
@@ -48,7 +48,6 @@
         android:text="@string/start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.212"
@@ -59,10 +58,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" OpenVPN Shield"
-        android:fontFamily="@font/urbanist_bold"
-        android:drawableStart="@drawable/baseline_shield_24"
+        android:fontFamily="@font/poppin_semibold"
         android:textSize="20sp"
         android:textColor="@color/black"
+        app:drawableStartCompat="@drawable/baseline_shield_24"
         app:layout_constraintBottom_toTopOf="@+id/imgAnimation2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +71,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/urbanist_bold"
+        android:fontFamily="@font/poppin_semibold"
         android:text="@string/not_connected"
         android:textColor="@color/primaryColorVPN"
         android:textSize="31sp"
@@ -92,15 +91,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_bold"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/poppin_semibold"
             android:text="@string/connect_to"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/countryName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_bold"
+            android:fontFamily="@font/poppin_regular"
             android:text="@string/your_wifi"
             android:textSize="30sp" />
     </LinearLayout>
@@ -117,16 +117,17 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_bold"
-            android:text="Your IP: "
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/poppin_semibold"
+            android:text="@string/your_ip"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/ipaddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_bold"
-            android:text="Loading"
+            android:fontFamily="@font/poppin_semibold"
+            android:text="@string/loading"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -164,9 +165,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/urbanist_semibold"
+                    android:fontFamily="@font/poppin_medium"
                     android:text="Country name: "
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/preferenceVpnCountryName"
@@ -186,9 +187,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/urbanist_semibold"
+                    android:fontFamily="@font/poppin_medium"
                     android:text="Username: "
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/preferenceVpnName"
@@ -207,9 +208,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/urbanist_semibold"
+                    android:fontFamily="@font/poppin_medium"
                     android:text="Password: "
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/preferenceVpnPassword"

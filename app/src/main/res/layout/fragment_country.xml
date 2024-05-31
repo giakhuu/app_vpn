@@ -9,6 +9,7 @@
 
     <!-- VIP Country Section -->
     <TextView
+        android:fontFamily="@font/poppin_medium"
         android:id="@+id/txtVipCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
 
     <!-- Standard Country Section -->
     <TextView
+        android:fontFamily="@font/poppin_medium"
         android:id="@+id/txtStandardCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

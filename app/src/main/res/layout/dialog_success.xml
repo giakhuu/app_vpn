@@ -11,10 +11,11 @@
         android:layout_margin="20dp">
 
         <TextView
+            android:layout_width="match_parent"
             android:id="@+id/txtSuccessText"
-            android:layout_width="wrap_content"
+            android:fontFamily="@font/poppin_semibold"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_semibold"
+            android:gravity="center"
             android:text="@string/example_text"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,6 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:fontFamily="@font/poppin_semibold"
             android:id="@+id/btnDone"
             android:layout_width="125dp"
             android:layout_height="49dp"

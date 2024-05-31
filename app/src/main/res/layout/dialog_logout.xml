@@ -14,7 +14,7 @@
             android:id="@+id/textView23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/urbanist_semibold"
+            android:fontFamily="@font/poppin_semibold"
             android:text="@string/wanna_logout"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:fontFamily="@font/poppin_semibold"
             android:id="@+id/btnLogoutNo"
             android:layout_width="125dp"
             android:layout_height="49dp"
@@ -36,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:fontFamily="@font/poppin_semibold"
             android:id="@+id/btnLogoutYes"
             android:layout_width="125dp"
             android:layout_height="49dp"

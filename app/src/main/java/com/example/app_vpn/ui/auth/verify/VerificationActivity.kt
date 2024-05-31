@@ -84,7 +84,11 @@ class VerificationActivity : AppCompatActivity() {
                         }
                         false -> {
                             binding.txtVerifyError.apply {
-                                text = verifyResponse.message
+                                if (verifyResponse.message.contains("expired")) {
+                                    text = context.getString(R.string.verrify_error_1)
+                                } else if (verifyResponse.message.contains("Invalid")) {
+                                    text = context.getString(R.string.verify_error_2)
+                                }
                                 visible(true)
                             }
                         }
