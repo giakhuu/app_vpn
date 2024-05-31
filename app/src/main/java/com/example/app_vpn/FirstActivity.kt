@@ -19,7 +19,7 @@ class FirstActivity : AppCompatActivity() {
     private val jwtUtils = JwtUtils()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_first)
+        setContentView(R.layout.activity_splash_screen)
 
         val userPreference = UserPreference(this)
 

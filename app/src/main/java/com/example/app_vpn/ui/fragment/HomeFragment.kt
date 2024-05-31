@@ -386,7 +386,7 @@ class HomeFragment : Fragment() {
         }
         else if (state == "connected") {
             binding.button.text = "Disconnect"
-//            showInterstitial()
+            showInterstitial()
             updateIpAddress()
         }
     }
