@@ -119,6 +119,10 @@ class HomeFragment : Fragment() {
                 updateIpAddress()
                 buttonViewModel.isRunning = false
             } else {
+                if (country == null) {
+                    Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
                 startVpn()
                 startPulse()
                 buttonViewModel.isRunning = true
