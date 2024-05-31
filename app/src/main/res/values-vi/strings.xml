@@ -72,8 +72,8 @@
     <string name="reset_password">Đặt lại mật khẩu</string>
 
     <!--    VPN THING -->
-    <string name="connect_to">Connect to: </string>
-    <string name="your_wifi">Your Wifi</string>
+    <string name="connect_to">Kết nối tới:</string>
+    <string name="your_wifi">Wifi của bạn</string>
     <string name="not_connected">Not Connected</string>
     <string name="none">None</string>
 
@@ -124,4 +124,5 @@
     <string name="password">Password</string>
     <string name="type">Loại</string>
     <string name="expire_date">Ngày hết hạn</string>
+    <string name="disconnect_alert">Bạn có muốn ngắt kết nối?</string>
 </resources>

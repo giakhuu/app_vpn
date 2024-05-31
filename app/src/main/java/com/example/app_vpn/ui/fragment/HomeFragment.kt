@@ -1,8 +1,11 @@
 package com.example.app_vpn.ui.fragment
 
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
@@ -69,6 +73,7 @@ class HomeFragment : Fragment() {
     private var jwtUtils = JwtUtils()
     private val buttonViewModel: ButtonViewModel by activityViewModels()
 
+
     // khai báo service cho vpn
     private var mService: IOpenVPNAPIService? = null
 
@@ -93,7 +98,8 @@ class HomeFragment : Fragment() {
 
         // Gán giá trị đầu cho vpn
         bindService()
-
+        val stopPulseFilter = IntentFilter("com.example.app_vpn.STOP_PULSE")
+        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter)
         // khai báo preference
         country = preferenceManager.getCountry()
 
@@ -105,7 +111,7 @@ class HomeFragment : Fragment() {
         preferenceVPNDetail()
 
         // xử lí bấm nút kết nối
-
+        Log.d("buttonViewModel", buttonViewModel.isRunning.toString())
         binding.button.setOnClickListener {
             if (buttonViewModel.isRunning) {
                 stopVpn()
@@ -114,6 +120,8 @@ class HomeFragment : Fragment() {
                 buttonViewModel.isRunning = false
             } else {
                 startVpn()
+                startPulse()
+                buttonViewModel.isRunning = true
             }
         }
 
@@ -201,7 +209,7 @@ class HomeFragment : Fragment() {
         handlerAnimation.postDelayed(runnable, 0)
     }
 
-    private fun stopPulse() {
+    fun stopPulse() {
         handlerAnimation.removeCallbacks(runnable)
     }
 
@@ -255,6 +263,7 @@ class HomeFragment : Fragment() {
 
                                 val profile = mService!!.addNewVPNProfile(country!!.name, false, config)
                                 mService!!.startProfile(profile.mUUID)
+                                Log.d("stop vpn", "startVpn: ")
                                 mService!!.startVPN(config)
                             }
                         } catch (e: Exception) {
@@ -283,7 +292,15 @@ class HomeFragment : Fragment() {
     private fun stopVpn() {
         if (mService != null) {
             try {
-                mService!!.disconnect()
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Disconnect")
+                    .setMessage(R.string.disconnect_alert)
+                    .setPositiveButton("Ok") { _, _ ->
+                        mService!!.disconnect()
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+                    .setCancelable(false)
                 binding.countryName.text = getString(R.string.your_wifi)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -355,15 +372,21 @@ class HomeFragment : Fragment() {
             binding.button.text = "Connect"
         }
         else if (state == "connecting") {
-            binding.countryName.text = country?.name
-            binding.button.text = "Connecting..."
+            if(!buttonViewModel.isRunning) {
+                binding.button.text = "Connect"
+                mService!!.disconnect()
+            }
+            else {
+                binding.countryName.text = country?.name
+                binding.button.text = "Connecting..."
+            }
         }
         else if (state == "retry") {
             binding.button.text = "Retry"
         }
         else if (state == "connected") {
             binding.button.text = "Disconnect"
-            showInterstitial()
+//            showInterstitial()
             updateIpAddress()
         }
     }
@@ -387,8 +410,6 @@ class HomeFragment : Fragment() {
 
                 "WAIT" -> {
                     binding.textView6.text = "Wait a moment..."
-                    startPulse()
-                    buttonViewModel.isRunning = true
                     status("connecting")
                 }
 
@@ -406,6 +427,10 @@ class HomeFragment : Fragment() {
                         Log.d("statusHandler", "openvpn server disconnect failed: " + ex.message)
                         ex.printStackTrace()
                     }
+                }
+
+                "USER_VPN_PASSWORD_CANCELLED" -> {
+                    Log.d("test", "statusHandler: ")
                 }
 
                 "AUTH_FAILED" -> {
@@ -450,4 +475,16 @@ class HomeFragment : Fragment() {
         }
     }
 
+    // xử lí bấm cancel khi nhập password
+    private val stopPulseReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == "com.example.app_vpn.STOP_PULSE") {
+                stopVpn()
+                stopPulse()
+                updateIpAddress()
+                buttonViewModel.isRunning = false
+                status("noconnect")
+            }
+        }
+    }
 }
