@@ -118,6 +118,10 @@ class HomeFragment : Fragment() {
                 updateIpAddress()
                 buttonViewModel.isRunning = false
             } else {
+                if (country == null) {
+                    Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
                 startVpn()
                 startPulse()
                 buttonViewModel.isRunning = true
@@ -341,16 +345,22 @@ class HomeFragment : Fragment() {
                 e.printStackTrace()
             }
 
-            try {
-                mService?.registerStatusCallback(mCallback)
-            } catch (e: RemoteException) {
-                Log.e("HomeFragment", "Failed to register VPN status callback: ${e.message}")
-                e.printStackTrace()
-            }
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
             mService = null // Set mService to null when service is disconnected
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 7) {
+            try {
+                mService!!.registerStatusCallback(mCallback)
+            } catch (e: RemoteException) {
+                Log.d("mCallback","openvpn status callback failed: " + e.message)
+                e.printStackTrace()
+            }
         }
     }
 
