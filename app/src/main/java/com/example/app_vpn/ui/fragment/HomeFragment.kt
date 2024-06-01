@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
-import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
@@ -48,6 +47,7 @@ import de.blinkt.openvpn.api.IOpenVPNAPIService
 import de.blinkt.openvpn.api.IOpenVPNStatusCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
@@ -99,10 +99,10 @@ class HomeFragment : Fragment() {
         // Gán giá trị đầu cho vpn
         bindService()
         val stopPulseFilter = IntentFilter("com.example.app_vpn.STOP_PULSE")
-        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter,
-            RECEIVER_NOT_EXPORTED)
+        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter)
         // khai báo preference
         country = preferenceManager.getCountry()
+
 
         // hiện thông tin vpn trong bộ nhớ
         preferenceVPNDetail()
@@ -113,7 +113,6 @@ class HomeFragment : Fragment() {
             if (buttonViewModel.isRunning) {
                 stopVpn()
                 stopPulse()
-                updateIpAddress()
                 buttonViewModel.isRunning = false
             } else {
                 if (country == null) {
@@ -213,6 +212,10 @@ class HomeFragment : Fragment() {
     fun stopPulse() {
         handlerAnimation.removeCallbacks(runnable)
     }
+
+
+
+
 
     // xử lí vpn
     private fun preferenceVPNDetail() {
@@ -373,6 +376,9 @@ class HomeFragment : Fragment() {
     fun status(state: String) {
         if(state == "noconnect") {
             binding.button.text = "Connect"
+            if(!buttonViewModel.isRunning) {
+                updateIpAddress()
+            }
         }
         else if (state == "connecting") {
             if(!buttonViewModel.isRunning) {
@@ -386,6 +392,7 @@ class HomeFragment : Fragment() {
         }
         else if (state == "retry") {
             binding.button.text = "Retry"
+            updateIpAddress()
         }
         else if (state == "connected") {
             binding.button.text = "Disconnect"
@@ -457,6 +464,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             var ip = getMyPublicIpAsync().await()
             binding.ipaddress.text = ip
+            Log.d("ipaddress", ip)
         }
     }
     // Hiện quảng cáo
