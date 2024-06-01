@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
+import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
@@ -98,13 +99,10 @@ class HomeFragment : Fragment() {
         // Gán giá trị đầu cho vpn
         bindService()
         val stopPulseFilter = IntentFilter("com.example.app_vpn.STOP_PULSE")
-        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter)
+        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter,
+            RECEIVER_NOT_EXPORTED)
         // khai báo preference
         country = preferenceManager.getCountry()
-
-        // Gán giá trị cho 2 cái text ơ trang home
-        updateIpAddress()
-
 
         // hiện thông tin vpn trong bộ nhớ
         preferenceVPNDetail()
@@ -215,10 +213,6 @@ class HomeFragment : Fragment() {
     fun stopPulse() {
         handlerAnimation.removeCallbacks(runnable)
     }
-
-
-
-
 
     // xử lí vpn
     private fun preferenceVPNDetail() {
