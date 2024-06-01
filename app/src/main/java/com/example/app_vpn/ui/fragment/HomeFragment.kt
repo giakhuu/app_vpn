@@ -103,9 +103,6 @@ class HomeFragment : Fragment() {
         // khai báo preference
         country = preferenceManager.getCountry()
 
-        // Gán giá trị cho 2 cái text ơ trang home
-        updateIpAddress()
-
 
         // hiện thông tin vpn trong bộ nhớ
         preferenceVPNDetail()

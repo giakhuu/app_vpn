@@ -63,7 +63,7 @@ class AccountFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("my_tag", "on view create account fragemnt")
+        Log.d("account", "on view create account fragemnt")
         super.onViewCreated(view, savedInstanceState)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.swiperefresh) { v, insets ->
