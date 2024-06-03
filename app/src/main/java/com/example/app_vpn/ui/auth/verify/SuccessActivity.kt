@@ -2,12 +2,12 @@ package com.example.app_vpn.ui.auth.verify
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import com.example.app_vpn.databinding.ActivitySuccessBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.util.startNewActivity
 
-class SuccessActivity : AppCompatActivity() {
+class SuccessActivity : BaseActivity() {
     private lateinit var binding: ActivitySuccessBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

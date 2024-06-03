@@ -2,13 +2,13 @@ package com.example.app_vpn.ui.menu
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app_vpn.R
 import com.example.app_vpn.databinding.ActivityPrivatePolicyBinding
+import com.example.app_vpn.ui.BaseActivity
 
-class PrivatePolicyActivity : AppCompatActivity() {
+class PrivatePolicyActivity : BaseActivity() {
     private lateinit var binding: ActivityPrivatePolicyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,13 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app_vpn.R
 import com.example.app_vpn.databinding.ActivityContactBinding
+import com.example.app_vpn.ui.BaseActivity
 
-class ContactActivity : AppCompatActivity() {
+class ContactActivity : BaseActivity() {
 
     private lateinit var binding: ActivityContactBinding
     override fun onCreate(savedInstanceState: Bundle?) {

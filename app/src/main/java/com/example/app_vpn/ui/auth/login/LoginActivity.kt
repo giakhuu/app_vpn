@@ -1,19 +1,22 @@
 package com.example.app_vpn.ui.auth.login
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
+import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.databinding.ActivityLoginBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.MainActivity
 import com.example.app_vpn.ui.auth.resetpw.ForgotPasswordActivity
 import com.example.app_vpn.ui.auth.signup.SignUpActivity
@@ -27,20 +30,24 @@ import com.example.app_vpn.util.onLoad
 import com.example.app_vpn.util.setUp
 import com.example.app_vpn.util.startNewActivity
 import com.github.razir.progressbutton.bindProgressButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 
 const val TAG = "MYTAG_CHECK"
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private val authViewModel by viewModels<AuthViewModel>()
 
     private lateinit var binding : ActivityLoginBinding
+    private lateinit var preferenceManager: PreferenceManager
 
     private lateinit var btnSignIn : Button
+    private lateinit var switchLang: SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -53,6 +60,20 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        updateUI(this)
+
+        preferenceManager = PreferenceManager(this)
+
+        switchLang = binding.switchLang
+        switchLang.apply {
+            isChecked = preferenceManager.getLanguage() == "vi"
+            setOnCheckedChangeListener { _, isChecked ->
+                val newLanguage = if (isChecked) "vi" else "en"
+                preferenceManager.saveLanguage(newLanguage)
+                recreate()
+            }
+        }
+
 
         btnSignIn = binding.btnSignIn
         bindProgressButton(btnSignIn)
@@ -128,9 +149,24 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateUI(context: Context) {
+        binding.txtTitle.text = context.getString(R.string.login_to_your_account)
+        binding.txtUsername.hint = context.getString(R.string.enter_your_username)
+    }
+
     private fun logIn() {
         val username = binding.txtUsername.text.toString().trim()
         val password = binding.txtPassword.text.toString().trim()
         authViewModel.login(username, password)
+    }
+
+    private fun updateLocale(context: Context, language: String): Context {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+
+        return context.createConfigurationContext(config)
     }
 }

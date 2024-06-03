@@ -2,15 +2,15 @@ package com.example.app_vpn.ui.auth.resetpw
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app_vpn.R
 import com.example.app_vpn.databinding.ActivityResetPasswordSuccessBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.util.startNewActivity
 
-class ResetPasswordSuccessActivity : AppCompatActivity() {
+class ResetPasswordSuccessActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResetPasswordSuccessBinding
     override fun onCreate(savedInstanceState: Bundle?) {

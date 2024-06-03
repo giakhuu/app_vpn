@@ -11,13 +11,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.ActivityPaymentVipBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.ui.viewmodel.PaymentViewModel
 import com.example.app_vpn.util.getMyPublicIpAsync
@@ -34,7 +34,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 @AndroidEntryPoint
-class PaymentVipActivity : AppCompatActivity() {
+class PaymentVipActivity : BaseActivity() {
 
     private val paymentViewModel by viewModels<PaymentViewModel>()
     private lateinit var bundle: Bundle

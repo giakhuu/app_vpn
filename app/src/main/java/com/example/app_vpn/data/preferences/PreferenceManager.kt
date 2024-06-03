@@ -24,4 +24,13 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
         val json = sharedPreferences.getString("country", null) ?: return null
         return gson.fromJson(json, Country::class.java)
     }
+
+    fun saveLanguage(lang: String) {
+        editor.putString("language", lang)
+        editor.apply()
+    }
+
+    fun getLanguage(): String? {
+        return sharedPreferences.getString("language", null)
+    }
 }

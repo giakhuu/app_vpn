@@ -47,7 +47,6 @@ import de.blinkt.openvpn.api.IOpenVPNAPIService
 import de.blinkt.openvpn.api.IOpenVPNStatusCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
@@ -96,6 +95,8 @@ class HomeFragment : Fragment() {
             insets
         }
 
+        updateIpAddress()
+
         // Gán giá trị đầu cho vpn
         bindService()
         val stopPulseFilter = IntentFilter("com.example.app_vpn.STOP_PULSE")
@@ -112,8 +113,6 @@ class HomeFragment : Fragment() {
         binding.button.setOnClickListener {
             if (buttonViewModel.isRunning) {
                 stopVpn()
-                stopPulse()
-                buttonViewModel.isRunning = false
             } else {
                 if (country == null) {
                     Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
@@ -127,6 +126,7 @@ class HomeFragment : Fragment() {
 
         // Khôi phục trạng thái của nút khi Fragment được hiển thị lại
         if (buttonViewModel.isRunning) {
+            binding.countryName.text = country!!.name
             startPulse()
         } else {
             stopPulse()
@@ -297,11 +297,13 @@ class HomeFragment : Fragment() {
                     .setMessage(R.string.disconnect_alert)
                     .setPositiveButton("Ok") { _, _ ->
                         mService!!.disconnect()
+                        stopPulse()
+                        buttonViewModel.isRunning = false
+                        binding.countryName.text = getString(R.string.your_wifi)
                     }
                     .setNegativeButton("Cancel", null)
                     .show()
                     .setCancelable(false)
-                binding.countryName.text = getString(R.string.your_wifi)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -331,7 +333,7 @@ class HomeFragment : Fragment() {
 
             try {
                 // Request permission to use the API
-                val i = (mService as? IOpenVPNAPIService)?.prepare(activity!!.packageName)
+                val i = mService?.prepare(activity!!.packageName)
                 if (i != null) {
                     startActivityForResult(i, 7)
                 } else {
@@ -387,7 +389,7 @@ class HomeFragment : Fragment() {
             }
             else {
                 binding.countryName.text = country?.name
-                binding.button.text = "Connecting..."
+                binding.button.text = "Connecting  ..."
             }
         }
         else if (state == "retry") {
