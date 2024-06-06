@@ -79,7 +79,6 @@ class PaymentVipActivity : BaseActivity() {
         }
 
         binding.textView20.visible(false)
-        binding.txtPaymentUrl.visible(false)
 
         // Lưu hình ảnh
         binding.btnSaveImg.setOnClickListener {
@@ -87,7 +86,7 @@ class PaymentVipActivity : BaseActivity() {
             saveImage(bitmap, "qrpay.jpg")
         }
 
-        val text = getString(R.string.go_to_payment_page)
+        val text = getString(R.string.or_you_can_click_here)
 
         paymentViewModel.createPaymentResponse.observe(this) { response ->
             when (response) {
@@ -95,12 +94,11 @@ class PaymentVipActivity : BaseActivity() {
                     binding.txtCreatePaymentLoading.visible(false)
                     binding.btnSaveImg.visible(true)
                     val paymentUrl = response.value.data.paymentUrl
-                    binding.txtPaymentUrl.visible(true)
                     binding.textView20.visible(true)
                     val underlineText = SpannableString(text)
                     underlineText.setSpan(UnderlineSpan(), 0, text.length, 0)
-                    binding.txtPaymentUrl.text = underlineText
-                    binding.txtPaymentUrl.setOnClickListener {
+                    binding.textView20.text = underlineText
+                    binding.textView20.setOnClickListener {
                         val uri = Uri.parse(paymentUrl)
                         val intent = Intent(Intent.ACTION_VIEW, uri)
                         startActivity(intent)

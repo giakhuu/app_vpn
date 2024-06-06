@@ -152,4 +152,5 @@
     <string name="cn">Connect</string>
     <string name="on_cn">Connecting...</string>
     <string name="retry">Retry</string>
+    <string name="or_you_can_click_here">Or you can click here</string>
 </resources>

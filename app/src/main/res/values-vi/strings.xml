@@ -153,4 +153,5 @@
     <string name="cn">Kết nối</string>
     <string name="on_cn">Đang kết nối</string>
     <string name="retry">Kết nối lại</string>
+    <string name="or_you_can_click_here">Hoặc có thể nhấn vào đây</string>
 </resources>
