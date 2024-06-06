@@ -29,7 +29,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/txtStandardCountry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtVipCountry">
 
@@ -85,7 +85,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStandardCountry">
 
@@ -125,6 +125,7 @@
         android:text="Import File"
         android:id="@+id/importFileBtn"
         android:layout_marginHorizontal="10sp"
+        app:layout_constraintHeight_percent="0.1"
         android:textColor="@color/white"
         android:background="@drawable/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
