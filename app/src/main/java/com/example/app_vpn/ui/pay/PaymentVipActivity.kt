@@ -1,12 +1,16 @@
 package com.example.app_vpn.ui.pay
 
 import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.ActivityPaymentVipBinding
@@ -73,11 +78,16 @@ class PaymentVipActivity : BaseActivity() {
             insets
         }
 
+        binding.textView20.visible(false)
+        binding.txtPaymentUrl.visible(false)
+
         // Lưu hình ảnh
         binding.btnSaveImg.setOnClickListener {
             val bitmap: Bitmap = (binding.imgQrCode.drawable as BitmapDrawable).bitmap
             saveImage(bitmap, "qrpay.jpg")
         }
+
+        val text = getString(R.string.go_to_payment_page)
 
         paymentViewModel.createPaymentResponse.observe(this) { response ->
             when (response) {
@@ -85,6 +95,16 @@ class PaymentVipActivity : BaseActivity() {
                     binding.txtCreatePaymentLoading.visible(false)
                     binding.btnSaveImg.visible(true)
                     val paymentUrl = response.value.data.paymentUrl
+                    binding.txtPaymentUrl.visible(true)
+                    binding.textView20.visible(true)
+                    val underlineText = SpannableString(text)
+                    underlineText.setSpan(UnderlineSpan(), 0, text.length, 0)
+                    binding.txtPaymentUrl.text = underlineText
+                    binding.txtPaymentUrl.setOnClickListener {
+                        val uri = Uri.parse(paymentUrl)
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
+                    }
                     generateQRCode(paymentUrl)
                 }
 

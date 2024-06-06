@@ -141,4 +141,6 @@
     <string name="verify_error_2">Mã xác minh không hợp lệ</string>
     <string name="source_code">Mã nguồn</string>
     <string name="rate_us">Đánh giá</string>
+    <string name="go_to_payment_page">Đến trang thanh toán</string>
+    <string name="or_you_can_click_here">Hoặc có thể nhấn vào đây:</string>
 </resources>

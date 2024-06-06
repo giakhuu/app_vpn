@@ -14,9 +14,10 @@
         android:layout_height="227dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.244"
+        app:layout_constraintVertical_bias="0.202"
         app:srcCompat="@drawable/qr_payment" />
 
     <TextView
@@ -42,6 +43,7 @@
         android:paddingHorizontal="25dp"
         android:text="@string/create_payment_loading"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,13 +58,12 @@
         android:text="@string/payment_save_qr"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:visibility="gone"
         app:drawableStartCompat="@drawable/baseline_arrow_downward_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgQrCode"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.034" />
 
     <TextView
         android:id="@+id/textView12"
@@ -77,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSaveImg" />
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <TextView
         android:id="@+id/textView13"
@@ -122,4 +123,27 @@
         app:layout_constraintHorizontal_bias="0.838"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppin_medium"
+        android:gravity="center"
+        android:text="@string/or_you_can_click_here"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/btnSaveImg" />
+
+    <TextView
+        android:id="@+id/txtPaymentUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppin_medium"
+        android:text="@string/go_to_payment_page"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/textView20"
+        app:layout_constraintTop_toTopOf="@+id/textView20" />
 </androidx.constraintlayout.widget.ConstraintLayout>
