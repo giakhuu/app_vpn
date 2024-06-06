@@ -113,23 +113,26 @@ class HomeFragment : Fragment() {
         preferenceVPNDetail()
 
         // xử lí bấm nút kết nối
-        Log.d("buttonViewModel", buttonViewModel.isRunning.toString())
         binding.button.setOnClickListener {
-            if (buttonViewModel.isRunning) {
-                stopVpn()
-            } else {
-                if (country == null) {
-                    Toast.makeText(requireContext(), "Hãy chọn vpn", Toast.LENGTH_LONG).show()
-                    return@setOnClickListener
+            Log.d("buttonViewModel", "${buttonViewModel.isRunning}  ${preferenceManager.getStatus()}")
+
+            when (preferenceManager.getStatus()) {
+                "CONNECTED" -> stopVpn()
+                "USERPAUSE" -> resumeVpn()
+                else -> {
+                    if (country == null) {
+                        Toast.makeText(requireContext(), "Hãy chọn VPN", Toast.LENGTH_LONG).show()
+                    } else {
+                        startVpn()
+                        startPulse()
+                        buttonViewModel.isRunning = true
+                    }
                 }
-                startVpn()
-                startPulse()
-                buttonViewModel.isRunning = true
             }
         }
 
         // Khôi phục trạng thái của nút khi Fragment được hiển thị lại
-        if (buttonViewModel.isRunning) {
+        if (preferenceManager.getStatus() == "CONNECTED") {
             binding.countryName.text = country!!.name
             startPulse()
         } else {
@@ -328,6 +331,15 @@ class HomeFragment : Fragment() {
         }
     }
 
+    fun resumeVpn() {
+        try {
+            mService!!.resume()
+            status("connected")
+        } catch (e: RemoteException) {
+            e.printStackTrace()
+        }
+    }
+
     private fun bindService() {
         val icsopenvpnService = Intent(IOpenVPNAPIService::class.java.name)
 
@@ -394,19 +406,13 @@ class HomeFragment : Fragment() {
     fun status(state: String) {
         if(state == "noconnect") {
             binding.button.text = "Connect"
-            if(!buttonViewModel.isRunning) {
-                updateIpAddress()
-            }
+            updateIpAddress()
+            stopPulse()
         }
         else if (state == "connecting") {
-            if(!buttonViewModel.isRunning) {
-                binding.button.text = "Connect"
-                mService!!.disconnect()
-            }
-            else {
-                binding.countryName.text = country?.name
-                binding.button.text = "Connecting  ..."
-            }
+            startPulse()
+            binding.countryName.text = country?.name
+            binding.button.text = "Connecting  ..."
         }
         else if (state == "retry") {
             binding.button.text = "Retry"
@@ -417,19 +423,23 @@ class HomeFragment : Fragment() {
             showInterstitial()
             updateIpAddress()
         }
+        else if(state == "pause") {
+            binding.button.text = "Resume"
+            updateIpAddress()
+            stopPulse()
+            buttonViewModel.isRunning = false
+        }
     }
     fun statusHandler(connectionState: String) {
         requireActivity().runOnUiThread {
             when (connectionState) {
                 "NOPROCESS" -> {
-                    if(buttonViewModel.isRunning) {
-                        binding.textView6.text = "Wait a moment..."
-                        status("connecting")
-                    }
-                    else {
                         binding.textView6.text = "Not Connected"
                         status("noconnect")
-                    }
+                }
+                "USERPAUSE" -> {
+                    binding.textView6.text = "Pause"
+                    status("pause")
                 }
                 "CONNECTED" -> {
                     binding.textView6.text = "Connect successfully"
@@ -499,6 +509,7 @@ class HomeFragment : Fragment() {
         @Throws(RemoteException::class)
         override fun newStatus(uuid: String, state: String, message: String, level: String) {
             Log.d("VPNStatus", state)
+            preferenceManager.saveStatus(state)
             statusHandler(state)
         }
     }
