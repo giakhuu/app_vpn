@@ -21,6 +21,7 @@ import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.databinding.FragmentCountryBinding
 import com.example.app_vpn.ui.custom.CustomArrayCountryAdapter
 import com.example.app_vpn.ui.viewmodel.CountryViewModel
+import com.example.app_vpn.util.enable
 import com.example.app_vpn.util.handleApiError
 import com.example.app_vpn.util.visible
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -71,6 +72,7 @@ class CountryFragment : Fragment() {
         shimmerPremium = view.findViewById(R.id.shimmerPremiumCountry)
         lvPremium = view.findViewById(R.id.lvPremiumCountry)
         lvStandard = view.findViewById(R.id.lvStandardCountry)
+        binding.importFileBtn.enable(false)
 
         if (!isDataLoaded) {
             countryViewModel.getAllCountry()
@@ -87,6 +89,7 @@ class CountryFragment : Fragment() {
                         stopShimmer()
                         visible(false)
                     }
+                    binding.importFileBtn.enable(true)
                     val allCountry = response.value.data
                     updateCountryUI(allCountry)
                     isDataLoaded = true

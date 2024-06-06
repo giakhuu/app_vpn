@@ -81,7 +81,7 @@ class CustomArrayCountryAdapter(
         }
 
         // Thiết lập sự kiện khi RadioButton được nhấn
-        radioButton.setOnClickListener {
+        val onClickListener = View.OnClickListener {
             // Cập nhật checkedPosition khi RadioButton được chọn
             notifyDataSetChanged()
 
@@ -98,10 +98,12 @@ class CustomArrayCountryAdapter(
             }
         }
 
+        rowView.setOnClickListener(onClickListener)
+        radioButton.setOnClickListener(onClickListener)
+
         // Thiết lập trạng thái của RadioButton dựa trên checkedPosition
         radioButton.isChecked = position == checkedPosition
 
         return rowView
     }
-
 }
