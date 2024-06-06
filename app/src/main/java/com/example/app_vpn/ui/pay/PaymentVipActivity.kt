@@ -79,6 +79,7 @@ class PaymentVipActivity : BaseActivity() {
         }
 
         binding.textView20.visible(false)
+        binding.btnSaveImg.visible(false)
 
         // Lưu hình ảnh
         binding.btnSaveImg.setOnClickListener {

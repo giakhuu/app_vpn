@@ -8,6 +8,7 @@ import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -168,7 +169,9 @@ class HomeFragment : Fragment() {
             navigationView.setNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.source_code -> {
-                        requireActivity().toast("Bank anh 500 thì anh suy nghĩ")
+                        val uri = Uri.parse("https://github.com/giakhuu/app_vpn.git")
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
                         true
                     }
 
