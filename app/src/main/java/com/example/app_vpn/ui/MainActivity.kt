@@ -1,11 +1,10 @@
 package com.example.app_vpn.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -19,6 +18,7 @@ import com.example.app_vpn.ui.fragment.AD_UNIT_ID
 import com.example.app_vpn.ui.fragment.AccountFragment
 import com.example.app_vpn.ui.fragment.CountryFragment
 import com.example.app_vpn.ui.fragment.HomeFragment
+import com.example.app_vpn.ui.viewmodel.UserViewModel
 import com.example.app_vpn.util.GoogleMobileAdsConsentManager
 import com.example.app_vpn.util.startNewActivity
 import com.google.android.gms.ads.AdError
@@ -30,6 +30,8 @@ import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -45,6 +47,7 @@ class MainActivity : BaseActivity() {
     private lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
 
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)
+    val userViewModel by viewModels<UserViewModel>()
     private var interstitialAd: InterstitialAd? = null
     private var adIsLoading: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +56,6 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
-
-        val windowManager = (getSystemService(Context.WINDOW_SERVICE) as WindowManager)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_drawer_layout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -88,7 +89,7 @@ class MainActivity : BaseActivity() {
     }
 
     // Thay đổi fragment
-    private fun makeCurrentFragment(fragment: Fragment){
+    private fun makeCurrentFragment(fragment: Fragment) {
         Log.d("my_fragment", fragment.toString())
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_wrapper, fragment)
@@ -103,9 +104,12 @@ class MainActivity : BaseActivity() {
 
     private fun setUpAds(showAds: Boolean) {
         googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(this)
-        googleMobileAdsConsentManager.gatherConsent(this) {consentError ->
+        googleMobileAdsConsentManager.gatherConsent(this) { consentError ->
             if (consentError != null) {
-                Log.w(TAG + "consent error", "consent error: ${consentError.errorCode}: ${consentError.message}")
+                Log.w(
+                    TAG + "consent error",
+                    "consent error: ${consentError.errorCode}: ${consentError.message}"
+                )
             }
 
             if (googleMobileAdsConsentManager.canRequestAds && showAds) {
@@ -123,7 +127,8 @@ class MainActivity : BaseActivity() {
         }
 
         MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder().setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR)).build()
+            RequestConfiguration.Builder().setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
+                .build()
         )
     }
 
@@ -156,7 +161,6 @@ class MainActivity : BaseActivity() {
         }
 
         interstitialAd?.show(this)
-
     }
 
     private fun loadAd() {
@@ -209,6 +213,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    fun fetchData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val accessToken = userPreference.getAccessTokenAsString()
+            userViewModel.fetchData(accessToken!!)
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -23,6 +23,7 @@ import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentAccountBinding
+import com.example.app_vpn.ui.MainActivity
 import com.example.app_vpn.ui.viewmodel.UserViewModel
 import com.example.app_vpn.util.JwtUtils
 import com.example.app_vpn.util.handleApiError
@@ -37,8 +38,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -51,6 +50,8 @@ class AccountFragment : Fragment() {
     lateinit var userPreference: UserPreference
     private lateinit var preferenceManager: PreferenceManager
 
+    private var isDataLoaded = false
+
     private val userViewModel by viewModels<UserViewModel>()
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -60,6 +61,7 @@ class AccountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("my_tag_Account", "on create view")
         binding = FragmentAccountBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -78,15 +80,21 @@ class AccountFragment : Fragment() {
 
         swipeRefreshLayout = binding.swiperefresh
 
-        fetchData()
+        val mainActivity = activity as MainActivity
 
-        swipeRefreshLayout.setOnRefreshListener {
-            refreshData()
+        if (!isDataLoaded) {
+            mainActivity.fetchData()
         }
 
-        userViewModel.user.observe(viewLifecycleOwner) {
+        swipeRefreshLayout.setOnRefreshListener {
+            mainActivity.fetchData()
+            binding.swiperefresh.isRefreshing = false
+        }
+
+        mainActivity.userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
+                    isDataLoaded = true
                     updateUI(it.value.data)
                 }
 
@@ -101,8 +109,10 @@ class AccountFragment : Fragment() {
         }
 
         binding.btnChangePassword.setOnClickListener {
-            val dialog = BottomSheetDialog(requireContext()) // Sử dụng requireContext() thay vì this
-            val viewBottomSheetDialog = layoutInflater.inflate(R.layout.dialog_change_password, null)
+            val dialog =
+                BottomSheetDialog(requireContext()) // Sử dụng requireContext() thay vì this
+            val viewBottomSheetDialog =
+                layoutInflater.inflate(R.layout.dialog_change_password, null)
             dialog.setCancelable(true)
             dialog.setContentView(viewBottomSheetDialog)
             dialog.show()
@@ -111,9 +121,12 @@ class AccountFragment : Fragment() {
             bindProgressButton(btnChangePw)
             btnChangePw.setUp()
 
-            val txtCurrentPassword = viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtCurrentPassword)
-            val txtNewPassword = viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtNewPassword)
-            val iplyNewPassword = viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyNewPassword)
+            val txtCurrentPassword =
+                viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtCurrentPassword)
+            val txtNewPassword =
+                viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtNewPassword)
+            val iplyNewPassword =
+                viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyNewPassword)
 
             iplyNewPassword.isValid(
                 txtNewPassword,
@@ -142,20 +155,31 @@ class AccountFragment : Fragment() {
                                 dialog.dismiss()
                                 showChangePwSuccessDialog(requireContext())
                             }
+
                             false -> {
-                                viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyCurrentPassword).apply {
-                                    if (responseValue.message.contains("Incorrect")) {
-                                        helperText = context.getString(R.string.incorrect_password)
+                                viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyCurrentPassword)
+                                    .apply {
+                                        if (responseValue.message.contains("Incorrect")) {
+                                            helperText =
+                                                context.getString(R.string.incorrect_password)
+                                        }
+                                        setHelperTextColor(
+                                            ColorStateList.valueOf(
+                                                resources.getColor(
+                                                    R.color.red
+                                                )
+                                            )
+                                        )
                                     }
-                                    setHelperTextColor(ColorStateList.valueOf(resources.getColor(R.color.red)))
-                                }
                             }
                         }
                     }
+
                     is Resource.Failure -> {
                         requireActivity().handleApiError(it)
                         dialog.dismiss()
                     }
+
                     is Resource.Loading -> {
                         btnChangePw.onLoad()
                     }
@@ -204,21 +228,6 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun refreshData() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val accessToken = userPreference.getAccessTokenAsString()
-            userViewModel.fetchData(accessToken!!)
-        }
-        binding.swiperefresh.isRefreshing = false
-    }
-
-    private fun fetchData() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val accessToken = userPreference.getAccessTokenAsString()
-            userViewModel.fetchData(accessToken!!)
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     private fun updateUI(user: User) {
         val premiumType = jwtUtils.extractPremiumType(user.premiumKey)
@@ -230,8 +239,7 @@ class AccountFragment : Fragment() {
 
             else -> {
                 binding.txtPremiumType.text = "Premium"
-                binding.txtExpireDate.text =
-                    " Expire Date: ${jwtUtils.extractExpirationDate(user.premiumKey)}"
+                binding.txtExpireDate.text = "${jwtUtils.extractExpirationDate(user.premiumKey)}"
             }
         }
         binding.txtUsername.text = user.username

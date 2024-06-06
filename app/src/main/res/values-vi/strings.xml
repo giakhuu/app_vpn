@@ -110,7 +110,7 @@
     <string name="sample_email">hello123@gmail.com</string>
     <string name="verification_not_recive_email">Chưa nhận được OTP</string>
     <string name="resend">Gửi lại</string>
-    <string name="change_password_title">Thường xuyên thay đổi mật khẩu dể nâng cao bảo mật</string>
+    <string name="change_password_title">Thường xuyên thay đổi mật khẩu\n để nâng cao bảo mật</string>
     <string name="current_password">Mật khẩu hiện tại</string>
     <string name="enter_current_password">Nhập mật khẩu hiện tại</string>
     <string name="new_password">Mật khẩu mới</string>

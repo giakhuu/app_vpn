@@ -9,10 +9,10 @@
 
     <!-- VIP Country Section -->
     <TextView
-        android:fontFamily="@font/poppin_medium"
         android:id="@+id/txtVipCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppin_medium"
         android:gravity="center"
         android:padding="20dp"
         android:text="Premium Countries"
@@ -65,10 +65,10 @@
 
     <!-- Standard Country Section -->
     <TextView
-        android:fontFamily="@font/poppin_medium"
         android:id="@+id/txtStandardCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppin_medium"
         android:gravity="center"
         android:padding="20dp"
         android:text="Standard Countries"
@@ -76,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shimmerPremiumCountry" />
+        app:layout_constraintTop_toBottomOf="@+id/lvPremiumCountry" />
 
     <!-- Shimmer Layout for Standard Country List -->
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -120,14 +120,15 @@
         app:layout_constraintTop_toBottomOf="@+id/txtStandardCountry" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Import File"
         android:id="@+id/importFileBtn"
         android:layout_marginHorizontal="10sp"
-        app:layout_constraintHeight_percent="0.1"
-        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_button"
+        android:fontFamily="@font/poppin_medium"
+        android:text="Import File"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shimmerStandardCountry"/>
+        app:layout_constraintHeight_percent="0.1"
+        tools:layout_editor_absoluteX="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

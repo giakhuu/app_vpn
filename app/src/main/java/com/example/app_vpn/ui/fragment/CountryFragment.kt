@@ -19,7 +19,6 @@ import com.example.app_vpn.data.entities.Country
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.databinding.FragmentCountryBinding
-import com.example.app_vpn.databinding.FragmentHomeBinding
 import com.example.app_vpn.ui.custom.CustomArrayCountryAdapter
 import com.example.app_vpn.ui.viewmodel.CountryViewModel
 import com.example.app_vpn.util.handleApiError
@@ -27,8 +26,6 @@ import com.example.app_vpn.util.visible
 import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
-import java.io.File
-import java.io.FileInputStream
 import java.io.InputStreamReader
 
 @AndroidEntryPoint
@@ -48,12 +45,20 @@ class CountryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCountryBinding.inflate(inflater, container, false)
         val view = binding.root
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val currentPaddingLeft = ViewCompat.getPaddingStart(v)
+            val currentPaddingRight = ViewCompat.getPaddingEnd(v)
+            val currentPaddingBottom = v.paddingBottom
+            v.setPadding(
+                currentPaddingLeft,
+                systemBars.top,
+                currentPaddingRight,
+                currentPaddingBottom
+            )
             insets
         }
         return view
