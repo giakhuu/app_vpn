@@ -59,7 +59,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/txtStandardCountry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtVipCountry" />
 
@@ -115,8 +115,18 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStandardCountry" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Import File"
+        android:id="@+id/importFileBtn"
+        android:layout_marginHorizontal="10sp"
+        android:textColor="@color/white"
+        android:background="@drawable/custom_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shimmerStandardCountry"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

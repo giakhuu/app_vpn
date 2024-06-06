@@ -225,7 +225,9 @@ class HomeFragment : Fragment() {
     private fun preferenceVPNDetail() {
         if(country != null) {
             binding.preferenceVpnCountryName.text = country!!.name
-            Picasso.get().load(country!!.flag).into(binding.flagImg)
+            if(country!!.flag != "None") {
+                Picasso.get().load(country!!.flag).into(binding.flagImg)
+            }
             if (country!!.premium) {
                 binding.preferenceVpnName.text = country!!.vpnName
                 binding.preferenceVpnPassword.text = country!!.vpnPassword
@@ -281,14 +283,24 @@ class HomeFragment : Fragment() {
                 )
             }
 
-            if (firebaseHandler.isUserLoggedIn()) {
-                downloadAndConnect()
-            } else {
-                firebaseHandler.signIn("giakhuu18112004@gmail.com", "gia18112004", {
+
+            // check country là external hay từ fire base
+            if(country!!.id == 0 && country!!.name == "Your country") {
+                val profile = mService!!.addNewVPNProfile(country!!.name, false, country!!.config)
+                mService!!.startProfile(profile.mUUID)
+                Log.d("stop vpn", "startVpn: ")
+                mService!!.startVPN(country!!.config)
+            }
+            else {
+                if (firebaseHandler.isUserLoggedIn()) {
                     downloadAndConnect()
-                }, { exception ->
-                    println("Sign-in failed: ${exception.message}")
-                })
+                } else {
+                    firebaseHandler.signIn("giakhuu18112004@gmail.com", "gia18112004", {
+                        downloadAndConnect()
+                    }, { exception ->
+                        println("Sign-in failed: ${exception.message}")
+                    })
+                }
             }
         }
     }
