@@ -141,4 +141,16 @@
     <string name="verify_error_2">Mã xác minh không hợp lệ</string>
     <string name="source_code">Mã nguồn</string>
     <string name="rate_us">Đánh giá</string>
+    <string name="not_cn">Chưa kết nối</string>
+    <string name="disco">Ngưng</string>
+    <string name="authe">Xác thực...</string>
+    <string name="exvpn">Thoát</string>
+    <string name="res_vpn">Kết nối lại</string>
+    <string name="pause_vpn">Ngưng</string>
+    <string name="cn_suc">Kết nối thành công</string>
+    <string name="au_failed">Xác thực thất bại</string>
+    <string name="wam">Đợi tí</string>
+    <string name="cn">Kết nối</string>
+    <string name="on_cn">Đang kết nối</string>
+    <string name="retry">Kết nối lại</string>
 </resources>

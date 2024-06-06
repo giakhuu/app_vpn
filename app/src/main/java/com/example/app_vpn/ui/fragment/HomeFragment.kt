@@ -111,6 +111,7 @@ class HomeFragment : Fragment() {
 
         // hiện thông tin vpn trong bộ nhớ
         preferenceVPNDetail()
+        Log.d("buttonViewModel", "${buttonViewModel.isRunning}  ${preferenceManager.getStatus()}")
 
         // xử lí bấm nút kết nối
         binding.button.setOnClickListener {
@@ -123,9 +124,15 @@ class HomeFragment : Fragment() {
                     if (country == null) {
                         Toast.makeText(requireContext(), "Hãy chọn VPN", Toast.LENGTH_LONG).show()
                     } else {
-                        startVpn()
-                        startPulse()
-                        buttonViewModel.isRunning = true
+                        if (buttonViewModel.isRunning) {
+                            stopPulse()
+                            stopVpn()
+                        }
+                        else {
+                            startVpn()
+                            startPulse()
+                            buttonViewModel.isRunning = true
+                        }
                     }
                 }
             }
@@ -133,6 +140,7 @@ class HomeFragment : Fragment() {
 
         // Khôi phục trạng thái của nút khi Fragment được hiển thị lại
         if (preferenceManager.getStatus() == "CONNECTED") {
+            status("connected")
             binding.countryName.text = country!!.name
             startPulse()
         } else {
@@ -319,6 +327,7 @@ class HomeFragment : Fragment() {
                         stopPulse()
                         buttonViewModel.isRunning = false
                         binding.countryName.text = getString(R.string.your_wifi)
+                        preferenceManager.saveStatus("NOPROCESS")
                     }
                     .setNegativeButton("Cancel", null)
                     .show()
@@ -405,26 +414,26 @@ class HomeFragment : Fragment() {
     // cập nhật state
     fun status(state: String) {
         if(state == "noconnect") {
-            binding.button.text = "Connect"
+            binding.button.text = getString(R.string.cn)
             updateIpAddress()
             stopPulse()
         }
         else if (state == "connecting") {
             startPulse()
             binding.countryName.text = country?.name
-            binding.button.text = "Connecting  ..."
+            binding.button.text = getString(R.string.on_cn)
         }
         else if (state == "retry") {
-            binding.button.text = "Retry"
+            binding.button.text = getString(R.string.retry)
             updateIpAddress()
         }
         else if (state == "connected") {
-            binding.button.text = "Disconnect"
+            binding.button.text = getString(R.string.disco)
             showInterstitial()
             updateIpAddress()
         }
         else if(state == "pause") {
-            binding.button.text = "Resume"
+            binding.button.text = getString(R.string.res_vpn)
             updateIpAddress()
             stopPulse()
             buttonViewModel.isRunning = false
@@ -434,25 +443,25 @@ class HomeFragment : Fragment() {
         requireActivity().runOnUiThread {
             when (connectionState) {
                 "NOPROCESS" -> {
-                        binding.textView6.text = "Not Connected"
-                        status("noconnect")
+                    binding.textView6.text = getString(R.string.not_cn)
+                    status("noconnect")
                 }
                 "USERPAUSE" -> {
-                    binding.textView6.text = "Pause"
+                    binding.textView6.text = getString(R.string.pause_vpn)
                     status("pause")
                 }
                 "CONNECTED" -> {
-                    binding.textView6.text = "Connect successfully"
+                    binding.textView6.text = getString(R.string.cn_suc)
                     status("connected")
                 }
 
                 "WAIT" -> {
-                    binding.textView6.text = "Wait a moment..."
+                    binding.textView6.text = getString(R.string.wam)
                     status("connecting")
                 }
 
                 "AUTH" -> {
-                    binding.textView6.text = "Authenticating..."
+                    binding.textView6.text = getString(R.string.authe)
                     status("connecting")
                 }
 
@@ -467,17 +476,14 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-                "USER_VPN_PASSWORD_CANCELLED" -> {
-                    Log.d("test", "statusHandler: ")
-                }
 
                 "AUTH_FAILED" -> {
-                    binding.textView6.text = "Authentication failed"
+                    binding.textView6.text = getString(R.string.au_failed)
                     status("retry")
                 }
 
                 "EXITING" -> {
-                    binding.textView6.text = "Exiting"
+                    binding.textView6.text = getString(R.string.exvpn)
                     binding.countryName.text = getString(R.string.your_wifi)
                     buttonViewModel.isRunning = false
                     stopPulse()

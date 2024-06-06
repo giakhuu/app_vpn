@@ -140,4 +140,16 @@
     <string name="verify_error_2">Invalid verification code</string>
     <string name="source_code">Source Code</string>
     <string name="rate_us">Rate us</string>
+    <string name="not_cn">Not connected</string>
+    <string name="disco">Disconnect</string>
+    <string name="authe">Authenticating...</string>
+    <string name="exvpn">Exiting</string>
+    <string name="res_vpn">Resume</string>
+    <string name="pause_vpn">Pause</string>
+    <string name="cn_suc">Connect Successfully</string>
+    <string name="au_failed">Authentication failed</string>
+    <string name="wam">Wait a moment</string>
+    <string name="cn">Connect</string>
+    <string name="on_cn">Connecting...</string>
+    <string name="retry">Retry</string>
 </resources>
