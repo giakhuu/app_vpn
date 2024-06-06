@@ -1,5 +1,4 @@
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swiperefresh"
@@ -23,8 +22,8 @@
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppin_semibold"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppin_semibold"
             android:text="@string/my_account"
             android:textColor="@color/primaryColorVPN"
             android:textFontWeight="900"
@@ -34,11 +33,11 @@
             app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
         <androidx.cardview.widget.CardView
-            android:layout_marginTop="20dp"
             android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30sp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="30sp"
             android:orientation="vertical"
             app:cardBackgroundColor="@color/primaryColorVPN"
@@ -184,10 +183,10 @@
                         android:text="@string/type" />
 
                     <TextView
-                        android:fontFamily="@font/poppin_medium"
                         android:id="@+id/txtPremiumType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/loading"
                         android:textColor="@color/primaryColorVPN" />
                 </LinearLayout>
@@ -207,10 +206,10 @@
                         android:text="@string/expire_date" />
 
                     <TextView
-                        android:fontFamily="@font/poppin_medium"
                         android:id="@+id/txtExpireDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppin_medium"
                         android:text="@string/loading"
                         android:textColor="@color/primaryColorVPN" />
                 </LinearLayout>
@@ -234,23 +233,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:visibility="gone"
             android:id="@+id/btnDeleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/custom_button"
-            android:layout_marginRight="30sp"
             android:layout_marginLeft="30sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30sp"
+            android:background="@drawable/custom_button"
             android:fontFamily="@font/urbanist_semibold"
             android:text="Delete account"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/cardView3"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

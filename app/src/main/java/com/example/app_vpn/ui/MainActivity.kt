@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -36,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private val TAG = "my_tag"
 
     @Inject
@@ -90,6 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     // Thay đổi fragment
     private fun makeCurrentFragment(fragment: Fragment){
+        Log.d("my_fragment", fragment.toString())
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_wrapper, fragment)
             commit()

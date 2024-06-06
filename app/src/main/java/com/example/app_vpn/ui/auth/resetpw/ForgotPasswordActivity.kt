@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivityForgotPasswordBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.auth.verify.VerificationActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.ui.viewmodel.MailViewModel
@@ -25,7 +25,7 @@ import com.example.app_vpn.util.setUp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ForgotPasswordActivity : AppCompatActivity() {
+class ForgotPasswordActivity : BaseActivity() {
 
     private lateinit var binding: ActivityForgotPasswordBinding
 

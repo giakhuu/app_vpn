@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivityResetPasswordBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.viewmodel.UserViewModel
 import com.example.app_vpn.util.handleApiError
 import com.example.app_vpn.util.isValid
@@ -21,7 +21,7 @@ import com.example.app_vpn.util.startNewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ResetPasswordActivity : AppCompatActivity() {
+class ResetPasswordActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var btnResetPassword: Button

@@ -6,13 +6,13 @@ import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.app_vpn.R
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.databinding.ActivitySignUpBinding
+import com.example.app_vpn.ui.BaseActivity
 import com.example.app_vpn.ui.auth.login.LoginActivity
 import com.example.app_vpn.ui.auth.verify.VerificationActivity
 import com.example.app_vpn.ui.viewmodel.AuthViewModel
@@ -32,7 +32,7 @@ import com.github.razir.progressbutton.bindProgressButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
     private val mailViewModel by viewModels<MailViewModel>()

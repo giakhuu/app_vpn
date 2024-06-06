@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.app_vpn.R
 import com.example.app_vpn.data.entities.User
 import com.example.app_vpn.data.network.Resource
+import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentAccountBinding
 import com.example.app_vpn.ui.viewmodel.UserViewModel
@@ -48,6 +49,7 @@ class AccountFragment : Fragment() {
 
     @Inject
     lateinit var userPreference: UserPreference
+    private lateinit var preferenceManager: PreferenceManager
 
     private val userViewModel by viewModels<UserViewModel>()
 
@@ -71,6 +73,8 @@ class AccountFragment : Fragment() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        preferenceManager = PreferenceManager(requireContext())
 
         swipeRefreshLayout = binding.swiperefresh
 
