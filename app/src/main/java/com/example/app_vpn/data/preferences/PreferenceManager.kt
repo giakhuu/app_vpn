@@ -33,4 +33,13 @@ class PreferenceManager @Inject constructor(@ApplicationContext context: Context
     fun getLanguage(): String? {
         return sharedPreferences.getString("language", null)
     }
+
+    fun saveStatus(status: String) {
+        editor.putString("status", status)
+        editor.apply()
+    }
+
+    fun getStatus(): String? {
+        return sharedPreferences.getString("status", null)
+    }
 }
