@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
+import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
@@ -16,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -87,6 +90,7 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -99,7 +103,7 @@ class HomeFragment : Fragment() {
         // Gán giá trị đầu cho vpn
         bindService()
         val stopPulseFilter = IntentFilter("com.example.app_vpn.STOP_PULSE")
-        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter)
+        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter, RECEIVER_NOT_EXPORTED)
         // khai báo preference
         country = preferenceManager.getCountry()
 
