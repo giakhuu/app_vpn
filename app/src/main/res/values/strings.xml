@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Apex VPN</string>
     <string name="login_to_your_account">Login To Your Account</string>
+    <string name="login_success">Login Successfully</string>
+    <string name="login_failed_session_not_found">Login failed: No session found</string>
     <string name="enter_your_username">Enter your username</string>
     <string name="enter_your_password">Enter your password</string>
     <!-- Strings used for fragments for navigation -->
@@ -11,6 +13,7 @@
     <string name="loading">Loading…</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+    <string name="sign_up_w_google">Sign up with google</string>
     <string name="state">NONE</string>
 
     <string name="lorem_ipsum">
@@ -70,8 +73,9 @@
     <string name="enter_new_password">Enter new password</string>
     <string name="passwordConfirmValidateError">Password does not match</string>
     <string name="reset_password">Reset Password</string>
+    <string name="email_not_confirmed">Email Not Confirmed</string>
 
-<!--    VPN THING -->
+    <!--    VPN THING -->
     <string name="connect_to">Connect to: </string>
     <string name="your_wifi">Your Wifi</string>
     <string name="not_connected">Not Connected</string>
@@ -88,9 +92,13 @@
     <string name="enter_your_email">Enter your email</string>
 
     <!--    Get premium-->
+    <string name="premium">Premium</string>
+    <string name="non_premium">Free</string>
+    <string name="unlimited">Unlimited</string>
     <string name="get_premium">Get Premium</string>
     <string name="get_premium_select_sub">Select Your Subscription</string>
     <string name="get_premium_btn">Get Premium and Enjoying</string>
+    <string name="payment_success">Payment successfully, login again to achieve premium</string>
     <string name="login_no_acc">Don’t have an account?</string>
     <string name="payment_title">Scan To Pay</string>
     <string name="payment_instruction">Instruction</string>
@@ -107,11 +115,11 @@
     <string name="verification">Verification</string>
     <string name="verification_title">Code has sent to</string>
     <string name="sample_email">hello123@gmail.com</string>
-    <string name="verification_not_recive_email">Haven\'t recived the verification code?</string>
+    <string name="confirm_email_send">A confirmation email has been sent to you. Please verify it.</string>
     <string name="resend">Resend</string>
     <string name="change_password_title">Regularly changing passwords boosts security</string>
-    <string name="current_password">Current Password</string>
-    <string name="enter_current_password">Enter current password</string>
+    <string name="new_password_confirm">New Password Confirm</string>
+    <string name="enter_new_password_confirm">Enter new password again</string>
     <string name="new_password">New Password</string>
     <string name="wanna_logout">Do you want to logout?</string>
     <string name="no">No</string>
@@ -132,7 +140,7 @@
     <string name="account">Account</string>
     <string name="username_already_taken">Username is already taken</string>
     <string name="email_already_taken">Email is already taken</string>
-    <string name="incorrect_password">Incorrect password</string>
+    <string name="email_login_failed">Incorrect login information</string>
     <string name="password_change_success">Change password successful</string>
     <string name="user_doesn_t_exist">User doesn\'t exist</string>
     <string name="create_payment_loading">Please wait a moment while we create\nthe payment QR code for you</string>
@@ -153,4 +161,8 @@
     <string name="on_cn">Connecting...</string>
     <string name="retry">Retry</string>
     <string name="or_you_can_click_here">Or you can click here</string>
+    <string name="vpn_server">VPN Servers</string>
+
+    <string name="google_web_client_id">16756964301-8hjukq7lns71u67rf18o3uen654cd0vg.apps.googleusercontent.com</string>
+    <string name="unknow_error">Unknow Error</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.example.app_vpn.data.entities
 
 data class Subscription(
-    val number: Int,
-    val duration: String,
-    val price : String,
-    var selected: Boolean = false
+    val id: Int,
+    val duration: Int,
+    val price : Int,
+    val description: String,
+    var isSelected: Boolean
 )

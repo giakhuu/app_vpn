@@ -1,37 +1,37 @@
 package com.example.app_vpn.data.network.api
 
-import com.example.app_vpn.data.entities.User
-import com.example.app_vpn.data.repsonses.DataResponse
-import com.example.app_vpn.data.repsonses.OtherResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import com.example.app_vpn.data.entities.PremiumStatus
+import com.example.app_vpn.util.API_KEY
+import com.example.app_vpn.util.SECRET_KEY
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Headers
+import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
+
 
 interface UserApi {
-    @GET("user/detail")
-    suspend fun fetchData(
-        @Header("Authorization") accessToken: String
-    ): DataResponse<User>
-
-    @FormUrlEncoded
-    @POST("user/changepw")
-    suspend fun changePassword(
+    @GET("userPremium")
+    suspend fun getPremiumUserByUuid(
         @Header("Authorization") accessToken: String,
-        @Field(value = "oldPassword") oldPassword: String,
-        @Field(value = "newPassword") newPassword: String,
-    ): DataResponse<User>
+        @retrofit2.http.Query("uuid") uuid: String
+    ): Response<List<PremiumStatus>>
+}
 
-    suspend fun delete(
-        @Header("Authorization") accessToken: String
-    ) : OtherResponse
+interface UserServiceApi {
+    @POST("userPremium")
+    suspend fun addPremiumUser(
+        @Body userPremiumStatus: PremiumStatus,
+        @Header("Authorization") accessToken: String = "Bearer $SECRET_KEY"
+    ) : Response<String>
 
-    @FormUrlEncoded
-    @PUT("user/resetPassword")
-    suspend fun resetPassword(
-        @Field(value = "email") email: String,
-        @Field(value = "password") password: String
-    ): OtherResponse
+    @PATCH("userPremium")
+    suspend fun updatePremiumUser(
+        @Body userPremiumStatus: PremiumStatus,
+        @retrofit2.http.Query("uuid") uuid: String,
+        @Header("Authorization") accessToken: String = "Bearer $SECRET_KEY"
+    ) : Response<String>
+
 }

@@ -133,7 +133,7 @@
     <string name="account">Account</string>
     <string name="username_already_taken">Username is already taken</string>
     <string name="email_already_taken">Email is already taken</string>
-    <string name="incorrect_password">Incorrect password</string>
+    <string name="email_login_failed">Incorrect login information</string>
     <string name="password_change_success">Change password successful</string>
     <string name="user_doesn_t_exist">User doesn\'t exist</string>
     <string name="create_payment_loading">Please wait a moment while we create\nthe payment QR code for you</string>

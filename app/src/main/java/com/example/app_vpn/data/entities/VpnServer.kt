@@ -1,6 +1,6 @@
 package com.example.app_vpn.data.entities
 
-data class Country(
+data class VpnServer(
     val id : Int,
     val name : String,
     val flag : String,

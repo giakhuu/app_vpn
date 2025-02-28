@@ -89,5 +89,13 @@
         </RadioGroup>
 
     </LinearLayout>
+    <ImageView
+        android:id="@+id/lockIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:contentDescription="icon_premium"
+        android:src="@drawable/crown_icon"
+        android:visibility="gone"/>
 
 </androidx.cardview.widget.CardView>

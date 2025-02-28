@@ -133,7 +133,7 @@
     <string name="account">Tài khoản</string>
     <string name="username_already_taken">Tên đăng nhập đã được đăng ký</string>
     <string name="email_already_taken">Email đã được đăng ký</string>
-    <string name="incorrect_password">Mật khẩu không đúng</string>
+    <string name="email_login_failed">Thông tin đăng nhập không chính xác</string>
     <string name="password_change_success">Thay đổi mật khẩu thành công</string>
     <string name="user_doesn_t_exist">Tài khoản không tồn tại</string>
     <string name="create_payment_loading">Vui lòng đợi một lát\nđể chúng tôi tạo mã QR thanh toán cho bạn</string>

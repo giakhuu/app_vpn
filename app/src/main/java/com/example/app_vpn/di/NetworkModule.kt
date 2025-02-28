@@ -1,30 +1,47 @@
 package com.example.app_vpn.di
 
 import android.content.Context
+import com.example.app_vpn.data.entities.Payment
 import com.example.app_vpn.data.network.RemoteDataSource
-import com.example.app_vpn.data.network.api.AuthApi
-import com.example.app_vpn.data.network.api.CountryApi
-import com.example.app_vpn.data.network.api.MailApi
 import com.example.app_vpn.data.network.api.PaymentApi
+import com.example.app_vpn.data.network.api.VpnServerApi
+import com.example.app_vpn.data.network.api.PaypalPaymentApi
+import com.example.app_vpn.data.network.api.SubscriptionApi
 import com.example.app_vpn.data.network.api.UserApi
+import com.example.app_vpn.data.network.api.UserServiceApi
+import com.example.app_vpn.util.API_KEY
+import com.example.app_vpn.util.SUPABASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.storage.Storage
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
     @Singleton
     @Provides
-    fun provideAuthApi(
-        remoteDataSource: RemoteDataSource,
-        @ApplicationContext context: Context
-    ): AuthApi {
-        return remoteDataSource.buildApi(AuthApi::class.java, context)
+    fun provideSupabaseClient() : SupabaseClient {
+        val supabaseClient = createSupabaseClient(
+            supabaseUrl = SUPABASE_URL,
+            supabaseKey = API_KEY,
+        ) {
+            install(Auth) {
+                autoLoadFromStorage = true // 🔥 Tự động load session từ storage
+                alwaysAutoRefresh = true
+            }
+            install(Storage) {
+                // settings
+            }
+        }
+
+        return supabaseClient
     }
 
     @Singleton
@@ -33,16 +50,7 @@ object NetworkModule {
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
     ): UserApi {
-        return remoteDataSource.buildApi(UserApi::class.java, context)
-    }
-
-    @Singleton
-    @Provides
-    fun provideMailApi(
-        remoteDataSource: RemoteDataSource,
-        @ApplicationContext context: Context
-    ) : MailApi {
-        return remoteDataSource.buildApi(MailApi::class.java, context)
+        return remoteDataSource.buildApi(UserApi::class.java, )
     }
 
     @Singleton
@@ -50,16 +58,39 @@ object NetworkModule {
     fun provideCountryApi(
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
-    ) : CountryApi {
-        return remoteDataSource.buildApi(CountryApi::class.java, context)
+    ) : VpnServerApi {
+        return remoteDataSource.buildApi(VpnServerApi::class.java,)
+    }
+
+    @Singleton
+    @Provides
+    fun providePaypalPaymentApi(
+        remoteDataSource: RemoteDataSource,
+    ) : PaypalPaymentApi {
+        return remoteDataSource.buildPaypalApi(PaypalPaymentApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSubscriptionApi(
+        remoteDataSource: RemoteDataSource,
+    ) : SubscriptionApi {
+        return remoteDataSource.buildApi(SubscriptionApi::class.java, )
     }
 
     @Singleton
     @Provides
     fun providePaymentApi(
         remoteDataSource: RemoteDataSource,
-        @ApplicationContext context: Context
-    ) : PaymentApi {
-        return remoteDataSource.buildApi(PaymentApi::class.java, context)
+    ) : PaymentApi{
+        return remoteDataSource.buildApiSecret(PaymentApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserServiceApi(
+        remoteDataSource: RemoteDataSource
+    ) : UserServiceApi {
+        return remoteDataSource.buildApiSecret(UserServiceApi::class.java)
     }
 }

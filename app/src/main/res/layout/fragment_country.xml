@@ -5,17 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.CountryFragment">
+    tools:context=".ui.fragment.VpnServerFragment">
 
     <!-- VIP Country Section -->
     <TextView
-        android:id="@+id/txtVipCountry"
+        android:id="@+id/txtVpnServer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppin_medium"
         android:gravity="center"
         android:padding="20dp"
-        android:text="Premium Countries"
+        android:text="@string/vpn_server"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
@@ -27,11 +27,10 @@
         android:id="@+id/shimmerPremiumCountry"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtStandardCountry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtVipCountry">
+        app:layout_constraintTop_toBottomOf="@+id/txtVpnServer">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,9 +38,12 @@
             android:orientation="vertical">
 
             <include layout="@layout/shimmer_sample" />
-
             <include layout="@layout/shimmer_sample" />
-
+            <include layout="@layout/shimmer_sample" />
+            <include layout="@layout/shimmer_sample" />
+            <include layout="@layout/shimmer_sample" />
+            <include layout="@layout/shimmer_sample" />
+            <include layout="@layout/shimmer_sample" />
             <include layout="@layout/shimmer_sample" />
 
         </LinearLayout>
@@ -49,7 +51,7 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <ListView
-        android:id="@+id/lvPremiumCountry"
+        android:id="@+id/lvVpnServer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:divider="@android:color/transparent"
@@ -57,67 +59,14 @@
         android:padding="8dp"
         android:scrollbars="none"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/txtStandardCountry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtVipCountry" />
+        app:layout_constraintTop_toBottomOf="@id/txtVpnServer"
+        app:layout_constraintBottom_toTopOf="@+id/importFileBtn"
+        />
 
     <!-- Standard Country Section -->
-    <TextView
-        android:id="@+id/txtStandardCountry"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppin_medium"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="Standard Countries"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lvPremiumCountry" />
-
-    <!-- Shimmer Layout for Standard Country List -->
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerStandardCountry"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtStandardCountry">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <include layout="@layout/shimmer_sample" />
-
-            <include layout="@layout/shimmer_sample" />
-
-            <include layout="@layout/shimmer_sample" />
-
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <ListView
-        android:id="@+id/lvStandardCountry"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp"
-        android:padding="8dp"
-        android:scrollbars="none"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtStandardCountry" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/importFileBtn"

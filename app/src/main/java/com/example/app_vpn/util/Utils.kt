@@ -25,6 +25,10 @@ import com.github.razir.progressbutton.showProgress
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
+import java.lang.Error
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 fun <A : Activity> Activity.startNewActivity(activity: Class<A>,  bundle: Bundle? = null) {
     Intent(this, activity).also {
@@ -104,36 +108,6 @@ fun Activity.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
-fun Activity.handleApiError(
-    failure: Resource.Failure,
-    action: (() -> Unit)? = null
-) {
-    val rootView = window.decorView.findViewById<View>(android.R.id.content)
-    when {
-        failure.isNetworkError -> {
-            Log.d("my_tag", failure.toString())
-            rootView?.snackBar(
-                failure.errorBody.toString(),
-                action
-            )
-        }
-        failure.errorCode == 404 -> {
-            if (this is LoginActivity) {
-                rootView?.snackBar("Please enter correct login information")
-            }
-            else {
-                rootView?.snackBar("404 Error !")
-            }
-        }
-        failure.errorCode == 409 -> {
-            rootView?.snackBar("Already exist username or email")
-        }
-        else -> {
-            val error = failure.errorBody
-            rootView?.snackBar(error!!)
-        }
-    }
-}
 
 fun Fragment.logout() = lifecycleScope.launch {
     Log.d("mytag_logout_utils", activity.toString())
@@ -147,4 +121,42 @@ fun hideKeyboard(context: Context, view: View) {
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
 
+
+fun convertDateTime(input: String?): String {
+    try {
+        val parsedDate = OffsetDateTime.parse(input)
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a", Locale.getDefault())
+        return parsedDate.format(formatter)
+    }
+    catch (e: Exception) {
+        return ""
+    }
+}
+
+fun isPremium(timeString: String): Boolean {
+    return try {
+        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+        val parsedTime = OffsetDateTime.parse(timeString, formatter)
+        parsedTime.isAfter(OffsetDateTime.now())
+    } catch (e: Exception) {
+        false // Trả về false nếu format không hợp lệ
+    }
+}
+
+fun getNewExpiredDate(expiredDateStr: String, month: Int): String {
+    val expiredDate = OffsetDateTime.parse(expiredDateStr, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
+    val now = OffsetDateTime.now()
+
+    val newExpiredDate = if (expiredDate.isBefore(now)) {
+        now.plusMonths(month.toLong())
+    } else {
+        expiredDate.plusMonths(month.toLong())
+    }
+
+    return newExpiredDate.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+}

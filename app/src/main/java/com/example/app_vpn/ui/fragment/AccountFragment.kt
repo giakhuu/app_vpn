@@ -1,254 +1,203 @@
 package com.example.app_vpn.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
-import android.content.res.ColorStateList
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.app_vpn.R
-import com.example.app_vpn.data.entities.User
+import com.example.app_vpn.data.entities.PremiumStatus
 import com.example.app_vpn.data.network.Resource
 import com.example.app_vpn.data.preferences.PreferenceManager
 import com.example.app_vpn.data.preferences.UserPreference
 import com.example.app_vpn.databinding.FragmentAccountBinding
 import com.example.app_vpn.ui.MainActivity
+import com.example.app_vpn.ui.auth.login.TAG
+import com.example.app_vpn.ui.auth.resetpw.ResetPasswordSuccessActivity
+import com.example.app_vpn.ui.viewmodel.AuthViewModel
 import com.example.app_vpn.ui.viewmodel.UserViewModel
-import com.example.app_vpn.util.JwtUtils
-import com.example.app_vpn.util.handleApiError
-import com.example.app_vpn.util.isValid
-import com.example.app_vpn.util.isValidPassword
-import com.example.app_vpn.util.logout
-import com.example.app_vpn.util.onDone
-import com.example.app_vpn.util.onLoad
-import com.example.app_vpn.util.setUp
+import com.example.app_vpn.util.*
 import com.github.razir.progressbutton.bindProgressButton
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+import kotlin.math.log
 
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
+
     private lateinit var binding: FragmentAccountBinding
 
-    @Inject
-    lateinit var userPreference: UserPreference
-    private lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var supabaseClient: SupabaseClient
+    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var userPreference: UserPreference
 
-    private var isDataLoaded = false
-
-    private val userViewModel by viewModels<UserViewModel>()
-
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private val jwtUtils = JwtUtils()
+    private val authViewModel by viewModels<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("my_tag_Account", "on create view")
         binding = FragmentAccountBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("account", "on view create account fragemnt")
         super.onViewCreated(view, savedInstanceState)
+        setupUi()
+        applySystemInsets(binding.root)
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.swiperefresh) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    /**
+     * Thiết lập giao diện và sự kiện của Fragment.
+     * Mỗi phần được tách thành các hàm riêng để đảm bảo Single Responsibility.
+     */
+    private fun setupUi() {
+        setupSwipeRefresh()
+        updateEmail()
+        binding.btnChangePassword.setOnClickListener { showChangePasswordDialog() }
+        binding.btnLogout.setOnClickListener { showLogoutDialog() }
+        updatePremiumStatus()
+    }
 
-        preferenceManager = PreferenceManager(requireContext())
-
-        swipeRefreshLayout = binding.swiperefresh
-
-        val mainActivity = activity as MainActivity
-
-        if (!isDataLoaded) {
-            mainActivity.fetchData()
-        }
-
-        swipeRefreshLayout.setOnRefreshListener {
-            mainActivity.fetchData()
+    private fun setupSwipeRefresh() {
+        binding.swiperefresh.setOnRefreshListener {
+            Log.d("_premium", "Swiped down to refresh")
             binding.swiperefresh.isRefreshing = false
-        }
-
-        mainActivity.userViewModel.user.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Success -> {
-                    isDataLoaded = true
-                    updateUI(it.value.data)
-                }
-
-                is Resource.Failure -> {
-                    requireActivity().handleApiError(it)
-                }
-
-                is Resource.Loading -> {
-                    //shimmer effect
-                }
-            }
-        }
-
-        binding.btnChangePassword.setOnClickListener {
-            val dialog =
-                BottomSheetDialog(requireContext()) // Sử dụng requireContext() thay vì this
-            val viewBottomSheetDialog =
-                layoutInflater.inflate(R.layout.dialog_change_password, null)
-            dialog.setCancelable(true)
-            dialog.setContentView(viewBottomSheetDialog)
-            dialog.show()
-
-            val btnChangePw = viewBottomSheetDialog.findViewById<Button>(R.id.btnChangePw)
-            bindProgressButton(btnChangePw)
-            btnChangePw.setUp()
-
-            val txtCurrentPassword =
-                viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtCurrentPassword)
-            val txtNewPassword =
-                viewBottomSheetDialog.findViewById<TextInputEditText>(R.id.txtNewPassword)
-            val iplyNewPassword =
-                viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyNewPassword)
-
-            iplyNewPassword.isValid(
-                txtNewPassword,
-                btnChangePw,
-                invalidHelperText = getString(R.string.passwordValidateError)
-            ) {
-                this.isValidPassword()
-            }
-
-            // Xử lí sự kiện thay đổi password
-            btnChangePw.setOnClickListener {
-                val currentPassword = txtCurrentPassword.text.toString()
-                val newPassword = txtNewPassword.text.toString()
-                lifecycleScope.launch {
-                    changePassword(currentPassword, newPassword)
-                }
-            }
-
-            userViewModel.changePwResponse.observe(viewLifecycleOwner) {
-                when (it) {
-                    is Resource.Success -> {
-                        btnChangePw.onDone(getString(R.string.change_password))
-                        val responseValue = it.value
-                        when (responseValue.isSuccessful) {
-                            true -> {
-                                dialog.dismiss()
-                                showChangePwSuccessDialog(requireContext())
-                            }
-
-                            false -> {
-                                viewBottomSheetDialog.findViewById<TextInputLayout>(R.id.iplyCurrentPassword)
-                                    .apply {
-                                        if (responseValue.message.contains("Incorrect")) {
-                                            helperText =
-                                                context.getString(R.string.incorrect_password)
-                                        }
-                                        setHelperTextColor(
-                                            ColorStateList.valueOf(
-                                                resources.getColor(
-                                                    R.color.red
-                                                )
-                                            )
-                                        )
-                                    }
-                            }
-                        }
-                    }
-
-                    is Resource.Failure -> {
-                        requireActivity().handleApiError(it)
-                        dialog.dismiss()
-                    }
-
-                    is Resource.Loading -> {
-                        btnChangePw.onLoad()
-                    }
-                }
-            }
-        }
-
-        binding.btnLogout.setOnClickListener {
-            showLogoutDialog()
+            // Bạn có thể thêm logic refresh dữ liệu nếu cần.
         }
     }
 
-    private fun showLogoutDialog() {
-        val dialog = Dialog(requireContext())
-        val viewLogoutDialog = layoutInflater.inflate(R.layout.dialog_logout, null)
+    private fun updateEmail() {
+        binding.txtEmail.text = supabaseClient.auth.currentUserOrNull()?.email
+    }
 
-        dialog.setCancelable(false)
-        dialog.setContentView(viewLogoutDialog)
+    /**
+     * Áp dụng padding dựa trên insets của hệ thống (status bar, navigation bar)
+     */
+    private fun applySystemInsets(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = systemBars.top, bottom = systemBars.bottom)
+            insets
+        }
+    }
+
+    /**
+     * Hiển thị dialog đổi mật khẩu và thiết lập sự kiện của các thành phần bên trong.
+     */
+    private fun showChangePasswordDialog() {
+        val dialog = BottomSheetDialog(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_change_password, null)
+        dialog.setContentView(dialogView)
+        dialog.setCancelable(true)
         dialog.show()
 
-        val btnLogoutNo = viewLogoutDialog.findViewById<Button>(R.id.btnLogoutNo)
-        val btnLogoutYes = viewLogoutDialog.findViewById<Button>(R.id.btnLogoutYes)
+        handleChangePasswordBtnClick(dialogView)
+        observeUpdatePasswordResponse(dialogView)
+    }
 
-        btnLogoutNo.setOnClickListener {
-            dialog.dismiss()
+    /**
+     * Xử lý sự kiện click nút đổi mật khẩu bên trong dialog.
+     */
+    private fun handleChangePasswordBtnClick(view: View) {
+        val btnChangePw = view.findViewById<Button>(R.id.btnChangePw)
+        bindProgressButton(btnChangePw)
+        btnChangePw.setUp()
+
+        val txtNewPassword = view.findViewById<TextInputEditText>(R.id.txtNewPassword)
+        val txtNewPasswordConfirm = view.findViewById<TextInputEditText>(R.id.txtNewPasswordConfirm)
+        val iplyNewPassword = view.findViewById<TextInputLayout>(R.id.iplyNewPassword)
+        val iplyNewPasswordConfirm = view.findViewById<TextInputLayout>(R.id.iplyNewPasswordConfirm)
+
+        iplyNewPassword.isValid(txtNewPassword, btnChangePw, getString(R.string.passwordValidateError)) {
+            this.isValidPassword()
         }
+        iplyNewPasswordConfirm.isValid(
+            txtNewPasswordConfirm, btnChangePw, getString(R.string.passwordConfirmValidateError)
+        ) { txtNewPasswordConfirm.text.toString() == txtNewPassword.text.toString() }
 
-        btnLogoutYes.setOnClickListener {
+        btnChangePw.setOnClickListener {
+            lifecycleScope.launch {
+                btnChangePw.onLoad()
+                authViewModel.updatePassword(
+                    supabaseClient.auth.currentUserOrNull()?.email,
+                    txtNewPassword.text.toString(),
+                    supabaseClient.auth.currentAccessTokenOrNull() ?: ""
+                )
+            }
+        }
+    }
+
+    /**
+     * Quan sát phản hồi từ cập nhật mật khẩu.
+     */
+    private fun observeUpdatePasswordResponse(view: View) {
+        val btnChangePw = view.findViewById<Button>(R.id.btnChangePw)
+        lifecycleScope.launch {
+            authViewModel.updatePasswordResponse.collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        Log.d(TAG, "resetpassword: thành công")
+                        requireContext().showToast(getString(R.string.reset_password_success))
+                        startActivity(Intent(requireContext(), ResetPasswordSuccessActivity::class.java))
+                    }
+                    is Resource.Error -> {
+                        btnChangePw.onDone(getString(R.string.reset_password))
+                        requireContext().showToast(resource.error.message.toString())
+                    }
+                    is Resource.Loading -> {
+                        // Loading đã được xử lý qua onLoad() trong btnChangePw
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Hiển thị dialog logout.
+     */
+    private fun showLogoutDialog() {
+        val dialog = Dialog(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_logout, null)
+        dialog.setContentView(dialogView)
+        dialog.setCancelable(false)
+        dialog.show()
+
+        dialogView.findViewById<Button>(R.id.btnLogoutNo).setOnClickListener { dialog.dismiss() }
+        dialogView.findViewById<Button>(R.id.btnLogoutYes).setOnClickListener {
             logout()
             dialog.dismiss()
         }
     }
 
-    private fun showChangePwSuccessDialog(context: Context) {
-        val dialog = Dialog(context)
-        val viewDialog = layoutInflater.inflate(R.layout.dialog_success, null)
-        dialog.setCancelable(false)
-        dialog.setContentView(viewDialog)
-        dialog.show()
-
-        val btnDone = viewDialog.findViewById<Button>(R.id.btnDone)
-        val txtSuccessText = viewDialog.findViewById<TextView>(R.id.txtSuccessText)
-        txtSuccessText.text = getString(R.string.password_change_success)
-        btnDone.setOnClickListener {
-            dialog.dismiss()
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun updateUI(user: User) {
-        val premiumType = jwtUtils.extractPremiumType(user.premiumKey)
-        when (premiumType) {
-            "F" -> {
-                binding.txtPremiumType.text = "Free"
-                binding.txtExpireDate.text = "Unlimited"
-            }
-
-            else -> {
-                binding.txtPremiumType.text = "Premium"
-                binding.txtExpireDate.text = "${jwtUtils.extractExpirationDate(user.premiumKey)}"
+    /**
+     * Cập nhật giao diện hiển thị trạng thái Premium dựa trên dữ liệu từ UserPreference.
+     */
+    private fun updatePremiumStatus() {
+        lifecycleScope.launch {
+            if (userPreference.getPremiumStatus()) {
+                binding.txtPremiumType.text = getString(R.string.premium)
+                binding.txtExpireDate.text = convertDateTime(userPreference.getPremiumExpiredDate())
+            } else {
+                binding.txtPremiumType.text = getString(R.string.non_premium)
+                binding.txtExpireDate.text = getString(R.string.unlimited)
             }
         }
-        binding.txtUsername.text = user.username
-        binding.txtEmail.text = user.email
-
-    }
-
-    private suspend fun changePassword(oldPassword: String, newPassword: String) {
-        val accessToken = userPreference.getAccessTokenAsString()
-        userViewModel.changePassword(accessToken!!, oldPassword, newPassword)
     }
 }

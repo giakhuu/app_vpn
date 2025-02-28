@@ -14,22 +14,17 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.asLiveData
 import com.example.app_vpn.R
-import com.example.app_vpn.data.entities.Country
+import com.example.app_vpn.data.entities.VpnServer
 import com.example.app_vpn.data.preferences.PreferenceManager
-import com.example.app_vpn.data.preferences.UserPreference
-import com.example.app_vpn.util.JwtUtils
 import com.example.app_vpn.util.enable
 import com.squareup.picasso.Picasso
 
-class CustomArrayCountryAdapter(
+class CustomArrayVpnServerAdapter(
     val activity: Context,
-    val list: List<Country>,
-    val lifecycleOwner: LifecycleOwner
+    val list: List<VpnServer>,
+    val isPremium: Boolean
 ) :
-    ArrayAdapter<Country>(activity, R.layout.item_country_layout) {
-
-    private var userPreference = UserPreference(activity)
-    private var jwtUtils = JwtUtils()
+    ArrayAdapter<VpnServer>(activity, R.layout.item_country_layout) {
 
     private var checkedPosition = -1 // Khởi tạo checkedPosition là -1
     private lateinit var preferenceManager: PreferenceManager
@@ -47,11 +42,11 @@ class CustomArrayCountryAdapter(
         val countryName = rowView.findViewById<TextView>(R.id.countryName)
         val pingConnection = rowView.findViewById<TextView>(R.id.pingConnection)
         val radioButton = rowView.findViewById<RadioButton>(R.id.radioButton)
-
+        val lockIcon = rowView.findViewById<ImageView>(R.id.lockIcon)
         // set preferenceManager
         preferenceManager = PreferenceManager(activity)
 
-        userPreference.premiumKey
+
 
         // Set hình ảnh của quốc gia
         Picasso.get().load(list[position].flag).into(flagImg)
@@ -62,24 +57,20 @@ class CustomArrayCountryAdapter(
         // Set thời gian ping
         pingConnection.text = "50ms"
 
-        userPreference.premiumKey.asLiveData().observe(lifecycleOwner) { premiumKey ->
-            val premiumType = jwtUtils.extractPremiumType(premiumKey!!)
-            val isFreeUser = premiumType == "F"
-            val isFreeCountry = !list[position].premium
-            // If the user is not a premium user, enable/disable the entire row
-            if (isFreeUser) {
-                rowView.enable(
-                    isFreeCountry
-                )
-                radioButton.enable(
-                    isFreeCountry
-                )
-                if (list[position].premium == false) {
-
-                }
-            }
+        // xử lí enable coutry premium
+        // !(true && true)
+        Log.d("vpnServer", "${list[position].name}: ${list[position].premium}")
+        val isEnabled = if (isPremium) {
+            // Người dùng premium → cho phép truy cập tất cả các server
+            true
+        } else {
+            // Người dùng không phải premium → chỉ cho phép các server free
+            !list[position].premium
         }
 
+        lockIcon.visibility = if (isEnabled) View.GONE else View.VISIBLE
+        rowView.enable(isEnabled)
+        radioButton.enable(isEnabled)
         // Thiết lập sự kiện khi RadioButton được nhấn
         val onClickListener = View.OnClickListener {
             // Cập nhật checkedPosition khi RadioButton được chọn
@@ -92,9 +83,8 @@ class CustomArrayCountryAdapter(
                 checkedPosition = position
 
                 // lưu vào preference
-                preferenceManager.saveCountry(list[position])
-                val country = preferenceManager.getCountry()
-                Log.d("country", country.toString())
+                preferenceManager.saveVpnServer(list[position])
+                val country = preferenceManager.getVpnServer()
             }
         }
 

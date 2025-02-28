@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.app_vpn.R
 import com.example.app_vpn.data.entities.Benefit
-import com.example.app_vpn.data.entities.Country
+import com.example.app_vpn.data.entities.VpnServer
 
 class CustomBenefitAdapter(val activity: Context, val list: List<Benefit>) :
-    ArrayAdapter<Country>(activity, R.layout.item_benefit) {
+    ArrayAdapter<VpnServer>(activity, R.layout.item_benefit) {
 
     // Số dòng sẽ vẽ nên
     override fun getCount(): Int {

@@ -1,57 +1,64 @@
 package com.example.app_vpn.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app_vpn.data.entities.User
+import com.example.app_vpn.data.entities.PremiumStatus
 import com.example.app_vpn.data.network.Resource
-import com.example.app_vpn.data.repository.UserRepository
-import com.example.app_vpn.data.repsonses.DataResponse
-import com.example.app_vpn.data.repsonses.OtherResponse
+import com.example.app_vpn.data.preferences.UserPreference
+import com.example.app_vpn.data.repository.repoImpl.UserRepository
+import com.example.app_vpn.ui.auth.login.TAG
+import com.example.app_vpn.util.VPN_SERVER_BUCKET
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.exception.AuthRestException
+import io.github.jan.supabase.auth.user.UserInfo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userPreference: UserPreference,
+    private val supabase: SupabaseClient
 ) : ViewModel() {
 
-    private val _user = MutableLiveData<Resource<DataResponse<User>>>()
-    private val _changePwResponse = MutableLiveData<Resource<DataResponse<User>>>()
-    private val _resetPasswordResponse = MutableLiveData<Resource<OtherResponse>>()
+    private val _premiumStatus = MutableStateFlow<Resource<List<PremiumStatus>>>(Resource.Loading)
+    val premiumStatus: StateFlow<Resource<List<PremiumStatus>>>
+        get() = _premiumStatus.asStateFlow()
+    private val _updatePasswordResponse = MutableStateFlow<Resource<Nothing>>(Resource.Loading)
+    val updatePasswordResponse: StateFlow<Resource<Nothing>> = _updatePasswordResponse.asStateFlow()
+    /**
+     * Gọi API để lấy premiumStatus và lưu vào UserPreference
+     * Dùng ở **HomeFragment**
+     */
+    fun fetchPremiumData() = viewModelScope.launch {
+        val result = userRepository.fetchPremiumData()
+        _premiumStatus.value = result
 
-    val user: LiveData<Resource<DataResponse<User>>>
-        get() = _user
-    val changePwResponse: LiveData<Resource<DataResponse<User>>>
-        get() = _changePwResponse
-    val resetPasswordResponse: LiveData<Resource<OtherResponse>>
-        get() = _resetPasswordResponse
-
-    fun fetchData(accessToken: String) = viewModelScope.launch {
-        _user.value = userRepository.fetchData(accessToken)
+        // Kiểm tra nếu API trả về thành công và có dữ liệu
+        if (result is Resource.Success) {
+            result.data?.firstOrNull()?.let { premiumStatus ->
+                savePremiumStatus(premiumStatus)
+            }
+        }
     }
 
-    fun changePassword(
-        accessToken: String,
-        oldPassword: String,
-        newPassword: String
-    ) = viewModelScope.launch {
-        _changePwResponse.value = Resource.Loading
-        _changePwResponse.value =
-            userRepository.changePassword(accessToken, oldPassword, newPassword)
+    /**
+     * Lưu `premiumStatus` vào UserPreference
+     */
+    fun savePremiumStatus(premiumStatus: PremiumStatus) {
+        viewModelScope.launch {
+            userPreference.savePremiumStatus(premiumStatus)
+        }
     }
 
-    fun resetPassword(
-        email: String,
-        password: String
-    ) = viewModelScope.launch {
-        _resetPasswordResponse.value = Resource.Loading
-        _resetPasswordResponse.value = userRepository.resetPassword(email, password)
-    }
 
-    fun delete(accessToken: String) = viewModelScope.launch {
-        userRepository.delete(accessToken)
-    }
 }

@@ -18,19 +18,17 @@ class CustomSubscriptionAdapter(
 ) : RecyclerView.Adapter<CustomSubscriptionAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val numberTextView: TextView = itemView.findViewById(R.id.number)
-        private val durationTextView: TextView = itemView.findViewById(R.id.duration)
+        private val descriptionTextView: TextView = itemView.findViewById(R.id.description)
         private val priceTextView: TextView = itemView.findViewById(R.id.price)
         private val radioButtonPricing: RadioButton = itemView.findViewById(R.id.radioButtonPricing)
         private val materialCardView: MaterialCardView = itemView as MaterialCardView
 
         fun bind(subscription: Subscription) {
             with(subscription) {
-                numberTextView.text = number.toString()
-                priceTextView.text = price
-                durationTextView.text = duration
-                radioButtonPricing.isChecked = selected
-                setBorderColor(selected)
+                descriptionTextView.text = description
+                priceTextView.text = String.format(price.toString())
+                radioButtonPricing.isChecked = isSelected
+                setBorderColor(isSelected)
 
                 itemView.setOnClickListener { handleItemClick(this) }
                 radioButtonPricing.setOnClickListener { handleItemClick(this) }
@@ -44,8 +42,8 @@ class CustomSubscriptionAdapter(
 
         @SuppressLint("NotifyDataSetChanged")
         private fun handleItemClick(subscription: Subscription) {
-            list.forEach { it.selected = false }
-            subscription.selected = true
+            list.forEach { it.isSelected = false }
+            subscription.isSelected = true
             onClick(adapterPosition)
             notifyDataSetChanged()
         }

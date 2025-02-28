@@ -16,13 +16,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/number"
+            android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30sp"
             android:fontFamily="@font/urbanist_semibold"
             android:gravity="center"
-            android:text="1"
+            android:text="1 Month"
             android:textColor="@color/wordBenefit"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -31,27 +31,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/urbanist_semibold"
-            android:gravity="center_vertical"
-            android:text="Month"
-            android:textColor="@color/wordBenefit"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/number"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/txtCurrencyUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/urbanist_semibold"
-            android:text="VND"
+            android:text="USD"
             android:textColor="@color/wordBenefit"
             android:textSize="22sp"
             android:textStyle="bold"
