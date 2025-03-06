@@ -131,9 +131,7 @@ class HomeFragment : Fragment() {
                 } else {
                     if (status == "NOPROCESS" || status == null) {
                         startVpn(homeViewModel.config)
-                        startPulse()
                     } else {
-                        stopPulse()
                         stopVpn()
                     }
                 }
@@ -332,13 +330,16 @@ class HomeFragment : Fragment() {
     fun status(state: String) {
         binding.apply {
             when (state) {
+                "start" -> {
+                    countryName.text = vpnServer?.name
+                    button.text = getString(R.string.on_cn)
+                }
                 "noconnect" -> {
                     button.text = getString(R.string.cn)
                     updateIpAddress()
                     stopPulse()
                 }
                 "connecting" -> {
-                    startPulse()
                     countryName.text = vpnServer?.name
                     button.text = getString(R.string.on_cn)
                 }
@@ -349,6 +350,7 @@ class HomeFragment : Fragment() {
                 "connected" -> {
                     button.text = getString(R.string.disco)
                     updateIpAddress()
+                    startPulse()
                 }
                 "pause" -> {
                     button.text = getString(R.string.res_vpn)
@@ -364,6 +366,7 @@ class HomeFragment : Fragment() {
             Log.d("StatusHandler", "Updating UI for state: $connectionState")
 
             val stateMapping = mapOf(
+                "RESOLVE" to Pair(getString(R.string.wam), "start"),
                 "NOPROCESS" to Pair(getString(R.string.not_cn), "noconnect"),
                 "USERPAUSE" to Pair(getString(R.string.pause_vpn), "pause"),
                 "CONNECTED" to Pair(getString(R.string.cn_suc), "connected"),

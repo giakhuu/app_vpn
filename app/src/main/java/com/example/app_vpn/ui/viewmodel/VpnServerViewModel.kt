@@ -21,7 +21,6 @@ class VpnServerViewModel @Inject constructor(
     private val vpnServerRepository: VpnServerRepository
 ) : ViewModel() {
     private val _allCountry = MutableStateFlow<Resource<List<VpnServer>>>(Resource.Loading)
-
     val allCountry : StateFlow<Resource<List<VpnServer>>> = _allCountry.asStateFlow()
 
     init {

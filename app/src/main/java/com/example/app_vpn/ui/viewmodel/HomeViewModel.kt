@@ -31,8 +31,6 @@ class HomeViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
 ) : ViewModel(){
     var config: String = ""
-
-
     init {
         preferenceManager.getVpnServer()?.let { vpnServer ->
             getConfig(vpnServer)

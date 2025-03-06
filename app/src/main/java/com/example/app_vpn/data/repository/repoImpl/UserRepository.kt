@@ -43,7 +43,6 @@ class UserRepository @Inject constructor(
                         uuid = oldPremiumStatus.uuid,
                         expiredDate = getNewExpiredDate(oldPremiumStatus.expiredDate, subscription.duration)
                     )
-                    Log.d("updatePremiumData", "updatePremiumData: $newPremiumUser")
                     userServiceApi.updatePremiumUser(
                         userPremiumStatus = newPremiumUser,
                         "eq.${supabase.auth.currentUserOrNull()?.id}"
@@ -52,8 +51,9 @@ class UserRepository @Inject constructor(
                 else {
                     val newPremiumUser = PremiumStatus(
                         uuid = supabase.auth.currentUserOrNull()!!.id,
-                        expiredDate = OffsetDateTime.now().plusMonths(subscription.duration.toLong()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME).toString()
+                        expiredDate = getNewExpiredDate(null, subscription.duration)
                     )
+
                     userServiceApi.addPremiumUser(
                         newPremiumUser
                     )

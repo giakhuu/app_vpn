@@ -26,8 +26,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import java.lang.Error
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 fun <A : Activity> Activity.startNewActivity(activity: Class<A>,  bundle: Bundle? = null) {
@@ -128,9 +130,10 @@ fun Context.showToast(message: String) {
 
 fun convertDateTime(input: String?): String {
     try {
-        val parsedDate = OffsetDateTime.parse(input)
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a", Locale.getDefault())
-        return parsedDate.format(formatter)
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        val outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a")
+        val dateTime = LocalDateTime.parse(input, inputFormatter)
+        return dateTime.format(outputFormatter)
     }
     catch (e: Exception) {
         return ""
@@ -139,24 +142,27 @@ fun convertDateTime(input: String?): String {
 
 fun isPremium(timeString: String): Boolean {
     return try {
-        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-        val parsedTime = OffsetDateTime.parse(timeString, formatter)
-        parsedTime.isAfter(OffsetDateTime.now())
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        val now = LocalDateTime.now()
+        val inputDateTime = LocalDateTime.parse(timeString, formatter)
+
+        !inputDateTime.isBefore(now)
     } catch (e: Exception) {
+        Log.d("updatePremiumData", "Parsing error: ${e.message}")
         false // Trả về false nếu format không hợp lệ
     }
 }
 
-fun getNewExpiredDate(expiredDateStr: String, month: Int): String {
-    val expiredDate = OffsetDateTime.parse(expiredDateStr, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+fun getNewExpiredDate(input: String?, duration: Int): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    val now = LocalDateTime.now()
+    val inputDateTime = input?.let { LocalDateTime.parse(it, formatter) } ?: now
 
-    val now = OffsetDateTime.now()
-
-    val newExpiredDate = if (expiredDate.isBefore(now)) {
-        now.plusMonths(month.toLong())
+    val adjustedDateTime = if (inputDateTime.isBefore(now)) {
+        now.plus(duration.toLong(), ChronoUnit.MONTHS)
     } else {
-        expiredDate.plusMonths(month.toLong())
+        inputDateTime.plus(duration.toLong(), ChronoUnit.MONTHS)
     }
 
-    return newExpiredDate.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+    return adjustedDateTime.format(formatter)
 }

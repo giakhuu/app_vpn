@@ -33,8 +33,6 @@ class UserViewModel @Inject constructor(
     private val _premiumStatus = MutableStateFlow<Resource<List<PremiumStatus>>>(Resource.Loading)
     val premiumStatus: StateFlow<Resource<List<PremiumStatus>>>
         get() = _premiumStatus.asStateFlow()
-    private val _updatePasswordResponse = MutableStateFlow<Resource<Nothing>>(Resource.Loading)
-    val updatePasswordResponse: StateFlow<Resource<Nothing>> = _updatePasswordResponse.asStateFlow()
     /**
      * Gọi API để lấy premiumStatus và lưu vào UserPreference
      * Dùng ở **HomeFragment**
