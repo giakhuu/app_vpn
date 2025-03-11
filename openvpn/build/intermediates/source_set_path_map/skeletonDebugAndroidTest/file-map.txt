@@ -1,0 +1,8 @@
+de.blinkt.openvpn.test.openvpn-core-1.9.0-0 C:\Users\giakh\.gradle\caches\transforms-3\263813759d430bdc9be75d89167f122c\transformed\core-1.9.0\res
+de.blinkt.openvpn.test.openvpn-lifecycle-runtime-2.3.1-1 C:\Users\giakh\.gradle\caches\transforms-3\7e936f9ddee1651ac0e8bc60f0ab2490\transformed\lifecycle-runtime-2.3.1\res
+de.blinkt.openvpn.test.openvpn-jetified-annotation-experimental-1.3.0-2 C:\Users\giakh\.gradle\caches\transforms-3\db3152419d191dcde902b83757ecf514\transformed\jetified-annotation-experimental-1.3.0\res
+de.blinkt.openvpn.test.openvpn-skeleton-3 C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\build\generated\res\resValues\androidTest\skeleton\debug
+de.blinkt.openvpn.test.openvpn-mergeSkeletonDebugAndroidTestResources-4 C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\build\intermediates\incremental\skeletonDebugAndroidTest\mergeSkeletonDebugAndroidTestResources\merged.dir
+de.blinkt.openvpn.test.openvpn-mergeSkeletonDebugAndroidTestResources-5 C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\build\intermediates\incremental\skeletonDebugAndroidTest\mergeSkeletonDebugAndroidTestResources\stripped.dir
+de.blinkt.openvpn.test.openvpn-merged_res-6 C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\build\intermediates\merged_res\skeletonDebugAndroidTest
+de.blinkt.openvpn.test.openvpn-packaged_res-7 C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\build\intermediates\packaged_res\skeletonDebug

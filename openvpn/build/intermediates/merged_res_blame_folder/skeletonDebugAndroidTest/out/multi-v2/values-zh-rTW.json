@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "de.blinkt.openvpn.test.openvpn-mergeSkeletonDebugAndroidTestResources-4:/values-zh-rTW/values-zh-rTW.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\giakh\\.gradle\\caches\\transforms-3\\263813759d430bdc9be75d89167f122c\\transformed\\core-1.9.0\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "108",
+                        "endColumns": "100",
+                        "endOffsets": "204"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\giakh\\Documents\\Code\\Android\\app_vpn\\openvpn\\build\\intermediates\\packaged_res\\skeletonDebug\\values-zh-rTW\\values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "52",
+                        "endOffsets": "103"
+                    }
+                }
+            ]
+        }
+    ]
+}

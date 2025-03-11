@@ -99,8 +99,6 @@ class HomeFragment : Fragment() {
             vpnServer = preferenceManager.getVpnServer()!!
             homeViewModel.getConfig(vpnServer!!)
         }
-        val stopPulseFilter = IntentFilter("com.example.app_vpn.STOP_PULSE")
-        requireContext().registerReceiver(stopPulseReceiver, stopPulseFilter, RECEIVER_NOT_EXPORTED)
     }
 
     private fun setupUiActions() {
@@ -231,7 +229,7 @@ class HomeFragment : Fragment() {
                 mService!!.startProfile(profile.mUUID)
                 Log.d("VPN", "VPN Started")
             } catch (e: Exception) {
-                Log.e("VPN", "Lỗi khởi động VPN: ${e.message}")
+                Log.e("VPN", "Lỗi khởi động VPN: ${mService == null}")
                 Toast.makeText(requireContext(), "VPN service error", Toast.LENGTH_SHORT).show()
             }
         }
@@ -306,6 +304,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 7) {
@@ -420,18 +419,6 @@ class HomeFragment : Fragment() {
             Log.d("VPNStatus", state)
             preferenceManager.saveStatus(state)
             statusHandler(state)
-        }
-    }
-
-    // xử lí bấm cancel khi nhập password
-    private val stopPulseReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == "com.example.app_vpn.STOP_PULSE") {
-                stopVpn()
-                stopPulse()
-                updateIpAddress()
-                status("noconnect")
-            }
         }
     }
 }

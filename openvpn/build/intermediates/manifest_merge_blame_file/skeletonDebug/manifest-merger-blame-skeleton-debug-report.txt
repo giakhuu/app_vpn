@@ -1,0 +1,263 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3  ~ Copyright (c) 2012-2019 Arne Schwabe
+4  ~ Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
+5-->
+6<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+7    xmlns:tools="http://schemas.android.com/tools"
+8    package="de.blinkt.openvpn" >
+9
+10    <uses-sdk android:minSdkVersion="21" />
+11
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:5:5-67
+12-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:5:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:6:5-79
+13-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:6:22-76
+14    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+14-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:7:5-81
+14-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:7:22-78
+15    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+15-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:8:5-80
+15-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:8:22-77
+16    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+16-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:9:5-77
+16-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:9:22-74
+17    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+17-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:10:5-77
+17-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:10:22-74
+18
+19    <application
+19-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:27:5-138:19
+20        android:name="de.blinkt.openvpn.core.ICSOpenVPNApplication"
+20-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:28:9-51
+21        android:allowBackup="true"
+21-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:29:9-35
+22        android:appCategory="productivity"
+22-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:30:9-43
+23        android:extractNativeLibs="true"
+23-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:31:9-41
+24        android:icon="@mipmap/ic_launcher"
+24-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:32:9-43
+25        android:label="@string/app"
+25-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:34:9-36
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:33:9-54
+27        android:supportsRtl="true"
+27-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:35:9-35
+28        android:theme="@style/blinkt"
+28-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:36:9-38
+29        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute" >
+29-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:37:9-39
+30        <activity
+30-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:10:9-13:47
+31            android:name="de.blinkt.openvpn.activities.NotImplemented"
+31-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:12:13-54
+32            android:exported="true"
+32-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:11:17-40
+33            tools:ignore="ExportedActivity" />
+33-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:13:13-44
+34
+35        <activity-alias
+35-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:21:9-25:19
+36            android:name="de.blinkt.openvpn.activities.Req"
+36-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:23:17-47
+37            android:exported="true"
+37-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:22:17-40
+38            android:targetActivity="de.blinkt.openvpn.activities.NotImplemented" />
+38-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:24:17-68
+39        <activity-alias
+39-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:15:9-19:15
+40            android:name="de.blinkt.openvpn.activities.LogWindow"
+40-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:17:17-53
+41            android:exported="true"
+41-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:16:17-40
+42            android:targetActivity="de.blinkt.openvpn.activities.NotImplemented" />
+42-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\skeleton\AndroidManifest.xml:18:17-68
+43
+44        <meta-data
+44-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:38:9-40:56
+45            android:name="android.content.APP_RESTRICTIONS"
+45-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:39:13-60
+46            android:resource="@xml/app_restrictions" />
+46-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:40:13-53
+47
+48        <activity
+48-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:42:9-48:52
+49            android:name="de.blinkt.openvpn.activities.DisconnectVPN"
+49-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:43:13-53
+50            android:autoRemoveFromRecents="true"
+50-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:44:13-49
+51            android:excludeFromRecents="true"
+51-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:45:13-46
+52            android:noHistory="true"
+52-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:46:13-37
+53            android:taskAffinity=".DisconnectVPN"
+53-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:47:13-50
+54            android:theme="@style/blinkt.dialog" />
+54-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:48:13-49
+55
+56        <service
+56-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:51:9-60:19
+57            android:name="de.blinkt.openvpn.core.OpenVPNService"
+57-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:52:13-48
+58            android:exported="true"
+58-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:53:13-36
+59            android:foregroundServiceType="connectedDevice"
+59-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:55:13-60
+60            android:permission="android.permission.BIND_VPN_SERVICE"
+60-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:54:13-69
+61            android:process=":openvpn" >
+61-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:56:13-39
+62            <intent-filter>
+62-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:57:13-59:29
+63                <action android:name="android.net.VpnService" />
+63-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:58:17-65
+63-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:58:25-62
+64            </intent-filter>
+65        </service>
+66        <service
+66-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:61:9-69:19
+67            android:name="de.blinkt.openvpn.api.ExternalOpenVPNService"
+67-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:62:13-55
+68            android:exported="true"
+68-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:64:13-36
+69            android:process=":openvpn"
+69-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:63:13-39
+70            tools:ignore="ExportedService" >
+70-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:65:17-47
+71            <intent-filter>
+71-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:66:13-68:29
+72                <action android:name="de.blinkt.openvpn.api.IOpenVPNAPIService" />
+72-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:67:17-83
+72-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:67:25-80
+73            </intent-filter>
+74        </service>
+75        <service
+75-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:70:9-73:42
+76            android:name="de.blinkt.openvpn.core.OpenVPNStatusService"
+76-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:71:13-54
+77            android:exported="false"
+77-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:72:13-37
+78            android:process=":openvpn" />
+78-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:73:13-39
+79
+80        <activity
+80-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:75:9-80:20
+81            android:name="de.blinkt.openvpn.api.GrantPermissionsActivity"
+81-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:75:19-63
+82            android:exported="true" >
+82-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:76:17-40
+83            <intent-filter>
+83-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:77:13-79:29
+84                <action android:name="android.intent.action.MAIN" />
+84-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:78:17-69
+84-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:78:25-66
+85            </intent-filter>
+86        </activity>
+87        <activity
+87-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:81:9-86:20
+88            android:name="de.blinkt.openvpn.api.ConfirmDialog"
+88-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:81:19-52
+89            android:exported="true" >
+89-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:82:17-40
+90            <intent-filter>
+90-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:77:13-79:29
+91                <action android:name="android.intent.action.MAIN" />
+91-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:78:17-69
+91-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:78:25-66
+92            </intent-filter>
+93        </activity>
+94
+95        <receiver
+95-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:88:9-94:20
+96            android:name="de.blinkt.openvpn.OnBootReceiver"
+96-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:88:19-49
+97            android:exported="true" >
+97-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:89:17-40
+98            <intent-filter android:priority="999" >
+98-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:90:13-93:29
+98-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:90:28-50
+99                <action android:name="android.intent.action.BOOT_COMPLETED" />
+99-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:91:17-79
+99-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:91:25-76
+100                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+100-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:92:17-84
+100-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:92:25-81
+101            </intent-filter>
+102        </receiver>
+103
+104        <activity
+104-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:97:9-111:20
+105            android:name="de.blinkt.openvpn.LaunchVPN"
+105-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:98:13-38
+106            android:autoRemoveFromRecents="true"
+106-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:99:13-49
+107            android:excludeFromRecents="true"
+107-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:100:13-46
+108            android:exported="true"
+108-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:104:13-36
+109            android:label="@string/vpn_launch_title"
+109-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:101:13-53
+110            android:taskAffinity=".LaunchVPN"
+110-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:102:13-46
+111            android:theme="@style/blinkt.dialog" >
+111-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:103:13-49
+112            <intent-filter>
+112-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:106:13-110:29
+113                <action android:name="android.intent.action.MAIN" />
+113-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:78:17-69
+113-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:78:25-66
+114
+115                <category android:name="android.intent.category.DEFAULT" />
+115-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:109:17-76
+115-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:109:27-73
+116            </intent-filter>
+117        </activity>
+118        <!--
+119        <receiver android:name="core.GetRestrictionReceiver">
+120            <intent-filter>
+121                <action android:name="android.intent.action.GET_RESTRICTION_ENTRIES" />
+122            </intent-filter>
+123        </receiver>
+124        -->
+125        <activity android:name="de.blinkt.openvpn.api.RemoteAction" />
+125-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:119:9-54
+125-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:119:19-51
+126
+127        <activity-alias
+127-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:133:9-136:62
+128            android:name="de.blinkt.openvpn.api.ResumeVPN"
+128-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:134:17-46
+129            android:exported="true"
+129-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:135:17-40
+130            android:targetActivity="de.blinkt.openvpn.api.RemoteAction" />
+130-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:136:17-59
+131        <activity-alias
+131-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:129:9-132:62
+132            android:name="de.blinkt.openvpn.api.PauseVPN"
+132-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:130:17-45
+133            android:exported="true"
+133-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:131:17-40
+134            android:targetActivity="de.blinkt.openvpn.api.RemoteAction" />
+134-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:132:17-59
+135        <activity-alias
+135-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:125:9-128:58
+136            android:name="de.blinkt.openvpn.api.DisconnectVPN"
+136-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:126:13-46
+137            android:exported="true"
+137-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:127:13-36
+138            android:targetActivity="de.blinkt.openvpn.api.RemoteAction" />
+138-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:128:13-55
+139        <activity-alias
+139-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:121:9-124:58
+140            android:name="de.blinkt.openvpn.api.ConnectVPN"
+140-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:122:13-43
+141            android:exported="true"
+141-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:123:13-36
+142            android:targetActivity="de.blinkt.openvpn.api.RemoteAction" />
+142-->C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\src\main\AndroidManifest.xml:124:13-55
+143    </application>
+144
+145</manifest>

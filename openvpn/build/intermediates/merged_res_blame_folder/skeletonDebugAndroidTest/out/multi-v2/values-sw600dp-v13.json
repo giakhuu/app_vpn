@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "de.blinkt.openvpn.test.openvpn-mergeSkeletonDebugAndroidTestResources-4:/values-sw600dp-v13/values-sw600dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\giakh\\Documents\\Code\\Android\\app_vpn\\openvpn\\build\\intermediates\\packaged_res\\skeletonDebug\\values-sw600dp-v13\\values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,108",
+                        "endColumns": "52,41",
+                        "endOffsets": "103,145"
+                    }
+                }
+            ]
+        }
+    ]
+}
