@@ -42,8 +42,6 @@
 |----------------|-------------------|-------------|
 | ![NativeScript](https://img.shields.io/badge/NativeScript-65ADF1?style=for-the-badge&logo=nativescript&logoColor=white) | **TypeScript/XML** | Cross-platform native mobile development |
 | ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white) | **Android Native** | High-performance Android implementation |
-| ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) | **Utility-First CSS** | Responsive UI design system |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) | **Type-Safe Development** | Enhanced code reliability and maintainability |
 
 </div>
 
@@ -67,7 +65,6 @@
 | **Component** | **Technology** | **Specification** |
 |---------------|----------------|-------------------|
 | ![OpenVPN](https://img.shields.io/badge/OpenVPN-EA7E20?style=for-the-badge&logo=openvpn&logoColor=white) | **VPN Protocol** | AES-256 encryption, RSA-4096 key exchange |
-| ![WebRTC](https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=webrtc&logoColor=white) | **P2P Communication** | Real-time connection monitoring |
 | ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) | **Authentication** | Secure token-based session management |
 | ![SSL/TLS](https://img.shields.io/badge/SSL/TLS-326CE5?style=for-the-badge&logo=letsencrypt&logoColor=white) | **Transport Security** | End-to-end encryption protocols |
 
@@ -102,13 +99,10 @@ graph TB
 - **Repository Pattern**: Centralized data access layer
 - **Singleton Pattern**: Global state management for VPN connections
 - **Observer Pattern**: Real-time UI updates and connection monitoring
-- **Factory Pattern**: Dynamic server configuration and protocol selection
 - **Strategy Pattern**: Multiple VPN protocol implementations
 
 ### **⚡ Performance Optimizations**
 - **Lazy Loading**: On-demand resource loading for faster app startup
-- **Connection Pooling**: Efficient database connection management
-- **Caching Strategy**: Redis-based session and configuration caching
 - **Background Processing**: Asynchronous VPN connection handling
 - **Memory Management**: Optimized object lifecycle and garbage collection
 
@@ -125,18 +119,8 @@ graph TB
 | **IDE & Editors** | ![Android Studio](https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white) ![VS Code](https://img.shields.io/badge/VS_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white) |
 | **Version Control** | ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white) |
 | **Build Tools** | ![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white) ![Webpack](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=black) |
-| **Testing** | ![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white) ![Detox](https://img.shields.io/badge/Detox-E2E_Testing-green?style=for-the-badge) |
-| **CI/CD** | ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white) ![Fastlane](https://img.shields.io/badge/Fastlane-00F200?style=for-the-badge&logo=fastlane&logoColor=white) |
 
 </div>
-
-### **📊 Code Quality & Standards**
-- **ESLint + Prettier**: Automated code formatting and linting
-- **Husky**: Pre-commit hooks for code quality enforcement
-- **SonarQube**: Static code analysis and security scanning
-- **TypeScript Strict Mode**: Enhanced type safety and error prevention
-- **Unit Testing**: 90%+ code coverage with comprehensive test suites
-
 ---
 
 ## 🚀 **Quick Start & Development Setup**
@@ -144,71 +128,23 @@ graph TB
 ### **Prerequisites**
 ```bash
 # Required Development Tools
-- Node.js 18+ with npm/yarn
-- NativeScript CLI 8.8+
 - Android Studio with SDK 24+
 - Kotlin 1.8.0+
-- TypeScript 5.4+
 ```
 
 ### **Environment Setup**
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/secure-vpn-nativescript.git
-cd secure-vpn-nativescript
+git clone https://github.com/giakhuu/app_vpn.git
+cd app_vpn
 
-# 2. Install dependencies
-npm install
+# 2. Open AndroidStudio
+run app
 
-# 3. Configure environment variables
-cp .env.example .env
-# Add your Supabase and PayPal credentials
-
-# 4. Setup NativeScript environment and start preview
-setup-nativescript-stackblitz && ns preview
-```
-
-### **🔧 Configuration Files**
-```typescript
-// nativescript.config.ts - Advanced configuration
-export default {
-  id: 'com.securevpn.app',
-  appPath: 'app',
-  android: {
-    v8Flags: '--expose_gc',
-    markingMode: 'none',
-    codeCache: true
-  },
-  ios: {
-    discardUncaughtJsExceptions: false
-  }
-} as NativeScriptConfig;
 ```
 
 ---
 
-## 🎯 **Key Features & Technical Implementations**
-
-### **🔐 Advanced Security Features**
-- **Multi-Protocol Support**: OpenVPN, IKEv2, WireGuard implementations
-- **Perfect Forward Secrecy**: Dynamic key generation for each session
-- **DNS Leak Protection**: Custom DNS resolver with encrypted queries
-- **Kill Switch**: Automatic traffic blocking on VPN disconnection
-- **Split Tunneling**: Selective app-based VPN routing
-
-### **📱 Cross-Platform Compatibility**
-- **NativeScript Framework**: Single codebase for iOS and Android
-- **Native Performance**: Direct access to platform APIs
-- **Responsive Design**: Adaptive UI for tablets and phones
-- **Offline Capability**: Local configuration and connection management
-
-### **⚡ Real-Time Features**
-- **Live Connection Monitoring**: WebSocket-based status updates
-- **Bandwidth Analytics**: Real-time data usage tracking
-- **Server Load Balancing**: Automatic optimal server selection
-- **Push Notifications**: Connection alerts and security updates
-
----
 
 ## 📊 **Performance Metrics & Benchmarks**
 
@@ -288,14 +224,10 @@ npm run build:ios
 
 <div align="center">
 
-**🚀 Developed by [Your Name] - Full-Stack Mobile Developer**
+**🚀 Developed by giakhuu and nmheeir - Full-Stack Mobile Developer**
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)
-[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white)](https://yourportfolio.com)
-
-**📧 Email**: your.email@domain.com  
-**🌐 Portfolio**: [yourportfolio.com](https://yourportfolio.com)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/giakhuu)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nmheeir)
 
 </div>
 
@@ -313,8 +245,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repository if you find it impressive!**
 
-[![Stars](https://img.shields.io/github/stars/yourusername/secure-vpn-nativescript?style=social)](https://github.com/yourusername/secure-vpn-nativescript/stargazers)
-[![Forks](https://img.shields.io/github/forks/yourusername/secure-vpn-nativescript?style=social)](https://github.com/yourusername/secure-vpn-nativescript/network/members)
+[![Stars](https://img.shields.io/github/stars/giakhuu/app_vpn?style=social)](https://github.com/giakhuu/app_vpn/stargazers)
+[![Forks](https://img.shields.io/github/forks/giakhuu/app_vpn?style=social)](https://github.com/giakhuu/app_vpn/network/members)
 
 *Showcasing advanced mobile development skills with enterprise-grade architecture*
 
