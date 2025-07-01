@@ -39,6 +39,7 @@
 |----------------|-------------------|-------------|
 | ![NativeScript](https://img.shields.io/badge/NativeScript-65ADF1?style=for-the-badge&logo=nativescript&logoColor=white) | **TypeScript/XML** | Cross-platform native mobile development |
 | ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white) | **Android Native** | High-performance Android implementation |
+| ![Google Ads](https://img.shields.io/badge/Google_Ads_SDK-4285F4?style=for-the-badge&logo=google&logoColor=white) | **Mobile Advertising** | Revenue monetization & targeted advertising |
 
 </div>
 
@@ -66,7 +67,16 @@
 | ![SSL/TLS](https://img.shields.io/badge/SSL/TLS-326CE5?style=for-the-badge&logo=letsencrypt&logoColor=white) | **Transport Security** | End-to-end encryption protocols |
 
 </div>
+### **💰 Monetization & Analytics**
 
+<div align="center">
+
+| **Platform** | **Integration** | **Features** |
+|--------------|----------------|--------------|
+| ![Google AdMob](https://img.shields.io/badge/Google_AdMob-EA4335?style=for-the-badge&logo=google&logoColor=white) | **Mobile Ads SDK** | Banner ads, Interstitial ads, Rewarded video |
+| ![Google Analytics](https://img.shields.io/badge/Google_Analytics-E37400?style=for-the-badge&logo=google-analytics&logoColor=white) | **User Analytics** | User engagement tracking, conversion metrics |
+| ![AdMob Mediation](https://img.shields.io/badge/AdMob_Mediation-4285F4?style=for-the-badge&logo=google&logoColor=white) | **Ad Network Optimization** | Multiple ad network integration, revenue optimization |
+</div>
 ---
 
 ## 🏗️ **Advanced Architecture & Design Patterns**
