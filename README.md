@@ -1,9 +1,6 @@
 # 🛡️ SecureVPN - Enterprise-Grade Mobile VPN Solution
 
 <div align="center">
-  
-  ![VPN Logo](https://images.pexels.com/photos/6963944/pexels-photo-6963944.jpeg?auto=compress&cs=tinysrgb&w=800&h=400&fit=crop)
-  
   **A high-performance, enterprise-grade VPN client for Android built with modern technologies**
   
   [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://android.com)
