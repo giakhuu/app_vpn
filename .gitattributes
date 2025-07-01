@@ -1,3 +1,4 @@
 path/to/your/large/file filter=lfs diff=lfs merge=lfs -text
 /openvpn filter=lfs diff=lfs merge=lfs -text
 openvpn/build/outputs/apk/androidTest/skeleton/debug/openvpn-skeleton-debug-androidTest.apk filter=lfs diff=lfs merge=lfs -text
+openvpn/** linguist-vendored
