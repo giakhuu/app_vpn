@@ -142,18 +142,6 @@ run app
 
 ---
 
-## 📱 **Screenshots & UI Showcase**
-
-<div align="center">
-  <img src="https://images.pexels.com/photos/4792728/pexels-photo-4792728.jpeg?auto=compress&cs=tinysrgb&w=200&h=400&fit=crop" width="200" />
-  <img src="https://images.pexels.com/photos/7923697/pexels-photo-7923697.jpeg?auto=compress&cs=tinysrgb&w=200&h=400&fit=crop" width="200" />
-  <img src="https://images.pexels.com/photos/4792731/pexels-photo-4792731.jpeg?auto=compress&cs=tinysrgb&w=200&h=400&fit=crop" width="200" />
-  
-  *Dashboard • Server Selection • Analytics*
-</div>
-
----
-
 ## 📞 **Professional Contact & Portfolio**
 
 <div align="center">
