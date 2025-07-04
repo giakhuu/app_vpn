@@ -1,2 +1,2 @@
-ninja: Entering directory `C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\.cxx\Debug\6g4gq4r3\arm64-v8a'
-[1/1] cmd.exe /C "cd /D C:\Users\giakh\Documents\Code\Android\app_vpn\openvpn\.cxx\Debug\6g4gq4r3\arm64-v8a && C:\Users\giakh\AppData\Local\Android\Sdk\cmake\3.22.1\bin\cmake.exe -E make_directory C:/Users/giakh/Documents/Code/Android/app_vpn/openvpn/src/main/cpp/../../../build/ovpnassets"
+ninja: Entering directory `D:\Android\app_vpn\openvpn\.cxx\Debug\6g4gq4r3\arm64-v8a'
+[1/1] cmd.exe /C "cd /D D:\Android\app_vpn\openvpn\.cxx\Debug\6g4gq4r3\arm64-v8a && C:\Users\nmh76\AppData\Local\Android\Sdk\cmake\3.22.1\bin\cmake.exe -E make_directory D:/Android/app_vpn/openvpn/src/main/cpp/../../../build/ovpnassets"

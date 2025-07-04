@@ -2,6 +2,7 @@ package com.example.app_vpn.data.repository.repoImpl
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import com.example.app_vpn.R
@@ -89,6 +90,7 @@ class AuthRepository @Inject constructor(
                     Resource.Success(response)
                 }
             } catch (e: Exception) {
+                Log.d("registerWithEmailPassword", ": $e")
                 Resource.Error(e)
             }
         }

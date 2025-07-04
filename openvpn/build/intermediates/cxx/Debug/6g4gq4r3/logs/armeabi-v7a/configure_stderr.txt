@@ -11,5 +11,5 @@ CMake Warning (dev) in CMakeLists.txt:
   line.
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
-OpenVPN 2.x version 1a326db
-OpenVPN 3.x version 1a326db
+OpenVPN 2.x version GIT-NOTFOUND
+OpenVPN 3.x version GIT-NOTFOUND

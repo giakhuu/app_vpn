@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".AppVpnApplication"
@@ -66,11 +66,11 @@
         <activity
             android:name=".ui.auth.resetpw.ForgotPasswordActivity"
             android:exported="false" /> <!-- <meta-data -->
-        <!-- android:name="com.google.android.gms.ads.APPLICATION_ID" -->
-        <!-- android:value="ca-app-pub-3940256099942544~3347511713" /> -->
+        <!--         android:name="com.google.android.gms.ads.APPLICATION_ID" -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6756127155027324~6524013225" />
+                 android:value="ca-app-pub-3940256099942544~3347511713" />
+<!--            android:value="ca-app-pub-6756127155027324~6524013225" />-->
 
         <activity
             android:name=".ui.pay.GetPremiumActivity"
